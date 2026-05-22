@@ -3638,32 +3638,7 @@ async function handleMdImport(event) {
             showToastCustom('文件内容为空');
             return;
         }
-        // 清空编辑器并导入
-        editor.innerHTML = '';
-        const lines = text.split('\n');
-        for (const line of lines) {
-            const trimmed = line.trim();
-            if (!trimmed) continue;
-            let type = 'body-l';
-            let content = trimmed;
-            if (trimmed.startsWith('### ')) { type = 'heading3'; content = trimmed.slice(4); }
-            else if (trimmed.startsWith('## ')) { type = 'heading2'; content = trimmed.slice(3); }
-            else if (trimmed.startsWith('# ')) { type = 'heading1'; content = trimmed.slice(2); }
-            else if (trimmed.startsWith('> ')) { type = 'quote'; content = trimmed.slice(2); }
-            else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) { type = 'list-item'; content = trimmed.slice(2); }
-            const block = createBlock(type);
-            block.innerHTML = escapeHtml(content).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>').replace(/`(.+?)`/g, '<code>$1</code>');
-            editor.appendChild(block);
-        }
-        // 直接保存内容，不触发 input 事件（避免 ensureBlocks 清理）
-        state.content = editor.innerHTML;
-        updateDocContent(getActiveDocId(), state.content);
-        updateStats();
-        if (outlinePanel.classList.contains('open')) {
-            updateOutline();
-        }
-        saveUndoState();
-        showToastCustom('已导入 · ' + file.name);
+        insertRecognizedText(text, file.name);
     } catch (error) {
         console.error(error);
         showToastCustom('文件读取失败');
@@ -3762,9 +3737,6 @@ function insertRecognizedText(content, sourceName) {
     if (!paragraphs.length) {
         showToastCustom(sourceName + ' 未识别到文字');
         return;
-    }
-    if (!editor.textContent.trim()) {
-        editor.innerHTML = '';
     }
     paragraphs.forEach(paragraph => {
         const block = createBlock('body-l');
