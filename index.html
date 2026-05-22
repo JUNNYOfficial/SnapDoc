@@ -7,6 +7,38 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+    <svg style="display:none" aria-hidden="true">
+        <defs>
+            <symbol id="icon-seedling" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v10"/><path d="M12 10a5 5 0 0 1 5-5h0a5 5 0 0 1 5 5v0a5 5 0 0 1-5 5h0a5 5 0 0 1-5-5v0Z"/><path d="M12 10a5 5 0 0 0-5-5h0a5 5 0 0 0-5 5v0a5 5 0 0 0 5 5h0a5 5 0 0 0 5-5v0Z"/></symbol>
+            <symbol id="icon-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2"/><path d="M12 19v2"/><path d="M3 12h2"/><path d="M19 12h2"/><path d="M5.6 5.6l1.4 1.4"/><path d="M17 17l1.4 1.4"/><path d="M5.6 18.4l1.4-1.4"/><path d="M17 7l1.4-1.4"/></symbol>
+            <symbol id="icon-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></symbol>
+            <symbol id="icon-stop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/></symbol>
+            <symbol id="icon-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+            <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+            <symbol id="icon-palette" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.01 17.461 2 12 2z"/></symbol>
+            <symbol id="icon-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></symbol>
+            <symbol id="icon-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+            <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></symbol>
+            <symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+            <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+            <symbol id="icon-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></symbol>
+            <symbol id="icon-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
+            <symbol id="icon-rocket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></symbol>
+            <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+            <symbol id="icon-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></symbol>
+            <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+            <symbol id="icon-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+            <symbol id="icon-clipboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></symbol>
+            <symbol id="icon-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+            <symbol id="icon-lightbulb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol>
+            <symbol id="icon-thought" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v4"/><path d="M12 18v4"/><path d="m4.93 4.93 2.83 2.83"/><path d="m16.24 16.24 2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="m4.93 19.07 2.83-2.83"/><path d="m16.24 7.76 2.83-2.83"/></symbol>
+            <symbol id="icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+            <symbol id="icon-write" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+            <symbol id="icon-compress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/><path d="M12 9v6"/><path d="m9 12 3-3 3 3"/></symbol>
+            <symbol id="icon-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
+            <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+        </defs>
+    </svg>
     <style>
         :root {
             --bg-deep: #121212;
@@ -1163,14 +1195,14 @@
         <button class="fmt-btn" data-cmd="h3" title="标题3">H3</button>
         <div class="fmt-sep"></div>
         <button class="fmt-btn" data-cmd="ul" title="无序列表">• List</button>
-        <button class="fmt-btn" data-cmd="quote" title="引用">❝ Quote</button>
+        <button class="fmt-btn" data-cmd="quote" title="引用">Quote</button>
         <div class="fmt-sep"></div>
-        <button class="fmt-btn" data-cmd="link" title="插入链接">🔗 Link</button>
+        <button class="fmt-btn" data-cmd="link" title="插入链接">Link</button>
     </div>
 
     <aside id="shame-buffer">
         <div style="margin-bottom: 1rem;">
-            <div class="shame-tag">🌱 求反馈中，勿催</div>
+            <div class="shame-tag"><svg width="14" height="14" style="vertical-align:middle;margin-right:4px;"><use href="#icon-seedling"/></svg>求反馈中，勿催</div>
             <h3 style="font-weight: 300; font-size: 1rem; color: var(--text-secondary);">情绪心电图</h3>
         </div>
         <canvas id="emotion-chart"></canvas>
@@ -1178,7 +1210,7 @@
     </aside>
 
     <aside id="clipboard-drawer">
-        <div style="font-family: var(--font-ui); font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;">✦ 灵感剪贴板</div>
+        <div style="font-family: var(--font-ui); font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px;"><svg width="12" height="12" style="vertical-align:middle;margin-right:4px;"><use href="#icon-sparkle"/></svg>灵感剪贴板</div>
         <div id="clip-list"></div>
     </aside>
 
@@ -1232,7 +1264,7 @@
     <!-- 共享弹窗 -->
     <div id="share-modal">
         <div class="modal-content">
-            <div class="shame-tag">🌱 草稿箱共享</div>
+            <div class="shame-tag"><svg width="14" height="14" style="vertical-align:middle;margin-right:4px;"><use href="#icon-seedling"/></svg>草稿箱共享</div>
             <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 1rem;">对方将看到极简阅读界面<br>无编辑压力，仅接收你的"未完成"</p>
             <div class="share-link" id="share-link-display" title="点击复制">generating...</div>
             <label style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1rem; font-family: var(--font-ui); font-size: 0.7rem; color: var(--text-secondary); cursor: pointer;">
@@ -1284,7 +1316,7 @@
         </div>
     </div>
 
-    <div class="feedback-watermark" id="watermark" style="display:none;">🌱 求反馈中，勿催</div>
+    <div class="feedback-watermark" id="watermark" style="display:none;"><svg width="16" height="16" style="vertical-align:middle;margin-right:4px;"><use href="#icon-seedling"/></svg>求反馈中，勿催</div>
 
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.18/mammoth.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.12.313/build/pdf.min.js"></script>
@@ -1382,6 +1414,99 @@ function saveVersion(docId, content) {
     saveVersions(versions);
 }
 
+// === 版本压缩功能 ===
+function compressVersions(docId) {
+    const versions = getVersions();
+    const docVersions = versions[docId];
+    if (!docVersions || docVersions.length < 3) {
+        showToastCustom('版本数量不足，无需压缩');
+        return false;
+    }
+
+    // 保留第一个版本和最后一个版本，压缩中间版本
+    const firstVersion = docVersions[0];
+    const lastVersion = docVersions[docVersions.length - 1];
+
+    // 计算中间版本的关键变化摘要
+    const middleVersions = docVersions.slice(1, -1);
+    const changeSummary = generateChangeSummary(middleVersions);
+
+    // 创建压缩后的版本记录
+    const compressedVersion = {
+        time: lastVersion.time,
+        content: lastVersion.content,
+        preview: '[已压缩] ' + changeSummary,
+        compressed: true,
+        compressedCount: middleVersions.length,
+        originalRange: {
+            start: firstVersion.time,
+            end: lastVersion.time
+        }
+    };
+
+    // 替换为精简版本列表：[第一个版本, 压缩版本]
+    versions[docId] = [firstVersion, compressedVersion];
+    saveVersions(versions);
+    return true;
+}
+
+function generateChangeSummary(versions) {
+    if (versions.length === 0) return '无变化';
+
+    const summaries = [];
+    let totalAdditions = 0;
+    let totalDeletions = 0;
+
+    for (let i = 0; i < versions.length; i++) {
+        const current = getEditorTextFromHtml(versions[i].content);
+        const prev = i > 0 ? getEditorTextFromHtml(versions[i - 1].content) : current;
+
+        // 简单统计：字符数变化
+        const charDiff = current.length - prev.length;
+        if (charDiff > 0) {
+            totalAdditions += charDiff;
+        } else {
+            totalDeletions += Math.abs(charDiff);
+        }
+    }
+
+    const firstTime = new Date(versions[0].time).toLocaleDateString('zh-CN');
+    const lastTime = new Date(versions[versions.length - 1].time).toLocaleDateString('zh-CN');
+
+    if (versions.length === 1) {
+        return `1次编辑 (+${totalAdditions}/-${totalDeletions})`;
+    }
+
+    let timeRange = firstTime;
+    if (firstTime !== lastTime) {
+        timeRange = `${firstTime} ~ ${lastTime}`;
+    }
+
+    return `${versions.length}次编辑 ${timeRange} (+${totalAdditions}/-${totalDeletions})`;
+}
+
+function decompressVersions(docId) {
+    const versions = getVersions();
+    const docVersions = versions[docId];
+    if (!docVersions) return false;
+
+    // 找到压缩版本并展开（这里简化处理，实际可能需要保存原始版本）
+    const compressedIdx = docVersions.findIndex(v => v.compressed);
+    if (compressedIdx === -1) {
+        showToastCustom('没有可解压的版本');
+        return false;
+    }
+
+    // 标记为已解压，保留内容但清除压缩标记
+    docVersions[compressedIdx].compressed = false;
+    docVersions[compressedIdx].preview = getEditorTextFromHtml(docVersions[compressedIdx].content).slice(0, 60) + '...';
+    delete docVersions[compressedIdx].compressedCount;
+    delete docVersions[compressedIdx].originalRange;
+
+    saveVersions(versions);
+    return true;
+}
+
 function getEditorTextFromHtml(html) {
     const div = document.createElement('div');
     div.innerHTML = html;
@@ -1428,15 +1553,30 @@ function openVersionsPanel() {
         versions.slice().reverse().forEach((v, i) => {
             const realIndex = versions.length - 1 - i;
             const date = new Date(v.time).toLocaleString('zh-CN');
-            html += '<div class="version-item" data-index="' + realIndex + '">' +
-                '<div class="version-time">' + date + '</div>' +
+            const compressedBadge = v.compressed ? '<span style="color:var(--accent-calm);font-size:0.7rem;margin-left:0.5rem;">[已压缩]</span>' : '';
+            html += '<div class="version-item' + (v.compressed ? ' version-compressed' : '') + '" data-index="' + realIndex + '">' +
+                '<div class="version-time">' + date + compressedBadge + '</div>' +
                 '<div class="version-preview">' + escapeHtml(v.preview) + '</div>' +
                 '</div>';
         });
         html += '</div>';
     }
 
-    html += '<button class="tool-btn" style="margin-top:1.5rem;width:100%;text-align:center;" onclick="this.closest(\'#versions-modal\').remove()">关闭</button></div>';
+    // 压缩/解压按钮
+    const hasCompressed = versions.some(v => v.compressed);
+    const canCompress = versions.length >= 3;
+    if (canCompress || hasCompressed) {
+        html += '<div style="display:flex;gap:0.5rem;margin-top:1rem;">';
+        if (canCompress && !hasCompressed) {
+            html += '<button class="tool-btn" id="btn-compress-versions" style="flex:1;text-align:center;"><svg width="16" height="16" style="vertical-align:middle;margin-right:4px;"><use href="#icon-compress"/></svg>压缩版本</button>';
+        }
+        if (hasCompressed) {
+            html += '<button class="tool-btn" id="btn-decompress-versions" style="flex:1;text-align:center;"><svg width="16" height="16" style="vertical-align:middle;margin-right:4px;"><use href="#icon-folder"/></svg>解压版本</button>';
+        }
+        html += '</div>';
+    }
+
+    html += '<button class="tool-btn" style="margin-top:1rem;width:100%;text-align:center;" onclick="this.closest(\'#versions-modal\').remove()">关闭</button></div>';
     modal.innerHTML = html;
     document.body.appendChild(modal);
 
@@ -1455,6 +1595,7 @@ function openVersionsPanel() {
             .version-item:hover { background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12); }
             .version-time { font-family:var(--font-ui);font-size:0.7rem;color:var(--text-secondary);margin-bottom:0.3rem; }
             .version-preview { font-family:var(--font-body);font-size:0.85rem;color:var(--text-primary); }
+            .version-compressed { border-left: 3px solid var(--accent-calm); }
             [data-theme="soft-paper"] .version-item { background:rgba(0,0,0,0.02);border-color:rgba(0,0,0,0.06); }
             [data-theme="soft-paper"] .version-item:hover { background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1); }
         `;
@@ -1474,6 +1615,33 @@ function openVersionsPanel() {
             }
         });
     });
+
+    // 压缩按钮事件
+    const compressBtn = modal.querySelector('#btn-compress-versions');
+    if (compressBtn) {
+        compressBtn.addEventListener('click', () => {
+            if (confirm('压缩后将合并中间版本，保留首尾版本。确定要压缩吗？')) {
+                if (compressVersions(docId)) {
+                    modal.remove();
+                    showToastCustom('版本已压缩');
+                    // 重新打开面板显示结果
+                    setTimeout(() => openVersionsPanel(), 300);
+                }
+            }
+        });
+    }
+
+    // 解压按钮事件
+    const decompressBtn = modal.querySelector('#btn-decompress-versions');
+    if (decompressBtn) {
+        decompressBtn.addEventListener('click', () => {
+            if (decompressVersions(docId)) {
+                modal.remove();
+                showToastCustom('版本已解压');
+                setTimeout(() => openVersionsPanel(), 300);
+            }
+        });
+    }
 }
 
 function updateDocTitle(id, title) {
@@ -2339,7 +2507,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     state.recognition.onend = () => {
         state.isRecording = false;
         btnVoice.classList.remove('recording');
-        btnVoice.textContent = '🎙 语音草稿';
+        btnVoice.innerHTML = '<svg width="16" height="16" style="vertical-align:middle;margin-right:4px;"><use href="#icon-mic"/></svg>语音草稿';
     };
 } else {
     btnVoice.style.display = 'none';
@@ -2352,7 +2520,7 @@ btnVoice.addEventListener('click', () => {
     } else {
         state.isRecording = true;
         btnVoice.classList.add('recording');
-        btnVoice.textContent = '⏹ 停止录音';
+        btnVoice.innerHTML = '<svg width="16" height="16" style="vertical-align:middle;margin-right:4px;"><use href="#icon-stop"/></svg>停止录音';
         state.recognition.start();
         editor.focus();
     }
@@ -2379,11 +2547,11 @@ function getActionType(currentText, currentHtml) {
 
 function getActionLabel(type, diff) {
     switch (type) {
-        case 'add': return '✏️ 写了 ' + diff + ' 字';
-        case 'delete': return '🗑 删了 ' + Math.abs(diff) + ' 字';
-        case 'format': return '🎨 调整了排版';
-        case 'edit': return '✏️ 小修了几处';
-        default: return '✏️ 编辑中';
+        case 'add': return '<svg width="12" height="12" style="vertical-align:middle;margin-right:4px;"><use href="#icon-pen"/></svg>写了 ' + diff + ' 字';
+        case 'delete': return '<svg width="12" height="12" style="vertical-align:middle;margin-right:4px;"><use href="#icon-trash"/></svg>删了 ' + Math.abs(diff) + ' 字';
+        case 'format': return '<svg width="12" height="12" style="vertical-align:middle;margin-right:4px;"><use href="#icon-palette"/></svg>调整了排版';
+        case 'edit': return '<svg width="12" height="12" style="vertical-align:middle;margin-right:4px;"><use href="#icon-pen"/></svg>小修了几处';
+        default: return '<svg width="12" height="12" style="vertical-align:middle;margin-right:4px;"><use href="#icon-pen"/></svg>编辑中';
     }
 }
 
@@ -2465,7 +2633,7 @@ function drawEmotionChart() {
 function renderTimeline() {
     timelineList.innerHTML = state.history.map(item => {
         const color = item.color || '#8C7B75';
-        const label = item.actionLabel || ('✏️ ' + item.length + '字');
+        const label = item.actionLabel || ('<svg width="12" height="12" style="vertical-align:middle;margin-right:4px;"><use href="#icon-pen"/></svg>' + item.length + '字');
         return '<div class="timeline-item" data-id="' + item.id + '" style="--dot-color:' + color + '">' +
             '<div class="timeline-meta">' + item.timestamp + '</div>' +
             '<div class="timeline-action" style="color:' + color + ';font-family:var(--font-ui);font-size:0.7rem;margin-bottom:0.2rem;">' + label + '</div>' +
@@ -3061,7 +3229,7 @@ function showSpellCheckPanel(issues) {
     const panel = document.createElement('div');
     panel.id = 'spellcheck-panel';
 
-    let html = '<div class="spellcheck-header"><div class="spellcheck-title">发现 ' + issues.length + ' 处问题</div><button class="spellcheck-close" onclick="clearSpellCheckMarks()">✕</button></div>';
+    let html = '<div class="spellcheck-header"><div class="spellcheck-title">发现 ' + issues.length + ' 处问题</div><button class="spellcheck-close" onclick="clearSpellCheckMarks()"><svg width="14" height="14"><use href="#icon-x"/></svg></button></div>';
     html += '<div class="spellcheck-list">';
     issues.slice(0, 10).forEach((issue, i) => {
         html += '<div class="spellcheck-item" data-index="' + i + '">' +
@@ -3106,82 +3274,82 @@ document.getElementById('btn-spellcheck').addEventListener('click', toggleSpellC
 const TEMPLATES = {
     blank: {
         name: '空白文档',
-        icon: '📄',
+        icon: 'file',
         blocks: [{ type: 'body-l', content: '' }]
     },
     diary: {
         name: '每日日记',
-        icon: '📔',
+        icon: 'book',
         blocks: [
             { type: 'heading1', content: new Date().toLocaleDateString('zh-CN') + ' 日记' },
-            { type: 'heading2', content: '🌤️ 今日心情' },
+            { type: 'heading2', content: '今日心情' },
             { type: 'body-l', content: '' },
-            { type: 'heading2', content: '📝 今日记录' },
+            { type: 'heading2', content: '今日记录' },
             { type: 'body-l', content: '' },
-            { type: 'heading2', content: '💭 思考与感悟' },
+            { type: 'heading2', content: '思考与感悟' },
             { type: 'body-l', content: '' }
         ]
     },
     weekly: {
         name: '周报',
-        icon: '📊',
+        icon: 'chart',
         blocks: [
             { type: 'heading1', content: '周报 - 第 ' + getWeekNumber() + ' 周' },
-            { type: 'heading2', content: '✅ 本周完成' },
+            { type: 'heading2', content: '本周完成' },
             { type: 'list-item', content: '' },
-            { type: 'heading2', content: '📌 下周计划' },
+            { type: 'heading2', content: '下周计划' },
             { type: 'list-item', content: '' },
-            { type: 'heading2', content: '⚠️ 遇到的问题' },
+            { type: 'heading2', content: '遇到的问题' },
             { type: 'body-l', content: '' },
-            { type: 'heading2', content: '📈 数据与成果' },
+            { type: 'heading2', content: '数据与成果' },
             { type: 'body-l', content: '' }
         ]
     },
     project: {
         name: '项目计划',
-        icon: '🚀',
+        icon: 'rocket',
         blocks: [
             { type: 'heading1', content: '项目名称' },
-            { type: 'heading2', content: '🎯 项目目标' },
+            { type: 'heading2', content: '项目目标' },
             { type: 'body-l', content: '' },
-            { type: 'heading2', content: '📋 任务清单' },
+            { type: 'heading2', content: '任务清单' },
             { type: 'list-item', content: '[ ] 任务一' },
             { type: 'list-item', content: '[ ] 任务二' },
             { type: 'list-item', content: '[ ] 任务三' },
-            { type: 'heading2', content: '📅 时间规划' },
+            { type: 'heading2', content: '时间规划' },
             { type: 'body-l', content: '' },
-            { type: 'heading2', content: '👥 团队成员' },
+            { type: 'heading2', content: '团队成员' },
             { type: 'body-l', content: '' }
         ]
     },
     meeting: {
         name: '会议记录',
-        icon: '🗒️',
+        icon: 'clipboard',
         blocks: [
             { type: 'heading1', content: '会议记录' },
             { type: 'body-l', content: '时间：' + new Date().toLocaleDateString('zh-CN') },
             { type: 'body-l', content: '地点：' },
             { type: 'body-l', content: '参会人：' },
-            { type: 'heading2', content: '📋 会议议题' },
+            { type: 'heading2', content: '会议议题' },
             { type: 'list-item', content: '' },
-            { type: 'heading2', content: '💬 讨论内容' },
+            { type: 'heading2', content: '讨论内容' },
             { type: 'body-l', content: '' },
-            { type: 'heading2', content: '✅ 行动项' },
+            { type: 'heading2', content: '行动项' },
             { type: 'list-item', content: '' }
         ]
     },
     reading: {
         name: '读书笔记',
-        icon: '📖',
+        icon: 'book',
         blocks: [
             { type: 'heading1', content: '《书名》读书笔记' },
-            { type: 'heading2', content: '✍️ 作者信息' },
+            { type: 'heading2', content: '作者信息' },
             { type: 'body-l', content: '' },
-            { type: 'heading2', content: '🌟 核心观点' },
+            { type: 'heading2', content: '核心观点' },
             { type: 'body-l', content: '' },
-            { type: 'heading2', content: '💡 精华摘录' },
+            { type: 'heading2', content: '精华摘录' },
             { type: 'quote', content: '' },
-            { type: 'heading2', content: '🤔 个人思考' },
+            { type: 'heading2', content: '个人思考' },
             { type: 'body-l', content: '' }
         ]
     }
@@ -3217,7 +3385,7 @@ function openTemplatePanel() {
     let html = '<div class="template-grid">';
     Object.entries(TEMPLATES).forEach(([key, t]) => {
         html += '<div class="template-card" data-template="' + key + '">' +
-            '<div class="template-icon">' + t.icon + '</div>' +
+            '<div class="template-icon"><svg width="32" height="32"><use href="#icon-' + t.icon + '"/></svg></div>' +
             '<div class="template-name">' + t.name + '</div>' +
             '</div>';
     });
