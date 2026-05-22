@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapDoc 登录中...</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #333;
+            border-top-color: #e0e0e0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .status {
+            font-size: 16px;
+            color: #888;
+        }
+        .error {
+            color: #ff6b6b;
+            text-align: center;
+            max-width: 400px;
+            padding: 0 20px;
+        }
+        .success {
+            color: #51cf66;
+        }
+        .info {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            max-width: 400px;
+            padding: 0 20px;
+            line-height: 1.6;
+        }
+        .token-input {
+            width: 300px;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .token-input::placeholder {
+            color: #555;
+        }
+        .btn {
+            padding: 10px 24px;
+            background: #e0e0e0;
+            color: #0f0f0f;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="spinner" id="spinner"></div>
+    <div class="status" id="status">正在处理登录...</div>
+    <div class="info" id="info" style="display:none;"></div>
+
+    <script>
+        // OAuth 回调处理
+        (async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
+            const error = urlParams.get('error');
+            const statusEl = document.getElementById('status');
+            const spinnerEl = document.getElementById('spinner');
+            const infoEl = document.getElementById('info');
+
+            // 验证 state 防止 CSRF
+            const savedState = sessionStorage.getItem('oauth_state');
+            sessionStorage.removeItem('oauth_state');
+
+            if (error) {
+                showError('登录失败: ' + error);
+                return;
+            }
+
+            if (!code) {
+                showError('授权码缺失');
+                return;
+            }
+
+            if (state !== savedState) {
+                showError('安全验证失败，请重试');
+                return;
+            }
+
+            try {
+                // 由于纯前端无法安全存储 client_secret，
+                // 我们使用 GitHub Device Flow 或让用户手动输入 token
+                // 这里提供两种方案：
+
+                // 方案 1: 如果用户有 Personal Access Token，直接输入
+                // 方案 2: 引导用户创建 token
+
+                statusEl.textContent = '需要 GitHub Token';
+                spinnerEl.style.display = 'none';
+                infoEl.style.display = 'block';
+                infoEl.innerHTML = `
+                    <p>由于安全原因，纯前端应用无法直接获取 OAuth Token。</p>
+                    <p style="margin-top:8px;">请按以下步骤操作：</p>
+                    <ol style="text-align:left;margin:8px 0;padding-left:20px;">
+                        <li>访问 <a href="https://github.com/settings/tokens/new" target="_blank" style="color:#4a7c59;">创建 Personal Access Token</a></li>
+                        <li>勾选 <strong>gist</strong> 权限</li>
+                        <li>生成后复制 token 到下方</li>
+                    </ol>
+                    <input type="text" class="token-input" id="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                    <br>
+                    <button class="btn" onclick="submitToken()">确认登录</button>
+                `;
+
+                // 将 code 保存到 sessionStorage，主页面可以读取
+                sessionStorage.setItem('github_auth_code', code);
+
+            } catch (err) {
+                showError('登录处理失败: ' + err.message);
+            }
+        })();
+
+        async function submitToken() {
+            const tokenInput = document.getElementById('token-input');
+            const token = tokenInput.value.trim();
+            const statusEl = document.getElementById('status');
+            const spinnerEl = document.getElementById('spinner');
+            const infoEl = document.getElementById('info');
+
+            if (!token || !token.startsWith('ghp_')) {
+                alert('请输入有效的 GitHub Personal Access Token');
+                return;
+            }
+
+            statusEl.textContent = '正在验证...';
+            spinnerEl.style.display = 'block';
+            infoEl.style.display = 'none';
+
+            try {
+                // 验证 token 并获取用户信息
+                const user = await fetchGitHubUser(token);
+
+                // 存储到 localStorage（加密）
+                const authData = {
+                    token: token,
+                    user: user,
+                    expires: Date.now() + 30 * 24 * 60 * 60 * 1000 // 30天
+                };
+                localStorage.setItem('snapdoc_auth', JSON.stringify(authData));
+
+                statusEl.textContent = '登录成功！';
+                statusEl.className = 'status success';
+                spinnerEl.style.display = 'none';
+
+                // 通知主窗口
+                if (window.opener) {
+                    window.opener.postMessage({
+                        type: 'oauth_success',
+                        user: user,
+                        token: token
+                    }, '*');
+                    setTimeout(() => window.close(), 1500);
+                } else {
+                    setTimeout(() => {
+                        window.location.href = '../index.html';
+                    }, 1500);
+                }
+            } catch (err) {
+                showError('验证失败: ' + err.message);
+            }
+        }
+
+        async function fetchGitHubUser(token) {
+            const res = await fetch('https://api.github.com/user', {
+                headers: {
+                    'Authorization': 'token ' + token,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+            if (!res.ok) throw new Error('Token 无效或已过期');
+            return res.json();
+        }
+
+        function showError(msg) {
+            const statusEl = document.getElementById('status');
+            const spinnerEl = document.getElementById('spinner');
+            statusEl.textContent = msg;
+            statusEl.className = 'status error';
+            spinnerEl.style.display = 'none';
+
+            // 通知主窗口
+            if (window.opener) {
+                window.opener.postMessage({ type: 'oauth_error', error: msg }, '*');
+            }
+        }
+    </script>
+</body>
+</html>

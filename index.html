@@ -1244,6 +1244,18 @@
             <button class="tool-btn" id="btn-shortcuts" title="快捷键 (Ctrl+/)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="4"/><path d="M14 18H18M14 24H18M14 30H18M22 18H26M22 24H26M22 30H26M30 18H34M30 24H34M30 30H34"/></svg>快捷键</button>
             <button class="tool-btn" id="btn-settings" title="设置"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="8"/><path d="M24 2V10M24 38V46M2 24H10M38 24H46M8.44 8.44L14.1 14.1M33.9 33.9L39.56 39.56M8.44 39.56L14.1 33.9M33.9 14.1L39.56 8.44"/></svg>设置</button>
         </div>
+        <!-- 用户组 -->
+        <div class="toolbar-group" id="user-group">
+            <button class="tool-btn" id="btn-login" title="登录"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V24M24 24L16 16M24 24L32 16"/><circle cx="24" cy="24" r="16"/><path d="M24 24L24 44"/></svg>登录</button>
+            <div id="user-menu" style="display:none;position:absolute;bottom:100%;right:0;margin-bottom:8px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);min-width:160px;z-index:1000;">
+                <div id="user-info" style="padding:8px 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
+                    <div id="user-name" style="font-weight:600;font-size:0.85rem;"></div>
+                    <div id="user-email" style="font-size:0.75rem;color:var(--text-secondary);"></div>
+                </div>
+                <button class="tool-btn" id="btn-sync" style="width:100%;text-align:left;justify-content:flex-start;padding:6px 12px;font-size:0.8rem;" title="同步数据"><svg class="tool-icon" style="width:16px;height:16px;" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4"><path d="M24 4V24M24 24L16 16M24 24L32 16"/><circle cx="24" cy="24" r="16"/><path d="M24 24L24 44"/></svg>同步</button>
+                <button class="tool-btn" id="btn-logout" style="width:100%;text-align:left;justify-content:flex-start;padding:6px 12px;font-size:0.8rem;color:#ff6b6b;" title="退出登录"><svg class="tool-icon" style="width:16px;height:16px;" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4"><path d="M18 14L30 24L18 34"/><path d="M30 24H6"/><path d="M30 6H42V42H30"/></svg>退出</button>
+            </div>
+        </div>
     </div>
     <input type="file" id="input-docx" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
     <input type="file" id="input-pdf" accept=".pdf,application/pdf" style="display:none">
@@ -3802,6 +3814,397 @@ function escapeHtml(text) { const div = document.createElement('div'); div.textC
 function escapeAttr(text) { return text.replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
 window.addEventListener('resize', () => { if (shameBuffer.classList.contains('open')) drawEmotionChart(); });
+
+// === GitHub OAuth 登录系统 ===
+const GITHUB_CLIENT_ID = 'Ov231iDEL8kRhHX1dzKo';
+const GITHUB_REDIRECT_URI = window.location.origin + '/auth/callback.html';
+const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize';
+
+// 登录状态管理
+let currentUser = null;
+let githubToken = null;
+
+// 检查登录状态
+async function checkAuthStatus() {
+    const stored = localStorage.getItem('snapdoc_auth');
+    if (stored) {
+        try {
+            const auth = JSON.parse(stored);
+            if (auth.token && auth.expires > Date.now()) {
+                githubToken = auth.token;
+                currentUser = auth.user;
+                updateUserUI();
+                return true;
+            }
+        } catch (e) {
+            console.error('Auth parse error:', e);
+        }
+    }
+    updateUserUI();
+    return false;
+}
+
+// 开始 OAuth 登录
+function startGitHubLogin() {
+    // 生成随机 state 防止 CSRF
+    const state = generateRandomState();
+    sessionStorage.setItem('oauth_state', state);
+    
+    // 构建授权 URL
+    const params = new URLSearchParams({
+        client_id: GITHUB_CLIENT_ID,
+        redirect_uri: GITHUB_REDIRECT_URI,
+        scope: 'gist read:user',
+        state: state
+    });
+    
+    const authUrl = GITHUB_OAUTH_URL + '?' + params.toString();
+    
+    // 打开弹出窗口
+    const width = 500;
+    const height = 600;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2;
+    
+    const popup = window.open(
+        authUrl,
+        'github-oauth',
+        `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no`
+    );
+    
+    // 监听消息
+    window.addEventListener('message', handleOAuthMessage);
+    
+    // 检测弹出窗口关闭
+    const checkClosed = setInterval(() => {
+        if (popup.closed) {
+            clearInterval(checkClosed);
+            window.removeEventListener('message', handleOAuthMessage);
+        }
+    }, 500);
+}
+
+// 处理 OAuth 回调消息
+function handleOAuthMessage(event) {
+    if (event.origin !== window.location.origin) return;
+
+    if (event.data.type === 'oauth_success') {
+        currentUser = event.data.user;
+        githubToken = event.data.token;
+
+        // 保存到 localStorage
+        const authData = {
+            token: githubToken,
+            user: currentUser,
+            expires: Date.now() + 30 * 24 * 60 * 60 * 1000 // 30天
+        };
+        localStorage.setItem('snapdoc_auth', JSON.stringify(authData));
+
+        showToastCustom('GitHub 登录成功！');
+        updateUserUI();
+    } else if (event.data.type === 'oauth_error') {
+        showToastCustom('登录失败: ' + event.data.error);
+    }
+}
+
+// 生成随机 state
+function generateRandomState() {
+    const array = new Uint8Array(16);
+    crypto.getRandomValues(array);
+    return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// 更新用户界面
+function updateUserUI() {
+    const loginBtn = document.getElementById('btn-login');
+    const userMenu = document.getElementById('user-menu');
+    const userName = document.getElementById('user-name');
+    const userEmail = document.getElementById('user-email');
+    
+    if (currentUser) {
+        loginBtn.innerHTML = '<svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><circle cx="24" cy="18" r="6"/><path d="M12 36C12 30 17 26 24 26C31 26 36 30 36 36"/></svg>' + (currentUser.name || currentUser.login);
+        loginBtn.title = '用户菜单';
+        userName.textContent = currentUser.name || currentUser.login;
+        userEmail.textContent = currentUser.email || '';
+    } else {
+        loginBtn.innerHTML = '<svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V24M24 24L16 16M24 24L32 16"/><circle cx="24" cy="24" r="16"/><path d="M24 24L24 44"/></svg>登录';
+        loginBtn.title = '登录';
+        userMenu.style.display = 'none';
+    }
+}
+
+// 退出登录
+function logout() {
+    currentUser = null;
+    githubToken = null;
+    localStorage.removeItem('snapdoc_auth');
+    updateUserUI();
+    showToastCustom('已退出登录');
+}
+
+// 同步数据到 GitHub Gist
+async function syncToGitHub() {
+    if (!githubToken) {
+        showToastCustom('请先登录');
+        return;
+    }
+    
+    showToastCustom('正在同步...');
+    
+    try {
+        // 收集所有文档数据
+        const docs = getAllDocs();
+        const versions = getAllVersions();
+        
+        const syncData = {
+            docs: docs,
+            versions: versions,
+            lastSync: Date.now()
+        };
+        
+        // 加密数据
+        const encrypted = await encryptSyncData(syncData);
+        
+        // 创建或更新 Gist
+        const gistId = localStorage.getItem('snapdoc_gist_id');
+        if (gistId) {
+            await updateGist(gistId, encrypted);
+        } else {
+            const newGist = await createGist(encrypted);
+            localStorage.setItem('snapdoc_gist_id', newGist.id);
+        }
+        
+        showToastCustom('同步完成');
+    } catch (error) {
+        console.error('Sync error:', error);
+        showToastCustom('同步失败: ' + error.message);
+    }
+}
+
+// 从 GitHub Gist 恢复数据
+async function restoreFromGitHub() {
+    if (!githubToken) {
+        showToastCustom('请先登录');
+        return;
+    }
+    
+    const gistId = localStorage.getItem('snapdoc_gist_id');
+    if (!gistId) {
+        showToastCustom('没有找到云端数据');
+        return;
+    }
+    
+    showToastCustom('正在恢复数据...');
+    
+    try {
+        const gist = await getGist(gistId);
+        const encrypted = gist.files['snapdoc-data.json'].content;
+        
+        // 解密数据
+        const syncData = await decryptSyncData(encrypted);
+        
+        // 恢复文档
+        if (syncData.docs) {
+            restoreAllDocs(syncData.docs);
+        }
+        if (syncData.versions) {
+            restoreAllVersions(syncData.versions);
+        }
+        
+        showToastCustom('数据恢复完成');
+    } catch (error) {
+        console.error('Restore error:', error);
+        showToastCustom('恢复失败: ' + error.message);
+    }
+}
+
+// Gist API 封装
+async function createGist(content) {
+    const res = await fetch('https://api.github.com/gists', {
+        method: 'POST',
+        headers: {
+            'Authorization': 'token ' + githubToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            description: 'SnapDoc 同步数据',
+            public: false,
+            files: {
+                'snapdoc-data.json': {
+                    content: content
+                }
+            }
+        })
+    });
+    if (!res.ok) throw new Error('创建 Gist 失败');
+    return res.json();
+}
+
+async function updateGist(gistId, content) {
+    const res = await fetch('https://api.github.com/gists/' + gistId, {
+        method: 'PATCH',
+        headers: {
+            'Authorization': 'token ' + githubToken,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            files: {
+                'snapdoc-data.json': {
+                    content: content
+                }
+            }
+        })
+    });
+    if (!res.ok) throw new Error('更新 Gist 失败');
+    return res.json();
+}
+
+async function getGist(gistId) {
+    const res = await fetch('https://api.github.com/gists/' + gistId, {
+        headers: { 'Authorization': 'token ' + githubToken }
+    });
+    if (!res.ok) throw new Error('获取 Gist 失败');
+    return res.json();
+}
+
+// 数据加密（使用用户密码派生密钥）
+async function encryptSyncData(data) {
+    const password = prompt('请输入同步密码（用于加密数据）：');
+    if (!password) throw new Error('需要密码');
+    
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    
+    const key = await deriveKey(password, salt);
+    const encoder = new TextEncoder();
+    const encrypted = await crypto.subtle.encrypt(
+        { name: 'AES-GCM', iv },
+        key,
+        encoder.encode(JSON.stringify(data))
+    );
+    
+    return JSON.stringify({
+        salt: Array.from(salt),
+        iv: Array.from(iv),
+        data: Array.from(new Uint8Array(encrypted))
+    });
+}
+
+async function decryptSyncData(encryptedStr) {
+    const password = prompt('请输入同步密码（用于解密数据）：');
+    if (!password) throw new Error('需要密码');
+    
+    const encrypted = JSON.parse(encryptedStr);
+    const salt = new Uint8Array(encrypted.salt);
+    const iv = new Uint8Array(encrypted.iv);
+    const data = new Uint8Array(encrypted.data);
+    
+    const key = await deriveKey(password, salt);
+    const decrypted = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv },
+        key,
+        data
+    );
+    
+    const decoder = new TextDecoder();
+    return JSON.parse(decoder.decode(decrypted));
+}
+
+async function deriveKey(password, salt) {
+    const encoder = new TextEncoder();
+    const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        encoder.encode(password),
+        'PBKDF2',
+        false,
+        ['deriveKey']
+    );
+    return crypto.subtle.deriveKey(
+        {
+            name: 'PBKDF2',
+            salt: salt,
+            iterations: 100000,
+            hash: 'SHA-256'
+        },
+        keyMaterial,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['encrypt', 'decrypt']
+    );
+}
+
+// 获取所有文档
+function getAllDocs() {
+    const docs = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('snapdoc_doc_')) {
+            try {
+                docs.push(JSON.parse(localStorage.getItem(key)));
+            } catch (e) {}
+        }
+    }
+    return docs;
+}
+
+// 获取所有版本
+function getAllVersions() {
+    try {
+        return JSON.parse(localStorage.getItem('snapdoc_versions') || '{}');
+    } catch (e) {
+        return {};
+    }
+}
+
+// 恢复所有文档
+function restoreAllDocs(docs) {
+    docs.forEach(doc => {
+        if (doc.id) {
+            localStorage.setItem('snapdoc_doc_' + doc.id, JSON.stringify(doc));
+        }
+    });
+    // 刷新文档列表
+    renderDocList();
+}
+
+// 恢复所有版本
+function restoreAllVersions(versions) {
+    localStorage.setItem('snapdoc_versions', JSON.stringify(versions));
+}
+
+// 事件绑定
+document.getElementById('btn-login').addEventListener('click', () => {
+    if (currentUser) {
+        // 已登录，显示/隐藏菜单
+        const menu = document.getElementById('user-menu');
+        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+    } else {
+        startGitHubLogin();
+    }
+});
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+    document.getElementById('user-menu').style.display = 'none';
+    logout();
+});
+
+document.getElementById('btn-sync').addEventListener('click', () => {
+    document.getElementById('user-menu').style.display = 'none';
+    syncToGitHub();
+});
+
+// 点击其他地方关闭用户菜单
+document.addEventListener('click', (e) => {
+    const userGroup = document.getElementById('user-group');
+    if (userGroup && !userGroup.contains(e.target)) {
+        const menu = document.getElementById('user-menu');
+        if (menu) menu.style.display = 'none';
+    }
+});
+
+// 初始化时检查登录状态
+checkAuthStatus();
+
 </script>
 </body>
 </html>
