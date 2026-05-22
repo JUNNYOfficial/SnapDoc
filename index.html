@@ -180,6 +180,37 @@
             z-index: 1;
             transition: padding 0.6s var(--ease-paper);
             overflow-y: auto;
+            display: flex;
+            gap: 2rem;
+            scroll-behavior: smooth;
+        }
+        /* 打字机模式 */
+        body.typewriter-mode #editor-container {
+            padding-top: 50vh;
+            padding-bottom: 50vh;
+        }
+        #editor-container.split-mode {
+            padding: 10vh 5vw;
+        }
+        #editor-container.split-mode #editor {
+            width: 50%;
+        }
+        #editor-preview {
+            display: none;
+            width: 50%;
+            padding: 1rem 0;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            border-left: 1px solid rgba(255,255,255,0.08);
+            padding-left: 2rem;
+        }
+        #editor-container.split-mode #editor-preview {
+            display: block;
+        }
+        [data-theme="soft-paper"] #editor-preview {
+            border-left-color: rgba(0,0,0,0.08);
         }
 
         /* === Notion式块级编辑器核心样式 === */
@@ -758,6 +789,91 @@
         .outline-item.h3 { font-size: 0.8rem; padding-left: 2rem; color: var(--text-muted); }
         [data-theme="soft-paper"] .outline-item:hover { background: rgba(0,0,0,0.03); }
 
+        /* 文档列表面板 */
+        #docs-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+        #docs-modal.show { opacity: 1; pointer-events: auto; }
+        .docs-panel {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 420px;
+            max-height: 70vh;
+            overflow-y: auto;
+            transform: translateY(10px);
+            transition: transform 0.3s var(--ease-paper);
+        }
+        #docs-modal.show .docs-panel { transform: translateY(0); }
+        .docs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .docs-title {
+            font-family: var(--font-ui);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .doc-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.4rem;
+            border: 1px solid transparent;
+        }
+        .doc-item:hover { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.05); }
+        .doc-item.active { background: rgba(74, 93, 107, 0.15); border-color: rgba(74, 93, 107, 0.3); }
+        .doc-item-title {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .doc-item-meta {
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+        .doc-item-actions {
+            display: flex;
+            gap: 0.3rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .doc-item:hover .doc-item-actions { opacity: 1; }
+        .doc-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.2rem 0.4rem;
+            font-size: 0.75rem;
+            border-radius: 4px;
+        }
+        .doc-action-btn:hover { color: #D47F7F; background: rgba(212, 127, 127, 0.1); }
+        [data-theme="soft-paper"] .doc-item:hover { background: rgba(0,0,0,0.03); }
+        [data-theme="soft-paper"] .doc-item.active { background: rgba(90, 122, 138, 0.1); border-color: rgba(90, 122, 138, 0.2); }
+
         /* 快捷键帮助面板 */
         #shortcuts-modal {
             position: fixed;
@@ -1038,6 +1154,7 @@
 
     <div id="editor-container">
         <div id="editor" contenteditable="true" data-placeholder="只写一行也没关系...&#10;光标在这里等你，没有评判。&#10;&#10;试试输入 # 标题、> 引用、- 列表、**加粗**" spellcheck="false"></div>
+        <div id="editor-preview" style="display: none;"></div>
     </div>
 
     <!-- 选中文字时浮现的格式工具栏 -->
@@ -1075,6 +1192,9 @@
         <div class="toolbar-group">
             <button class="tool-btn" id="btn-voice" title="语音草稿"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 20V24C10 27.713 11.475 31.274 14.1005 33.8995C16.726 36.525 20.287 38 24 38C27.713 38 31.274 36.525 33.8995 33.8995C36.525 31.274 38 27.713 38 24V20M24 38V46M16 46H32M24 2C22.4087 2 20.8826 2.63214 19.7574 3.75736C18.6321 4.88258 18 6.4087 18 8V24C18 25.5913 18.6321 27.1174 19.7574 28.2426C20.8826 29.3679 22.4087 30 24 30C25.5913 30 27.1174 29.3679 28.2426 28.2426C29.3679 27.1174 30 25.5913 30 24V8C30 6.4087 29.3679 4.88258 28.2426 3.75736C27.1174 2.63214 25.5913 2 24 2Z"/></svg>语音</button>
             <button class="tool-btn" id="btn-outline" title="大纲"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24H42M6 12H42M6 36H42"/></svg>大纲</button>
+            <button class="tool-btn" id="btn-split" title="分屏预览"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V44M8 4H40C42.2091 4 44 5.79086 44 8V40C44 42.2091 42.2091 44 40 44H8C5.79086 44 4 42.2091 4 40V8C4 5.79086 5.79086 4 8 4Z"/></svg>分屏</button>
+            <button class="tool-btn" id="btn-typewriter" title="打字机模式"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V12M24 36V44M12 24H4M44 24H36M14.1 14.1L8.44 8.44M39.56 39.56L33.9 33.9M14.1 33.9L8.44 39.56M39.56 8.44L33.9 14.1"/></svg>打字机</button>
+            <button class="tool-btn" id="btn-sound" title="打字音效"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V44M16 12H8M16 20H4M16 28H8M16 36H4M32 12H40M32 20H44M32 28H40M32 36H44"/></svg>音效</button>
             <button class="tool-btn" id="btn-search" title="搜索 (Ctrl+F)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="22" r="12"/><path d="M42 42L30 30"/></svg>搜索</button>
             <button class="tool-btn" id="btn-stats" title="字数统计"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8H20V20H8V8Z"/><path d="M28 8H40V20H28V8Z"/><path d="M8 28H20V40H8V28Z"/><path d="M28 28H40V40H28V28Z"/></svg>统计</button>
             <button class="tool-btn" id="btn-history" title="回溯历史"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><path d="M24 16V24L30 30"/><path d="M16 8L12 12L20 12"/></svg>回溯</button>
@@ -1093,6 +1213,7 @@
         </div>
         <!-- 系统组 -->
         <div class="toolbar-group">
+            <button class="tool-btn" id="btn-docs" title="我的文档"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4H34L42 16V44H14V4Z"/><path d="M34 4V16H42"/><path d="M20 24H36"/><path d="M20 32H36"/></svg>文档</button>
             <button class="tool-btn" id="btn-shortcuts" title="快捷键 (Ctrl+/)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="4"/><path d="M14 18H18M14 24H18M14 30H18M22 18H26M22 24H26M22 30H26M30 18H34M30 24H34M30 30H34"/></svg>快捷键</button>
             <button class="tool-btn" id="btn-settings" title="设置"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="8"/><path d="M24 2V10M24 38V46M2 24H10M38 24H46M8.44 8.44L14.1 14.1M33.9 33.9L39.56 39.56M8.44 39.56L14.1 33.9M33.9 14.1L39.56 8.44"/></svg>设置</button>
         </div>
@@ -1156,14 +1277,123 @@
         </div>
     </div>
 
+    <!-- 文档列表面板 -->
+    <div id="docs-modal">
+        <div class="docs-panel">
+            <div class="docs-header">
+                <div class="docs-title">我的文档</div>
+                <button class="tool-btn" id="btn-new-doc" style="font-size: 0.8rem;">+ 新建</button>
+            </div>
+            <div id="docs-list"></div>
+            <button class="tool-btn" onclick="document.getElementById('docs-modal').classList.remove('show')" style="margin-top: 1.5rem; width: 100%; text-align: center;">关闭</button>
+        </div>
+    </div>
+
     <div class="feedback-watermark" id="watermark" style="display:none;">🌱 求反馈中，勿催</div>
 
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.18/mammoth.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.12.313/build/pdf.min.js"></script>
 <script>
+// === 多文档存储系统 ===
+const STORAGE_KEY = 'monoflow_docs';
+const ACTIVE_DOC_KEY = 'monoflow_active_doc';
+
+function getDocs() {
+    try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    } catch {
+        return [];
+    }
+}
+
+function saveDocs(docs) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(docs));
+}
+
+function getActiveDocId() {
+    return localStorage.getItem(ACTIVE_DOC_KEY) || '';
+}
+
+function setActiveDocId(id) {
+    localStorage.setItem(ACTIVE_DOC_KEY, id);
+}
+
+function createNewDoc(title) {
+    const id = 'doc_' + Date.now();
+    const doc = {
+        id,
+        title: title || '未命名文档',
+        content: '',
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+    };
+    const docs = getDocs();
+    docs.unshift(doc);
+    saveDocs(docs);
+    setActiveDocId(id);
+    return doc;
+}
+
+function updateDocContent(id, content) {
+    const docs = getDocs();
+    const idx = docs.findIndex(d => d.id === id);
+    if (idx >= 0) {
+        docs[idx].content = content;
+        docs[idx].updatedAt = Date.now();
+        saveDocs(docs);
+    }
+}
+
+function updateDocTitle(id, title) {
+    const docs = getDocs();
+    const idx = docs.findIndex(d => d.id === id);
+    if (idx >= 0) {
+        docs[idx].title = title;
+        docs[idx].updatedAt = Date.now();
+        saveDocs(docs);
+    }
+}
+
+function deleteDoc(id) {
+    let docs = getDocs();
+    docs = docs.filter(d => d.id !== id);
+    saveDocs(docs);
+    if (getActiveDocId() === id && docs.length > 0) {
+        setActiveDocId(docs[0].id);
+        return docs[0];
+    }
+    return null;
+}
+
+function getDoc(id) {
+    return getDocs().find(d => d.id === id);
+}
+
+function getActiveDoc() {
+    const id = getActiveDocId();
+    if (!id) return null;
+    return getDoc(id);
+}
+
+// 迁移旧数据
+function migrateOldData() {
+    const oldContent = localStorage.getItem('monoflow_content');
+    if (oldContent && !getDocs().length) {
+        const doc = createNewDoc('我的文档');
+        updateDocContent(doc.id, oldContent);
+        localStorage.removeItem('monoflow_content');
+    }
+}
+migrateOldData();
+
 // === 核心状态 ===
+const activeDoc = getActiveDoc();
+if (!activeDoc) {
+    createNewDoc('未命名文档');
+}
+
 const state = {
-    content: localStorage.getItem('monoflow_content') || '',
+    content: getActiveDoc()?.content || '',
     history: JSON.parse(localStorage.getItem('monoflow_history') || '[]'),
     clipboard: JSON.parse(localStorage.getItem('monoflow_clipboard') || '[]'),
     isRecording: false,
@@ -1630,7 +1860,7 @@ window.addEventListener('DOMContentLoaded', () => {
         checkBlockConversion();
         handleInlineFormatting();
         state.content = editor.innerHTML;
-        localStorage.setItem('monoflow_content', state.content);
+        updateDocContent(getActiveDocId(), state.content);
         const currentLen = getEditorText().length;
         const isDelete = lastInputLen >= 0 && currentLen < lastInputLen;
         lastInputLen = currentLen;
@@ -2453,6 +2683,287 @@ function toggleOutline() {
 
 document.getElementById('btn-outline').addEventListener('click', toggleOutline);
 
+// === 文档列表面板 ===
+const docsModal = document.getElementById('docs-modal');
+const docsList = document.getElementById('docs-list');
+
+function openDocsPanel() {
+    renderDocsList();
+    docsModal.classList.add('show');
+}
+
+function renderDocsList() {
+    const docs = getDocs();
+    const activeId = getActiveDocId();
+    if (docs.length === 0) {
+        docsList.innerHTML = '<div style="color: var(--text-muted); text-align: center; padding: 2rem;">暂无文档</div>';
+        return;
+    }
+    docsList.innerHTML = docs.map(doc => {
+        const date = new Date(doc.updatedAt).toLocaleDateString('zh-CN');
+        const isActive = doc.id === activeId;
+        return '<div class="doc-item ' + (isActive ? 'active' : '') + '" data-id="' + doc.id + '">' +
+            '<div>' +
+            '<div class="doc-item-title">' + escapeHtml(doc.title) + '</div>' +
+            '<div class="doc-item-meta">' + date + ' · ' + (doc.content.length || 0) + ' 字符</div>' +
+            '</div>' +
+            '<div class="doc-item-actions">' +
+            '<button class="doc-action-btn" data-action="rename" data-id="' + doc.id + '">重命名</button>' +
+            '<button class="doc-action-btn" data-action="delete" data-id="' + doc.id + '">删除</button>' +
+            '</div>' +
+            '</div>';
+    }).join('');
+
+    // 绑定点击事件
+    docsList.querySelectorAll('.doc-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            if (e.target.closest('.doc-item-actions')) return;
+            const id = item.dataset.id;
+            switchToDoc(id);
+            docsModal.classList.remove('show');
+        });
+    });
+
+    docsList.querySelectorAll('.doc-action-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const action = btn.dataset.action;
+            if (action === 'delete') {
+                if (confirm('确定要删除这个文档吗？')) {
+                    const nextDoc = deleteDoc(id);
+                    if (nextDoc) {
+                        loadDocContent(nextDoc);
+                    } else {
+                        const newDoc = createNewDoc('未命名文档');
+                        loadDocContent(newDoc);
+                    }
+                    renderDocsList();
+                }
+            } else if (action === 'rename') {
+                const doc = getDoc(id);
+                const newTitle = prompt('新文档名称:', doc?.title || '');
+                if (newTitle && newTitle.trim()) {
+                    updateDocTitle(id, newTitle.trim());
+                    renderDocsList();
+                }
+            }
+        });
+    });
+}
+
+function switchToDoc(id) {
+    const doc = getDoc(id);
+    if (!doc) return;
+    // 保存当前文档
+    updateDocContent(getActiveDocId(), editor.innerHTML);
+    // 切换
+    setActiveDocId(id);
+    loadDocContent(doc);
+}
+
+function loadDocContent(doc) {
+    editor.innerHTML = doc.content || '';
+    if (!editor.innerHTML.trim()) {
+        editor.innerHTML = '';
+        const block = createBlock('body-l');
+        editor.appendChild(block);
+    }
+    state.content = editor.innerHTML;
+    updateStats();
+    if (outlinePanel.classList.contains('open')) {
+        updateOutline();
+    }
+    showToastCustom('已切换: ' + doc.title);
+}
+
+document.getElementById('btn-docs').addEventListener('click', openDocsPanel);
+
+// === 分屏预览 ===
+const editorContainer = document.getElementById('editor-container');
+const editorPreview = document.getElementById('editor-preview');
+let isSplitMode = false;
+
+function toggleSplitMode() {
+    isSplitMode = !isSplitMode;
+    editorContainer.classList.toggle('split-mode', isSplitMode);
+    document.getElementById('btn-split').classList.toggle('active', isSplitMode);
+    if (isSplitMode) {
+        updatePreview();
+    }
+}
+
+function updatePreview() {
+    if (!isSplitMode) return;
+    // 将编辑器内容转换为预览格式
+    let html = editor.innerHTML;
+    // 简单处理：将 block 元素转换为对应的 HTML
+    html = html.replace(/<div class="block block-heading1"[^>]*>(.*?)<\/div>/g, '<h1>$1</h1>');
+    html = html.replace(/<div class="block block-heading2"[^>]*>(.*?)<\/div>/g, '<h2>$1</h2>');
+    html = html.replace(/<div class="block block-heading3"[^>]*>(.*?)<\/div>/g, '<h3>$1</h3>');
+    html = html.replace(/<div class="block block-quote"[^>]*>(.*?)<\/div>/g, '<blockquote>$1</blockquote>');
+    html = html.replace(/<div class="block block-list-item"[^>]*>(.*?)<\/div>/g, '<li>$1</li>');
+    html = html.replace(/<div class="block block-body-l"[^>]*>(.*?)<\/div>/g, '<p>$1</p>');
+    html = html.replace(/<div class="block block-image"[^>]*>(.*?)<\/div>/g, '<div class="preview-image">$1</div>');
+    editorPreview.innerHTML = html;
+}
+
+// 监听编辑器输入，更新预览
+editor.addEventListener('input', () => {
+    if (isSplitMode) {
+        updatePreview();
+    }
+});
+
+document.getElementById('btn-split').addEventListener('click', toggleSplitMode);
+
+// === 打字机模式 ===
+let isTypewriterMode = false;
+let typewriterScrollTimer = null;
+
+function toggleTypewriterMode() {
+    isTypewriterMode = !isTypewriterMode;
+    document.body.classList.toggle('typewriter-mode', isTypewriterMode);
+    document.getElementById('btn-typewriter').classList.toggle('active', isTypewriterMode);
+    if (isTypewriterMode) {
+        scrollToCurrentBlock();
+    }
+}
+
+function scrollToCurrentBlock() {
+    if (!isTypewriterMode) return;
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+    const node = sel.anchorNode;
+    if (!node) return;
+    let block = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
+    while (block && !block.classList?.contains('block')) {
+        block = block.parentElement;
+    }
+    if (block) {
+        const container = document.getElementById('editor-container');
+        const blockRect = block.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const scrollTop = block.offsetTop - container.clientHeight / 2 + block.clientHeight / 2;
+        container.scrollTop = scrollTop;
+    }
+}
+
+editor.addEventListener('keyup', () => {
+    if (isTypewriterMode) {
+        clearTimeout(typewriterScrollTimer);
+        typewriterScrollTimer = setTimeout(scrollToCurrentBlock, 50);
+    }
+});
+
+document.getElementById('btn-typewriter').addEventListener('click', toggleTypewriterMode);
+
+// === 打字音效 ===
+let isSoundEnabled = false;
+let audioCtx = null;
+
+function initAudioContext() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+}
+
+function playKeySound() {
+    if (!isSoundEnabled || !audioCtx) return;
+    const now = audioCtx.currentTime;
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    // 随机选择音高，模拟不同按键
+    const frequencies = [800, 850, 900, 950, 1000, 1050, 1100];
+    const freq = frequencies[Math.floor(Math.random() * frequencies.length)];
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(freq, now);
+    oscillator.frequency.exponentialRampToValueAtTime(freq * 0.5, now + 0.08);
+    gainNode.gain.setValueAtTime(0.08, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.start(now);
+    oscillator.stop(now + 0.08);
+}
+
+function playEnterSound() {
+    if (!isSoundEnabled || !audioCtx) return;
+    const now = audioCtx.currentTime;
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    oscillator.type = 'triangle';
+    oscillator.frequency.setValueAtTime(600, now);
+    oscillator.frequency.exponentialRampToValueAtTime(300, now + 0.15);
+    gainNode.gain.setValueAtTime(0.1, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.start(now);
+    oscillator.stop(now + 0.15);
+}
+
+function playBackspaceSound() {
+    if (!isSoundEnabled || !audioCtx) return;
+    const now = audioCtx.currentTime;
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    oscillator.type = 'sawtooth';
+    oscillator.frequency.setValueAtTime(400, now);
+    oscillator.frequency.exponentialRampToValueAtTime(200, now + 0.1);
+    gainNode.gain.setValueAtTime(0.05, now);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.start(now);
+    oscillator.stop(now + 0.1);
+}
+
+function toggleSound() {
+    isSoundEnabled = !isSoundEnabled;
+    if (isSoundEnabled) {
+        initAudioContext();
+    }
+    document.getElementById('btn-sound').classList.toggle('active', isSoundEnabled);
+    showToastCustom(isSoundEnabled ? '打字音效已开启' : '打字音效已关闭');
+}
+
+// 监听键盘事件播放音效
+editor.addEventListener('keydown', (e) => {
+    if (!isSoundEnabled) return;
+    if (e.key === 'Enter') {
+        playEnterSound();
+    } else if (e.key === 'Backspace' || e.key === 'Delete') {
+        playBackspaceSound();
+    } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        playKeySound();
+    }
+});
+
+document.getElementById('btn-sound').addEventListener('click', toggleSound);
+
+document.getElementById('btn-new-doc').addEventListener('click', () => {
+    const title = prompt('文档名称:', '未命名文档');
+    if (title) {
+        updateDocContent(getActiveDocId(), editor.innerHTML);
+        const newDoc = createNewDoc(title.trim());
+        editor.innerHTML = '';
+        const block = createBlock('body-l');
+        editor.appendChild(block);
+        state.content = '';
+        updateStats();
+        renderDocsList();
+        showToastCustom('已创建: ' + title);
+    }
+});
+
+docsModal.addEventListener('click', (e) => {
+    if (e.target === docsModal) docsModal.classList.remove('show');
+});
+
 // === 快捷键帮助面板 ===
 const shortcutsModal = document.getElementById('shortcuts-modal');
 
@@ -2499,6 +3010,10 @@ document.addEventListener('keydown', (e) => {
         }
         if (shortcutsModal.classList.contains('show')) {
             shortcutsModal.classList.remove('show');
+            return;
+        }
+        if (docsModal.classList.contains('show')) {
+            docsModal.classList.remove('show');
             return;
         }
         if (outlinePanel.classList.contains('open')) {
@@ -2598,7 +3113,7 @@ async function handleMdImport(event) {
         }
         // 直接保存内容，不触发 input 事件（避免 ensureBlocks 清理）
         state.content = editor.innerHTML;
-        localStorage.setItem('monoflow_content', state.content);
+        updateDocContent(getActiveDocId(), state.content);
         updateStats();
         if (outlinePanel.classList.contains('open')) {
             updateOutline();
@@ -2687,7 +3202,7 @@ function insertRecognizedText(content, sourceName) {
     });
     // 直接保存内容，不触发 input 事件（避免 ensureBlocks 清理）
     state.content = editor.innerHTML;
-    localStorage.setItem('monoflow_content', state.content);
+    updateDocContent(getActiveDocId(), state.content);
     updateStats();
     if (outlinePanel.classList.contains('open')) {
         updateOutline();
