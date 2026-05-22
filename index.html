@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MonoFlow · 单流</title>
+    <title>SnapDoc</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
@@ -1322,8 +1322,8 @@
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.12.313/build/pdf.min.js"></script>
 <script>
 // === 多文档存储系统 ===
-const STORAGE_KEY = 'monoflow_docs';
-const ACTIVE_DOC_KEY = 'monoflow_active_doc';
+const STORAGE_KEY = 'snapdoc_docs';
+const ACTIVE_DOC_KEY = 'snapdoc_active_doc';
 
 function getDocs() {
     try {
@@ -1374,7 +1374,7 @@ function updateDocContent(id, content) {
 }
 
 // === 历史版本系统 ===
-const VERSIONS_KEY = 'monoflow_versions';
+const VERSIONS_KEY = 'snapdoc_versions';
 const MAX_VERSIONS_PER_DOC = 20;
 
 function getVersions() {
@@ -1677,11 +1677,11 @@ function getActiveDoc() {
 
 // 迁移旧数据
 function migrateOldData() {
-    const oldContent = localStorage.getItem('monoflow_content');
+    const oldContent = localStorage.getItem('snapdoc_content');
     if (oldContent && !getDocs().length) {
         const doc = createNewDoc('我的文档');
         updateDocContent(doc.id, oldContent);
-        localStorage.removeItem('monoflow_content');
+        localStorage.removeItem('snapdoc_content');
     }
 }
 migrateOldData();
@@ -1694,8 +1694,8 @@ if (!activeDoc) {
 
 const state = {
     content: getActiveDoc()?.content || '',
-    history: JSON.parse(localStorage.getItem('monoflow_history') || '[]'),
-    clipboard: JSON.parse(localStorage.getItem('monoflow_clipboard') || '[]'),
+    history: JSON.parse(localStorage.getItem('snapdoc_history') || '[]'),
+    clipboard: JSON.parse(localStorage.getItem('snapdoc_clipboard') || '[]'),
     isRecording: false,
     recognition: null,
     savedSelection: null,
@@ -1764,7 +1764,7 @@ function undo() {
     lastSnapshotText = prev.text;
     lastSnapshotHtml = prev.html;
     state.content = prev.html;
-    localStorage.setItem('monoflow_content', prev.html);
+    localStorage.setItem('snapdoc_content', prev.html);
     updateStats();
     showToastCustom('已撤销');
     setTimeout(() => { isUndoing = false; }, 50);
@@ -1782,7 +1782,7 @@ function redo() {
     lastSnapshotText = next.text;
     lastSnapshotHtml = next.html;
     state.content = next.html;
-    localStorage.setItem('monoflow_content', next.html);
+    localStorage.setItem('snapdoc_content', next.html);
     updateStats();
     showToastCustom('已重做');
     setTimeout(() => { isUndoing = false; }, 50);
@@ -2463,7 +2463,7 @@ function addToClipboard(text) {
     };
     state.clipboard.unshift(item);
     if (state.clipboard.length > 30) state.clipboard.pop();
-    localStorage.setItem('monoflow_clipboard', JSON.stringify(state.clipboard));
+    localStorage.setItem('snapdoc_clipboard', JSON.stringify(state.clipboard));
     renderClipboard();
     clipboardDrawer.classList.add('open');
     setTimeout(() => clipboardDrawer.classList.remove('open'), 3000);
@@ -2587,7 +2587,7 @@ function addHistorySnapshot(forceType) {
 
     state.history.unshift(snapshot);
     if (state.history.length > 80) state.history.pop();
-    localStorage.setItem('monoflow_history', JSON.stringify(state.history));
+    localStorage.setItem('snapdoc_history', JSON.stringify(state.history));
 
     lastSnapshotText = text;
     lastSnapshotHtml = html;
@@ -2684,7 +2684,7 @@ const themeOptions = document.querySelectorAll('.theme-option');
 
 // 初始化加载已保存的主题
 (function initTheme() {
-    const saved = localStorage.getItem('monoflow_theme') || 'default';
+    const saved = localStorage.getItem('snapdoc_theme') || 'default';
     applyTheme(saved);
 })();
 
@@ -2700,7 +2700,7 @@ function applyTheme(themeValue) {
         opt.classList.toggle('selected', isSelected);
         opt.setAttribute('aria-checked', isSelected ? 'true' : 'false');
     });
-    localStorage.setItem('monoflow_theme', themeValue);
+    localStorage.setItem('snapdoc_theme', themeValue);
 }
 
 // 打开设置面板
@@ -3511,7 +3511,7 @@ function exportMarkdown() {
     if (!raw.trim()) { showToastCustom('暂无内容可导出'); return; }
     const now = new Date();
     const pad = (n) => String(n).padStart(2, '0');
-    const filename = 'monoflow-' + now.getFullYear() + pad(now.getMonth()+1) + pad(now.getDate()) + '-' + pad(now.getHours()) + pad(now.getMinutes()) + '.md';
+    const filename = 'snapdoc-' + now.getFullYear() + pad(now.getMonth()+1) + pad(now.getDate()) + '-' + pad(now.getHours()) + pad(now.getMinutes()) + '.md';
     const cleaned = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim() + '\n';
     const blob = new Blob([cleaned], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -3529,7 +3529,7 @@ function exportPDF() {
     if (!raw.trim()) { showToastCustom('暂无内容可导出'); return; }
     const now = new Date();
     const pad = (n) => String(n).padStart(2, '0');
-    const filename = 'monoflow-' + now.getFullYear() + pad(now.getMonth()+1) + pad(now.getDate()) + '-' + pad(now.getHours()) + pad(now.getMinutes());
+    const filename = 'snapdoc-' + now.getFullYear() + pad(now.getMonth()+1) + pad(now.getDate()) + '-' + pad(now.getHours()) + pad(now.getMinutes());
     const originalTitle = document.title;
     document.title = filename;
     let restored = false;
@@ -3599,13 +3599,13 @@ a:hover{text-decoration:underline}
 <body>
 <div class="header">
 <h1>${escapeHtml(title)}</h1>
-<div class="meta">创建于 ${now} · 由 MonoFlow 编辑器生成</div>
+<div class="meta">创建于 ${now} · 由 SnapDoc 编辑器生成</div>
 </div>
 <div class="content">
 ${contentHtml}
 </div>
 <div class="footer">
-<p>本文档由 <a href="https://github.com" target="_blank">MonoFlow</a> 生成</p>
+<p>本文档由 <a href="https://github.com" target="_blank">SnapDoc</a> 生成</p>
 </div>
 </body>
 </html>`;
