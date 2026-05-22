@@ -419,6 +419,14 @@
         .tool-btn:hover, .tool-btn.active { color: var(--text-primary); background: rgba(255,255,255,0.03); }
         .tool-btn.recording { color: #D47F7F; animation: pulse 1.5s infinite; }
 
+        .tool-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
         /* 格式工具栏（选中文字时浮现） */
         #format-toolbar {
             position: fixed;
@@ -1065,28 +1073,28 @@
     <div id="toolbar">
         <!-- 编辑组 -->
         <div class="toolbar-group">
-            <button class="tool-btn" id="btn-voice" title="语音草稿">🎙</button>
-            <button class="tool-btn" id="btn-outline" title="大纲">☰</button>
-            <button class="tool-btn" id="btn-search" title="搜索 (Ctrl+F)">🔍</button>
-            <button class="tool-btn" id="btn-stats" title="字数统计">📊</button>
-            <button class="tool-btn" id="btn-history" title="回溯历史">◷</button>
+            <button class="tool-btn" id="btn-voice" title="语音草稿"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 20V24C10 27.713 11.475 31.274 14.1005 33.8995C16.726 36.525 20.287 38 24 38C27.713 38 31.274 36.525 33.8995 33.8995C36.525 31.274 38 27.713 38 24V20M24 38V46M16 46H32M24 2C22.4087 2 20.8826 2.63214 19.7574 3.75736C18.6321 4.88258 18 6.4087 18 8V24C18 25.5913 18.6321 27.1174 19.7574 28.2426C20.8826 29.3679 22.4087 30 24 30C25.5913 30 27.1174 29.3679 28.2426 28.2426C29.3679 27.1174 30 25.5913 30 24V8C30 6.4087 29.3679 4.88258 28.2426 3.75736C27.1174 2.63214 25.5913 2 24 2Z"/></svg>语音</button>
+            <button class="tool-btn" id="btn-outline" title="大纲"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24H42M6 12H42M6 36H42"/></svg>大纲</button>
+            <button class="tool-btn" id="btn-search" title="搜索 (Ctrl+F)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="22" r="12"/><path d="M42 42L30 30"/></svg>搜索</button>
+            <button class="tool-btn" id="btn-stats" title="字数统计"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8H20V20H8V8Z"/><path d="M28 8H40V20H28V8Z"/><path d="M8 28H20V40H8V28Z"/><path d="M28 28H40V40H28V28Z"/></svg>统计</button>
+            <button class="tool-btn" id="btn-history" title="回溯历史"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><path d="M24 16V24L30 30"/><path d="M16 8L12 12L20 12"/></svg>回溯</button>
         </div>
         <!-- 导入导出组 -->
         <div class="toolbar-group">
-            <button class="tool-btn" id="btn-import" title="导入 Markdown/TXT">📥</button>
-            <button class="tool-btn" id="btn-import-docx" title="导入 Word">�</button>
-            <button class="tool-btn" id="btn-import-pdf" title="导入 PDF">📑</button>
-            <button class="tool-btn" id="btn-export" title="导出 Markdown">↓ MD</button>
-            <button class="tool-btn" id="btn-export-pdf" title="导出 PDF">↓ PDF</button>
+            <button class="tool-btn" id="btn-import" title="导入 Markdown/TXT"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 30V6M34 16L24 6L14 16M6 30V38C6 39.0609 6.42143 40.0783 7.17157 40.8284C7.92172 41.5786 8.93913 42 10 42H38C39.0609 42 40.0783 41.5786 40.8284 40.8284C41.5786 40.0783 42 39.0609 42 38V30"/></svg>导入</button>
+            <button class="tool-btn" id="btn-import-docx" title="导入 Word"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M40 16L28 4H12C10.9391 4 9.92172 4.42143 9.17157 5.17157C8.42143 5.92172 8 6.93913 8 8V40C8 41.0609 8.42143 42.0783 9.17157 42.8284C9.92172 43.5786 10.9391 44 12 44H36C37.0609 44 38.0783 43.5786 38.8284 42.8284C39.5786 42.0783 40 41.0609 40 40V16ZM28 4V16H40M32 26H16M32 34H16M20 18H16"/></svg>Word</button>
+            <button class="tool-btn" id="btn-import-pdf" title="导入 PDF"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4H36L44 16V44H12V4Z"/><path d="M36 4V16H44"/><path d="M18 28H30"/><path d="M18 36H30"/><path d="M18 20H24"/></svg>PDF</button>
+            <button class="tool-btn" id="btn-export" title="导出 Markdown"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M42 30V38C42 39.0609 41.5786 40.0783 40.8284 40.8284C40.0783 41.5786 39.0609 42 38 42H10C8.93913 42 7.92172 41.5786 7.17157 40.8284C6.42143 40.0783 6 39.0609 6 38V30M34 20L24 30L14 20M24 30V6"/></svg>MD</button>
+            <button class="tool-btn" id="btn-export-pdf" title="导出 PDF"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4H36L44 16V44H12V4Z"/><path d="M36 4V16H44"/><path d="M18 28H30"/><path d="M18 36H30"/><path d="M18 20H24"/></svg>PDF</button>
         </div>
         <!-- 分享组 -->
         <div class="toolbar-group">
-            <button class="tool-btn" id="btn-share" title="共享">↗</button>
+            <button class="tool-btn" id="btn-share" title="共享"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M17.18 27.02L30.84 34.98M30.82 13.02L17.18 20.98M42 10C42 13.3137 39.3137 16 36 16C32.6863 16 30 13.3137 30 10C30 6.68629 32.6863 4 36 4C39.3137 4 42 6.68629 42 10ZM18 24C18 27.3137 15.3137 30 12 30C8.68629 30 6 27.3137 6 24C6 20.6863 8.68629 18 12 18C15.3137 18 18 20.6863 18 24ZM42 38C42 41.3137 39.3137 44 36 44C32.6863 44 30 41.3137 30 38C30 34.6863 32.6863 32 36 32C39.3137 32 42 34.6863 42 38Z"/></svg>共享</button>
         </div>
         <!-- 系统组 -->
         <div class="toolbar-group">
-            <button class="tool-btn" id="btn-shortcuts" title="快捷键 (Ctrl+/)">⌨</button>
-            <button class="tool-btn" id="btn-settings" title="设置">⚙</button>
+            <button class="tool-btn" id="btn-shortcuts" title="快捷键 (Ctrl+/)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="4"/><path d="M14 18H18M14 24H18M14 30H18M22 18H26M22 24H26M22 30H26M30 18H34M30 24H34M30 30H34"/></svg>快捷键</button>
+            <button class="tool-btn" id="btn-settings" title="设置"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="8"/><path d="M24 2V10M24 38V46M2 24H10M38 24H46M8.44 8.44L14.1 14.1M33.9 33.9L39.56 39.56M8.44 39.56L14.1 33.9M33.9 14.1L39.56 8.44"/></svg>设置</button>
         </div>
     </div>
     <input type="file" id="input-docx" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
@@ -2588,8 +2596,13 @@ async function handleMdImport(event) {
             block.innerHTML = escapeHtml(content).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>').replace(/`(.+?)`/g, '<code>$1</code>');
             editor.appendChild(block);
         }
-        ensureBlocks();
-        editor.dispatchEvent(new Event('input'));
+        // 直接保存内容，不触发 input 事件（避免 ensureBlocks 清理）
+        state.content = editor.innerHTML;
+        localStorage.setItem('monoflow_content', state.content);
+        updateStats();
+        if (outlinePanel.classList.contains('open')) {
+            updateOutline();
+        }
         saveUndoState();
         showToastCustom('已导入 · ' + file.name);
     } catch (error) {
@@ -2672,8 +2685,14 @@ function insertRecognizedText(content, sourceName) {
         block.innerHTML = escapeHtml(paragraph).replace(/\n/g, '<br>');
         editor.appendChild(block);
     });
-    ensureBlocks();
-    editor.dispatchEvent(new Event('input'));
+    // 直接保存内容，不触发 input 事件（避免 ensureBlocks 清理）
+    state.content = editor.innerHTML;
+    localStorage.setItem('monoflow_content', state.content);
+    updateStats();
+    if (outlinePanel.classList.contains('open')) {
+        updateOutline();
+    }
+    saveUndoState();
     const wordCount = trimmed.split(/\s+/).filter(Boolean).length;
     showToastCustom(sourceName + ' 已导入 · 识别 ' + wordCount + ' 词');
 }
