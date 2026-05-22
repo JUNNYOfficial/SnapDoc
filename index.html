@@ -1195,6 +1195,7 @@
             <button class="tool-btn" id="btn-split" title="分屏预览"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V44M8 4H40C42.2091 4 44 5.79086 44 8V40C44 42.2091 42.2091 44 40 44H8C5.79086 44 4 42.2091 4 40V8C4 5.79086 5.79086 4 8 4Z"/></svg>分屏</button>
             <button class="tool-btn" id="btn-typewriter" title="打字机模式"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V12M24 36V44M12 24H4M44 24H36M14.1 14.1L8.44 8.44M39.56 39.56L33.9 33.9M14.1 33.9L8.44 39.56M39.56 8.44L33.9 14.1"/></svg>打字机</button>
             <button class="tool-btn" id="btn-sound" title="打字音效"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V44M16 12H8M16 20H4M16 28H8M16 36H4M32 12H40M32 20H44M32 28H40M32 36H44"/></svg>音效</button>
+            <button class="tool-btn" id="btn-spellcheck" title="拼写检查"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M42 24H36L30 6H18L12 24H6M28 24L24 36L20 24"/><path d="M24 36V44"/></svg>拼写</button>
             <button class="tool-btn" id="btn-search" title="搜索 (Ctrl+F)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="22" r="12"/><path d="M42 42L30 30"/></svg>搜索</button>
             <button class="tool-btn" id="btn-stats" title="字数统计"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8H20V20H8V8Z"/><path d="M28 8H40V20H28V8Z"/><path d="M8 28H20V40H8V28Z"/><path d="M28 28H40V40H28V28Z"/></svg>统计</button>
             <button class="tool-btn" id="btn-history" title="回溯历史"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><path d="M24 16V24L30 30"/><path d="M16 8L12 12L20 12"/></svg>回溯</button>
@@ -1214,6 +1215,7 @@
         <!-- 系统组 -->
         <div class="toolbar-group">
             <button class="tool-btn" id="btn-docs" title="我的文档"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4H34L42 16V44H14V4Z"/><path d="M34 4V16H42"/><path d="M20 24H36"/><path d="M20 32H36"/></svg>文档</button>
+            <button class="tool-btn" id="btn-versions" title="历史版本"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V12M24 36V44M12 24H4M44 24H36M14.1 14.1L8.44 8.44M39.56 39.56L33.9 33.9M14.1 33.9L8.44 39.56M39.56 8.44L33.9 14.1"/><circle cx="24" cy="24" r="6"/></svg>历史</button>
             <button class="tool-btn" id="btn-shortcuts" title="快捷键 (Ctrl+/)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="4"/><path d="M14 18H18M14 24H18M14 30H18M22 18H26M22 24H26M22 30H26M30 18H34M30 24H34M30 30H34"/></svg>快捷键</button>
             <button class="tool-btn" id="btn-settings" title="设置"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="8"/><path d="M24 2V10M24 38V46M2 24H10M38 24H46M8.44 8.44L14.1 14.1M33.9 33.9L39.56 39.56M8.44 39.56L14.1 33.9M33.9 14.1L39.56 8.44"/></svg>设置</button>
         </div>
@@ -1338,10 +1340,147 @@ function updateDocContent(id, content) {
     const docs = getDocs();
     const idx = docs.findIndex(d => d.id === id);
     if (idx >= 0) {
+        // 保存历史版本（每5分钟最多保存一个版本，或内容变化超过100字符）
+        saveVersion(id, docs[idx].content);
         docs[idx].content = content;
         docs[idx].updatedAt = Date.now();
         saveDocs(docs);
     }
+}
+
+// === 历史版本系统 ===
+const VERSIONS_KEY = 'monoflow_versions';
+const MAX_VERSIONS_PER_DOC = 20;
+
+function getVersions() {
+    try {
+        return JSON.parse(localStorage.getItem(VERSIONS_KEY) || '{}');
+    } catch {
+        return {};
+    }
+}
+
+function saveVersions(versions) {
+    localStorage.setItem(VERSIONS_KEY, JSON.stringify(versions));
+}
+
+function saveVersion(docId, content) {
+    if (!content || content.length < 10) return;
+    const versions = getVersions();
+    if (!versions[docId]) versions[docId] = [];
+    const docVersions = versions[docId];
+    const lastVersion = docVersions[docVersions.length - 1];
+    const now = Date.now();
+    // 如果最后一个版本在5分钟内且内容差异小于100字符，不保存
+    if (lastVersion) {
+        const timeDiff = now - lastVersion.time;
+        const contentDiff = Math.abs(content.length - lastVersion.content.length);
+        if (timeDiff < 5 * 60 * 1000 && contentDiff < 100) return;
+    }
+    docVersions.push({
+        time: now,
+        content: content,
+        preview: getEditorTextFromHtml(content).slice(0, 60) + '...'
+    });
+    // 限制版本数量
+    if (docVersions.length > MAX_VERSIONS_PER_DOC) {
+        docVersions.shift();
+    }
+    saveVersions(versions);
+}
+
+function getEditorTextFromHtml(html) {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
+}
+
+function getDocVersions(docId) {
+    const versions = getVersions();
+    return versions[docId] || [];
+}
+
+function restoreVersion(docId, versionIndex) {
+    const versions = getVersions();
+    const docVersions = versions[docId];
+    if (!docVersions || !docVersions[versionIndex]) return false;
+    const version = docVersions[versionIndex];
+    // 先保存当前状态为一个新版本
+    const docs = getDocs();
+    const idx = docs.findIndex(d => d.id === docId);
+    if (idx >= 0) {
+        saveVersion(docId, docs[idx].content);
+        docs[idx].content = version.content;
+        docs[idx].updatedAt = Date.now();
+        saveDocs(docs);
+        return true;
+    }
+    return false;
+}
+
+function openVersionsPanel() {
+    const docId = getActiveDocId();
+    const versions = getDocVersions(docId);
+    const doc = getDoc(docId);
+
+    const modal = document.createElement('div');
+    modal.id = 'versions-modal';
+
+    let html = '<div class="versions-panel"><div class="versions-header"><div class="versions-title">历史版本</div><div class="versions-subtitle">' + escapeHtml(doc?.title || '未命名') + '</div></div>';
+
+    if (versions.length === 0) {
+        html += '<div style="color:var(--text-muted);text-align:center;padding:2rem;">暂无历史版本</div>';
+    } else {
+        html += '<div class="versions-list">';
+        versions.slice().reverse().forEach((v, i) => {
+            const realIndex = versions.length - 1 - i;
+            const date = new Date(v.time).toLocaleString('zh-CN');
+            html += '<div class="version-item" data-index="' + realIndex + '">' +
+                '<div class="version-time">' + date + '</div>' +
+                '<div class="version-preview">' + escapeHtml(v.preview) + '</div>' +
+                '</div>';
+        });
+        html += '</div>';
+    }
+
+    html += '<button class="tool-btn" style="margin-top:1.5rem;width:100%;text-align:center;" onclick="this.closest(\'#versions-modal\').remove()">关闭</button></div>';
+    modal.innerHTML = html;
+    document.body.appendChild(modal);
+
+    // 样式
+    if (!document.getElementById('versions-styles')) {
+        const style = document.createElement('style');
+        style.id = 'versions-styles';
+        style.textContent = `
+            #versions-modal { position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:100; }
+            .versions-panel { background:var(--bg-surface);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:2rem;width:90%;max-width:520px;max-height:70vh;overflow-y:auto; }
+            .versions-header { margin-bottom:1.5rem; }
+            .versions-title { font-family:var(--font-ui);font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:2px; }
+            .versions-subtitle { font-family:var(--font-body);font-size:1rem;color:var(--text-primary);margin-top:0.3rem; }
+            .versions-list { display:flex;flex-direction:column;gap:0.5rem; }
+            .version-item { background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:0.8rem 1rem;cursor:pointer;transition:all 0.2s; }
+            .version-item:hover { background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12); }
+            .version-time { font-family:var(--font-ui);font-size:0.7rem;color:var(--text-secondary);margin-bottom:0.3rem; }
+            .version-preview { font-family:var(--font-body);font-size:0.85rem;color:var(--text-primary); }
+            [data-theme="soft-paper"] .version-item { background:rgba(0,0,0,0.02);border-color:rgba(0,0,0,0.06); }
+            [data-theme="soft-paper"] .version-item:hover { background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1); }
+        `;
+        document.head.appendChild(style);
+    }
+
+    modal.querySelectorAll('.version-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const idx = parseInt(item.dataset.index);
+            if (confirm('确定要恢复到这个版本吗？当前内容将被保存为历史版本。')) {
+                if (restoreVersion(docId, idx)) {
+                    const doc = getDoc(docId);
+                    loadDocContent(doc);
+                    modal.remove();
+                    showToastCustom('已恢复到历史版本');
+                }
+            }
+        });
+    });
 }
 
 function updateDocTitle(id, title) {
@@ -1845,6 +1984,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // 删除操作：即时记录，不做防抖合并，确保每次按键都是独立时间轴条目
     // 新增/编辑：800ms 防抖，避免打字碎片化
     let saveTimer;
+    let spellCheckTimer;
     let lastInputLen = -1;
     let renderThrottleId = null;
     function throttledRender() {
@@ -1881,6 +2021,13 @@ window.addEventListener('DOMContentLoaded', () => {
         if (outlinePanel.classList.contains('open')) {
             updateOutline();
         }
+        // 拼写检查（防抖 1s）
+        clearTimeout(spellCheckTimer);
+        spellCheckTimer = setTimeout(() => {
+            if (isSpellCheckEnabled) {
+                performSpellCheck();
+            }
+        }, 1000);
         // 保存撤销状态（防抖 500ms）
         clearTimeout(undoSaveTimer);
         undoSaveTimer = setTimeout(() => {
@@ -2778,6 +2925,7 @@ function loadDocContent(doc) {
 }
 
 document.getElementById('btn-docs').addEventListener('click', openDocsPanel);
+document.getElementById('btn-versions').addEventListener('click', openVersionsPanel);
 
 // === 分屏预览 ===
 const editorContainer = document.getElementById('editor-container');
@@ -2945,19 +3093,318 @@ editor.addEventListener('keydown', (e) => {
 
 document.getElementById('btn-sound').addEventListener('click', toggleSound);
 
-document.getElementById('btn-new-doc').addEventListener('click', () => {
-    const title = prompt('文档名称:', '未命名文档');
-    if (title) {
-        updateDocContent(getActiveDocId(), editor.innerHTML);
-        const newDoc = createNewDoc(title.trim());
-        editor.innerHTML = '';
-        const block = createBlock('body-l');
-        editor.appendChild(block);
-        state.content = '';
-        updateStats();
-        renderDocsList();
-        showToastCustom('已创建: ' + title);
+// === 拼写检查 ===
+let isSpellCheckEnabled = false;
+
+// 常见英文拼写错误词典
+const COMMON_MISSPELLINGS = {
+    'teh': 'the', 'adn': 'and', 'taht': 'that', 'wiht': 'with',
+    'fo': 'of', 'ot': 'to', 'si': 'is', 'ti': 'it',
+    'jsut': 'just', 'os': 'so', 'no': 'not', 'onw': 'now',
+    'thier': 'their', 'recieve': 'receive', 'seperate': 'separate',
+    'occured': 'occurred', 'definately': 'definitely', 'accomodate': 'accommodate',
+    'beleive': 'believe', 'occurance': 'occurrence', 'untill': 'until',
+    'wich': 'which', 'thn': 'than', 'alot': 'a lot', 'becuase': 'because',
+    'truely': 'truly', 'noticable': 'noticeable', 'arguement': 'argument',
+    'independant': 'independent', 'ocassion': 'occasion', 'persistant': 'persistent',
+    'posession': 'possession', 'supercede': 'supersede', 'tommorow': 'tomorrow',
+    'wierd': 'weird', 'acheive': 'achieve', 'calender': 'calendar',
+    'collegue': 'colleague', 'concious': 'conscious', 'decieve': 'deceive',
+    'embarass': 'embarrass', 'existance': 'existence', 'foriegn': 'foreign',
+    'goverment': 'government', 'harrass': 'harass', 'hieght': 'height',
+    'immediatly': 'immediately', 'indispensible': 'indispensable', 'liason': 'liaison',
+    'millenium': 'millennium', 'neccessary': 'necessary', 'noticable': 'noticeable',
+    'paralell': 'parallel', 'peice': 'piece', 'playwrite': 'playwright',
+    'preceeding': 'preceding', 'priviledge': 'privilege', 'publically': 'publicly',
+    'recomend': 'recommend', 'refering': 'referring', 'relevent': 'relevant',
+    'rythm': 'rhythm', 'sieze': 'seize', 'succeed': 'succeed',
+    'suprise': 'surprise', 'tendancy': 'tendency', 'therefor': 'therefore',
+    'threshhold': 'threshold', 'tommorrow': 'tomorrow', 'tounge': 'tongue',
+    'truely': 'truly', 'unforseen': 'unforeseen', 'unneccesary': 'unnecessary',
+    'untill': 'until', 'wierd': 'weird', 'whereever': 'wherever',
+    'wich': 'which', 'yourslef': 'yourself'
+};
+
+// 中文常见错误
+const COMMON_CN_ERRORS = [
+    { wrong: '的得地', pattern: /的[^\u4e00-\u9fa5]*地/g },
+];
+
+function toggleSpellCheck() {
+    isSpellCheckEnabled = !isSpellCheckEnabled;
+    document.getElementById('btn-spellcheck').classList.toggle('active', isSpellCheckEnabled);
+    if (isSpellCheckEnabled) {
+        performSpellCheck();
+        showToastCustom('拼写检查已开启');
+    } else {
+        clearSpellCheckMarks();
+        showToastCustom('拼写检查已关闭');
     }
+}
+
+function performSpellCheck() {
+    if (!isSpellCheckEnabled) return;
+    clearSpellCheckMarks();
+
+    const text = getEditorText();
+    if (!text.trim()) return;
+
+    const issues = [];
+
+    // 检查英文拼写
+    const words = text.match(/[a-zA-Z]+/g) || [];
+    words.forEach(word => {
+        const lower = word.toLowerCase();
+        if (COMMON_MISSPELLINGS[lower]) {
+            // 找到所有出现位置
+            let idx = text.toLowerCase().indexOf(lower);
+            while (idx !== -1) {
+                issues.push({
+                    start: idx,
+                    end: idx + lower.length,
+                    word: word,
+                    suggestion: COMMON_MISSPELLINGS[lower],
+                    type: 'spelling'
+                });
+                idx = text.toLowerCase().indexOf(lower, idx + 1);
+            }
+        }
+    });
+
+    // 检查重复词
+    const sentences = text.split(/[。！？.!?\n]/);
+    sentences.forEach(sentence => {
+        const sentenceWords = sentence.match(/[\u4e00-\u9fa5]+/g) || [];
+        sentenceWords.forEach(word => {
+            if (word.length >= 2) {
+                const pattern = new RegExp(word + word, 'g');
+                let match;
+                while ((match = pattern.exec(text)) !== null) {
+                    issues.push({
+                        start: match.index,
+                        end: match.index + word.length * 2,
+                        word: word + word,
+                        suggestion: word,
+                        type: 'duplicate'
+                    });
+                }
+            }
+        });
+    });
+
+    if (issues.length > 0) {
+        showSpellCheckPanel(issues);
+    }
+}
+
+function clearSpellCheckMarks() {
+    const existing = document.getElementById('spellcheck-panel');
+    if (existing) existing.remove();
+}
+
+function showSpellCheckPanel(issues) {
+    clearSpellCheckMarks();
+
+    const panel = document.createElement('div');
+    panel.id = 'spellcheck-panel';
+
+    let html = '<div class="spellcheck-header"><div class="spellcheck-title">发现 ' + issues.length + ' 处问题</div><button class="spellcheck-close" onclick="clearSpellCheckMarks()">✕</button></div>';
+    html += '<div class="spellcheck-list">';
+    issues.slice(0, 10).forEach((issue, i) => {
+        html += '<div class="spellcheck-item" data-index="' + i + '">' +
+            '<div class="spellcheck-word">' + escapeHtml(issue.word) + '</div>' +
+            '<div class="spellcheck-suggestion">建议: ' + escapeHtml(issue.suggestion) + '</div>' +
+            '</div>';
+    });
+    if (issues.length > 10) {
+        html += '<div class="spellcheck-more">还有 ' + (issues.length - 10) + ' 处...</div>';
+    }
+    html += '</div>';
+    panel.innerHTML = html;
+
+    // 样式
+    if (!document.getElementById('spellcheck-styles')) {
+        const style = document.createElement('style');
+        style.id = 'spellcheck-styles';
+        style.textContent = `
+            #spellcheck-panel { position:fixed;bottom:5rem;right:2rem;background:var(--bg-surface);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.2rem;width:280px;max-height:400px;overflow-y:auto;z-index:90;box-shadow:0 8px 32px rgba(0,0,0,0.3); }
+            .spellcheck-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem; }
+            .spellcheck-title { font-family:var(--font-ui);font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px; }
+            .spellcheck-close { background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem;padding:0.2rem; }
+            .spellcheck-close:hover { color:var(--text-primary); }
+            .spellcheck-list { display:flex;flex-direction:column;gap:0.5rem; }
+            .spellcheck-item { background:rgba(212,127,127,0.08);border:1px solid rgba(212,127,127,0.15);border-radius:6px;padding:0.6rem 0.8rem;cursor:pointer;transition:all 0.2s; }
+            .spellcheck-item:hover { background:rgba(212,127,127,0.12); }
+            .spellcheck-word { font-family:var(--font-body);font-size:0.85rem;color:#D47F7F; }
+            .spellcheck-suggestion { font-family:var(--font-ui);font-size:0.75rem;color:var(--text-secondary);margin-top:0.2rem; }
+            .spellcheck-more { text-align:center;color:var(--text-muted);font-size:0.75rem;padding:0.5rem; }
+            [data-theme="soft-paper"] #spellcheck-panel { border-color:rgba(0,0,0,0.1);box-shadow:0 8px 32px rgba(0,0,0,0.1); }
+            [data-theme="soft-paper"] .spellcheck-item { background:rgba(180,100,100,0.05);border-color:rgba(180,100,100,0.1); }
+        `;
+        document.head.appendChild(style);
+    }
+
+    document.body.appendChild(panel);
+}
+
+document.getElementById('btn-spellcheck').addEventListener('click', toggleSpellCheck);
+
+// === 文档模板系统 ===
+const TEMPLATES = {
+    blank: {
+        name: '空白文档',
+        icon: '📄',
+        blocks: [{ type: 'body-l', content: '' }]
+    },
+    diary: {
+        name: '每日日记',
+        icon: '📔',
+        blocks: [
+            { type: 'heading1', content: new Date().toLocaleDateString('zh-CN') + ' 日记' },
+            { type: 'heading2', content: '🌤️ 今日心情' },
+            { type: 'body-l', content: '' },
+            { type: 'heading2', content: '📝 今日记录' },
+            { type: 'body-l', content: '' },
+            { type: 'heading2', content: '💭 思考与感悟' },
+            { type: 'body-l', content: '' }
+        ]
+    },
+    weekly: {
+        name: '周报',
+        icon: '📊',
+        blocks: [
+            { type: 'heading1', content: '周报 - 第 ' + getWeekNumber() + ' 周' },
+            { type: 'heading2', content: '✅ 本周完成' },
+            { type: 'list-item', content: '' },
+            { type: 'heading2', content: '📌 下周计划' },
+            { type: 'list-item', content: '' },
+            { type: 'heading2', content: '⚠️ 遇到的问题' },
+            { type: 'body-l', content: '' },
+            { type: 'heading2', content: '📈 数据与成果' },
+            { type: 'body-l', content: '' }
+        ]
+    },
+    project: {
+        name: '项目计划',
+        icon: '🚀',
+        blocks: [
+            { type: 'heading1', content: '项目名称' },
+            { type: 'heading2', content: '🎯 项目目标' },
+            { type: 'body-l', content: '' },
+            { type: 'heading2', content: '📋 任务清单' },
+            { type: 'list-item', content: '[ ] 任务一' },
+            { type: 'list-item', content: '[ ] 任务二' },
+            { type: 'list-item', content: '[ ] 任务三' },
+            { type: 'heading2', content: '📅 时间规划' },
+            { type: 'body-l', content: '' },
+            { type: 'heading2', content: '👥 团队成员' },
+            { type: 'body-l', content: '' }
+        ]
+    },
+    meeting: {
+        name: '会议记录',
+        icon: '🗒️',
+        blocks: [
+            { type: 'heading1', content: '会议记录' },
+            { type: 'body-l', content: '时间：' + new Date().toLocaleDateString('zh-CN') },
+            { type: 'body-l', content: '地点：' },
+            { type: 'body-l', content: '参会人：' },
+            { type: 'heading2', content: '📋 会议议题' },
+            { type: 'list-item', content: '' },
+            { type: 'heading2', content: '💬 讨论内容' },
+            { type: 'body-l', content: '' },
+            { type: 'heading2', content: '✅ 行动项' },
+            { type: 'list-item', content: '' }
+        ]
+    },
+    reading: {
+        name: '读书笔记',
+        icon: '📖',
+        blocks: [
+            { type: 'heading1', content: '《书名》读书笔记' },
+            { type: 'heading2', content: '✍️ 作者信息' },
+            { type: 'body-l', content: '' },
+            { type: 'heading2', content: '🌟 核心观点' },
+            { type: 'body-l', content: '' },
+            { type: 'heading2', content: '💡 精华摘录' },
+            { type: 'quote', content: '' },
+            { type: 'heading2', content: '🤔 个人思考' },
+            { type: 'body-l', content: '' }
+        ]
+    }
+};
+
+function getWeekNumber() {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 1);
+    const diff = now - start + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+    return Math.ceil((((diff / 86400000) + start.getDay() + 1) / 7));
+}
+
+function applyTemplate(templateId) {
+    const template = TEMPLATES[templateId];
+    if (!template) return;
+    updateDocContent(getActiveDocId(), editor.innerHTML);
+    const newDoc = createNewDoc(template.name);
+    editor.innerHTML = '';
+    template.blocks.forEach(b => {
+        const block = createBlock(b.type);
+        block.innerHTML = b.content ? escapeHtml(b.content).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\*(.+?)\*/g, '<em>$1</em>').replace(/`(.+?)`/g, '<code>$1</code>') : '<br>';
+        editor.appendChild(block);
+    });
+    state.content = editor.innerHTML;
+    updateDocContent(newDoc.id, state.content);
+    updateStats();
+    renderDocsList();
+    showToastCustom('已创建: ' + template.name);
+}
+
+// 模板选择面板
+function openTemplatePanel() {
+    let html = '<div class="template-grid">';
+    Object.entries(TEMPLATES).forEach(([key, t]) => {
+        html += '<div class="template-card" data-template="' + key + '">' +
+            '<div class="template-icon">' + t.icon + '</div>' +
+            '<div class="template-name">' + t.name + '</div>' +
+            '</div>';
+    });
+    html += '</div>';
+
+    const modal = document.createElement('div');
+    modal.id = 'template-modal';
+    modal.innerHTML = '<div class="template-panel"><div class="template-header"><div class="template-title">选择模板</div></div>' + html + '<button class="tool-btn" style="margin-top:1.5rem;width:100%;text-align:center;" onclick="this.closest(\'#template-modal\').remove()">取消</button></div>';
+    document.body.appendChild(modal);
+
+    // 样式
+    if (!document.getElementById('template-styles')) {
+        const style = document.createElement('style');
+        style.id = 'template-styles';
+        style.textContent = `
+            #template-modal { position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:100; }
+            .template-panel { background:var(--bg-surface);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:2rem;width:90%;max-width:480px; }
+            .template-header { margin-bottom:1.5rem; }
+            .template-title { font-family:var(--font-ui);font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:2px; }
+            .template-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem; }
+            .template-card { background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:1.2rem;text-align:center;cursor:pointer;transition:all 0.2s; }
+            .template-card:hover { background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);transform:translateY(-2px); }
+            .template-icon { font-size:2rem;margin-bottom:0.5rem; }
+            .template-name { font-family:var(--font-ui);font-size:0.8rem;color:var(--text-primary); }
+            [data-theme="soft-paper"] .template-card { background:rgba(0,0,0,0.02);border-color:rgba(0,0,0,0.06); }
+            [data-theme="soft-paper"] .template-card:hover { background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1); }
+        `;
+        document.head.appendChild(style);
+    }
+
+    modal.querySelectorAll('.template-card').forEach(card => {
+        card.addEventListener('click', () => {
+            applyTemplate(card.dataset.template);
+            modal.remove();
+        });
+    });
+}
+
+document.getElementById('btn-new-doc').addEventListener('click', () => {
+    openTemplatePanel();
 });
 
 docsModal.addEventListener('click', (e) => {
@@ -3076,6 +3523,82 @@ function exportPDF() {
     window.addEventListener('afterprint', restoreTitle);
     const fallbackTimer = setTimeout(restoreTitle, 8000);
     window.print();
+}
+
+// === 分享导出 HTML ===
+document.getElementById('btn-share').addEventListener('click', shareDocument);
+function shareDocument() {
+    const raw = getEditorText();
+    if (!raw.trim()) { showToastCustom('暂无内容可分享'); return; }
+    const doc = getDoc(getActiveDocId());
+    const title = doc?.title || '未命名文档';
+    const now = new Date().toLocaleString('zh-CN');
+
+    // 将编辑器内容转换为干净的 HTML
+    let contentHtml = editor.innerHTML;
+    // 清理 block 类，转换为标准 HTML
+    contentHtml = contentHtml.replace(/<div class="block block-heading1"[^>]*>(.*?)<\/div>/g, '<h1>$1</h1>');
+    contentHtml = contentHtml.replace(/<div class="block block-heading2"[^>]*>(.*?)<\/div>/g, '<h2>$1</h2>');
+    contentHtml = contentHtml.replace(/<div class="block block-heading3"[^>]*>(.*?)<\/div>/g, '<h3>$1</h3>');
+    contentHtml = contentHtml.replace(/<div class="block block-quote"[^>]*>(.*?)<\/div>/g, '<blockquote>$1</blockquote>');
+    contentHtml = contentHtml.replace(/<div class="block block-list-item"[^>]*>(.*?)<\/div>/g, '<li>$1</li>');
+    contentHtml = contentHtml.replace(/<div class="block block-body-l"[^>]*>(.*?)<\/div>/g, '<p>$1</p>');
+    contentHtml = contentHtml.replace(/<div class="block block-image"[^>]*>(.*?)<\/div>/g, '<div class="image-block">$1</div>');
+    contentHtml = contentHtml.replace(/<br>/g, '<br/>');
+
+    const shareHtml = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(title)}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC",sans-serif;background:#f5f5f0;color:#2c2c2c;line-height:1.8;max-width:720px;margin:0 auto;padding:3rem 2rem}
+.header{border-bottom:1px solid #e0e0d8;padding-bottom:1.5rem;margin-bottom:2rem}
+.header h1{font-size:1.8rem;font-weight:600;color:#1a1a1a;margin-bottom:0.5rem}
+.header .meta{font-size:0.85rem;color:#888}
+h1{font-size:1.6rem;margin:2rem 0 1rem;color:#1a1a1a}
+h2{font-size:1.3rem;margin:1.8rem 0 0.8rem;color:#2a2a2a}
+h3{font-size:1.1rem;margin:1.5rem 0 0.6rem;color:#3a3a3a}
+p{margin:0.8rem 0;color:#333}
+blockquote{border-left:3px solid #8b9a8b;padding-left:1rem;margin:1rem 0;color:#666;font-style:italic}
+li{margin:0.4rem 0 0.4rem 1.5rem;color:#333}
+strong{font-weight:600;color:#1a1a1a}
+em{font-style:italic;color:#444}
+code{background:#f0f0ea;padding:0.15rem 0.4rem;border-radius:3px;font-family:monospace;font-size:0.9em;color:#555}
+.image-block{margin:1rem 0}
+.image-block img{max-width:100%;border-radius:6px}
+.footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid #e0e0d8;font-size:0.8rem;color:#aaa;text-align:center}
+a{color:#4a7c59;text-decoration:none}
+a:hover{text-decoration:underline}
+@media print{body{padding:1cm 2cm}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>${escapeHtml(title)}</h1>
+<div class="meta">创建于 ${now} · 由 MonoFlow 编辑器生成</div>
+</div>
+<div class="content">
+${contentHtml}
+</div>
+<div class="footer">
+<p>本文档由 <a href="https://github.com" target="_blank">MonoFlow</a> 生成</p>
+</div>
+</body>
+</html>`;
+
+    const blob = new Blob([shareHtml], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'share-' + title.replace(/[^\w\u4e00-\u9fa5]/g, '_') + '.html';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+    showToastCustom('已生成分享文件');
 }
 
 async function handleMdImport(event) {
