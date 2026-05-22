@@ -184,11 +184,6 @@
             gap: 2rem;
             scroll-behavior: smooth;
         }
-        /* 打字机模式 */
-        body.typewriter-mode #editor-container {
-            padding-top: 50vh;
-            padding-bottom: 50vh;
-        }
         #editor-container.split-mode {
             padding: 10vh 5vw;
         }
@@ -1193,8 +1188,6 @@
             <button class="tool-btn" id="btn-voice" title="语音草稿"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 20V24C10 27.713 11.475 31.274 14.1005 33.8995C16.726 36.525 20.287 38 24 38C27.713 38 31.274 36.525 33.8995 33.8995C36.525 31.274 38 27.713 38 24V20M24 38V46M16 46H32M24 2C22.4087 2 20.8826 2.63214 19.7574 3.75736C18.6321 4.88258 18 6.4087 18 8V24C18 25.5913 18.6321 27.1174 19.7574 28.2426C20.8826 29.3679 22.4087 30 24 30C25.5913 30 27.1174 29.3679 28.2426 28.2426C29.3679 27.1174 30 25.5913 30 24V8C30 6.4087 29.3679 4.88258 28.2426 3.75736C27.1174 2.63214 25.5913 2 24 2Z"/></svg>语音</button>
             <button class="tool-btn" id="btn-outline" title="大纲"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24H42M6 12H42M6 36H42"/></svg>大纲</button>
             <button class="tool-btn" id="btn-split" title="分屏预览"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V44M8 4H40C42.2091 4 44 5.79086 44 8V40C44 42.2091 42.2091 44 40 44H8C5.79086 44 4 42.2091 4 40V8C4 5.79086 5.79086 4 8 4Z"/></svg>分屏</button>
-            <button class="tool-btn" id="btn-typewriter" title="打字机模式"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V12M24 36V44M12 24H4M44 24H36M14.1 14.1L8.44 8.44M39.56 39.56L33.9 33.9M14.1 33.9L8.44 39.56M39.56 8.44L33.9 14.1"/></svg>打字机</button>
-            <button class="tool-btn" id="btn-sound" title="打字音效"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V44M16 12H8M16 20H4M16 28H8M16 36H4M32 12H40M32 20H44M32 28H40M32 36H44"/></svg>音效</button>
             <button class="tool-btn" id="btn-spellcheck" title="拼写检查"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M42 24H36L30 6H18L12 24H6M28 24L24 36L20 24"/><path d="M24 36V44"/></svg>拼写</button>
             <button class="tool-btn" id="btn-search" title="搜索 (Ctrl+F)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="22" r="12"/><path d="M42 42L30 30"/></svg>搜索</button>
             <button class="tool-btn" id="btn-stats" title="字数统计"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8H20V20H8V8Z"/><path d="M28 8H40V20H28V8Z"/><path d="M8 28H20V40H8V28Z"/><path d="M28 28H40V40H28V28Z"/></svg>统计</button>
@@ -1555,6 +1548,9 @@ const linkUrlInput = document.getElementById('link-url-input');
 const fileInputDocx = document.getElementById('input-docx');
 const fileInputPdf = document.getElementById('input-pdf');
 const fileInputMd = document.getElementById('input-md');
+const statsBar = document.getElementById('stats-bar');
+const outlinePanel = document.getElementById('outline-panel');
+const outlineList = document.getElementById('outline-list');
 
 document.getElementById('btn-import').addEventListener('click', () => fileInputMd.click());
 document.getElementById('btn-import-docx').addEventListener('click', () => fileInputDocx.click());
@@ -2512,19 +2508,7 @@ document.getElementById('btn-history').addEventListener('click', () => {
 });
 
 // 羞耻共享
-document.getElementById('btn-share').addEventListener('click', () => {
-    const hash = btoa(Date.now().toString()).slice(0, 12);
-    const burn = document.getElementById('burn-after-read').checked ? '&burn=1' : '';
-    const link = location.origin + '/share/' + hash + '?mode=feedback' + burn;
-    document.getElementById('share-link-display').textContent = link;
-    document.getElementById('share-modal').classList.add('show');
-});
-document.getElementById('share-link-display').addEventListener('click', function() {
-    navigator.clipboard.writeText(this.textContent).then(() => {
-        this.style.color = '#E0E0E0';
-        setTimeout(() => this.style.color = '', 1000);
-    });
-});
+
 
 // === 设置面板：背景主题切换 ===
 const settingsModal = document.getElementById('settings-modal');
@@ -2753,7 +2737,6 @@ searchNext.addEventListener('click', () => {
 searchClose.addEventListener('click', closeSearch);
 
 // === 字数统计 ===
-const statsBar = document.getElementById('stats-bar');
 const statChars = document.getElementById('stat-chars');
 const statWords = document.getElementById('stat-words');
 const statLines = document.getElementById('stat-lines');
@@ -2777,8 +2760,6 @@ function toggleStats() {
 }
 
 // === 大纲视图 ===
-const outlinePanel = document.getElementById('outline-panel');
-const outlineList = document.getElementById('outline-list');
 
 function updateOutline() {
     const blocks = editor.querySelectorAll('.block');
@@ -2964,134 +2945,6 @@ editor.addEventListener('input', () => {
 });
 
 document.getElementById('btn-split').addEventListener('click', toggleSplitMode);
-
-// === 打字机模式 ===
-let isTypewriterMode = false;
-let typewriterScrollTimer = null;
-
-function toggleTypewriterMode() {
-    isTypewriterMode = !isTypewriterMode;
-    document.body.classList.toggle('typewriter-mode', isTypewriterMode);
-    document.getElementById('btn-typewriter').classList.toggle('active', isTypewriterMode);
-    if (isTypewriterMode) {
-        scrollToCurrentBlock();
-    }
-}
-
-function scrollToCurrentBlock() {
-    if (!isTypewriterMode) return;
-    const sel = window.getSelection();
-    if (!sel.rangeCount) return;
-    const node = sel.anchorNode;
-    if (!node) return;
-    let block = node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement;
-    while (block && !block.classList?.contains('block')) {
-        block = block.parentElement;
-    }
-    if (block) {
-        const container = document.getElementById('editor-container');
-        const blockRect = block.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        const scrollTop = block.offsetTop - container.clientHeight / 2 + block.clientHeight / 2;
-        container.scrollTop = scrollTop;
-    }
-}
-
-editor.addEventListener('keyup', () => {
-    if (isTypewriterMode) {
-        clearTimeout(typewriterScrollTimer);
-        typewriterScrollTimer = setTimeout(scrollToCurrentBlock, 50);
-    }
-});
-
-document.getElementById('btn-typewriter').addEventListener('click', toggleTypewriterMode);
-
-// === 打字音效 ===
-let isSoundEnabled = false;
-let audioCtx = null;
-
-function initAudioContext() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
-}
-
-function playKeySound() {
-    if (!isSoundEnabled || !audioCtx) return;
-    const now = audioCtx.currentTime;
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    // 随机选择音高，模拟不同按键
-    const frequencies = [800, 850, 900, 950, 1000, 1050, 1100];
-    const freq = frequencies[Math.floor(Math.random() * frequencies.length)];
-    oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(freq, now);
-    oscillator.frequency.exponentialRampToValueAtTime(freq * 0.5, now + 0.08);
-    gainNode.gain.setValueAtTime(0.08, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    oscillator.start(now);
-    oscillator.stop(now + 0.08);
-}
-
-function playEnterSound() {
-    if (!isSoundEnabled || !audioCtx) return;
-    const now = audioCtx.currentTime;
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    oscillator.type = 'triangle';
-    oscillator.frequency.setValueAtTime(600, now);
-    oscillator.frequency.exponentialRampToValueAtTime(300, now + 0.15);
-    gainNode.gain.setValueAtTime(0.1, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    oscillator.start(now);
-    oscillator.stop(now + 0.15);
-}
-
-function playBackspaceSound() {
-    if (!isSoundEnabled || !audioCtx) return;
-    const now = audioCtx.currentTime;
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    oscillator.type = 'sawtooth';
-    oscillator.frequency.setValueAtTime(400, now);
-    oscillator.frequency.exponentialRampToValueAtTime(200, now + 0.1);
-    gainNode.gain.setValueAtTime(0.05, now);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    oscillator.start(now);
-    oscillator.stop(now + 0.1);
-}
-
-function toggleSound() {
-    isSoundEnabled = !isSoundEnabled;
-    if (isSoundEnabled) {
-        initAudioContext();
-    }
-    document.getElementById('btn-sound').classList.toggle('active', isSoundEnabled);
-    showToastCustom(isSoundEnabled ? '打字音效已开启' : '打字音效已关闭');
-}
-
-// 监听键盘事件播放音效
-editor.addEventListener('keydown', (e) => {
-    if (!isSoundEnabled) return;
-    if (e.key === 'Enter') {
-        playEnterSound();
-    } else if (e.key === 'Backspace' || e.key === 'Delete') {
-        playBackspaceSound();
-    } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        playKeySound();
-    }
-});
-
-document.getElementById('btn-sound').addEventListener('click', toggleSound);
 
 // === 拼写检查 ===
 let isSpellCheckEnabled = false;
@@ -3698,7 +3551,34 @@ async function extractTextFromPdfData(data) {
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
         const page = await pdf.getPage(pageNum);
         const content = await page.getTextContent();
-        const pageText = content.items.map(item => item.str || '').join(' ');
+        // 按文本项的垂直位置排序，保持正确的阅读顺序
+        const items = content.items
+            .filter(item => item.str && item.str.trim())
+            .sort((a, b) => {
+                const yDiff = b.transform[5] - a.transform[5];
+                if (Math.abs(yDiff) > 5) return yDiff;
+                return a.transform[4] - b.transform[4];
+            });
+        // 按行分组
+        let currentY = null;
+        let lines = [];
+        let currentLine = [];
+        for (const item of items) {
+            const y = Math.round(item.transform[5] / 5) * 5;
+            if (currentY === null || Math.abs(y - currentY) < 5) {
+                currentLine.push(item);
+            } else {
+                if (currentLine.length > 0) {
+                    lines.push(currentLine.sort((a, b) => a.transform[4] - b.transform[4]).map(i => i.str).join(''));
+                }
+                currentLine = [item];
+            }
+            currentY = y;
+        }
+        if (currentLine.length > 0) {
+            lines.push(currentLine.sort((a, b) => a.transform[4] - b.transform[4]).map(i => i.str).join(''));
+        }
+        const pageText = lines.join('\n');
         text += pageText.trim() + '\n\n';
     }
     return text.trim();
