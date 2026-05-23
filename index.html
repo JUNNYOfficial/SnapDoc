@@ -379,6 +379,170 @@
             text-align: center;
         }
 
+        /* === 表格块样式 === */
+        #editor .block-table {
+            margin: 1rem 0;
+            position: relative;
+        }
+        #editor .block-table table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        #editor .block-table th,
+        #editor .block-table td {
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.5em 0.75em;
+            text-align: left;
+            min-width: 60px;
+            color: var(--text-primary);
+        }
+        #editor .block-table th {
+            background: rgba(255,255,255,0.05);
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        #editor .block-table td:focus {
+            outline: 2px solid var(--accent-calm);
+            outline-offset: -2px;
+        }
+        #editor .block-table .table-controls {
+            display: flex;
+            gap: 0.3rem;
+            margin-top: 0.4rem;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        #editor .block-table:hover .table-controls,
+        #editor .block-table:focus-within .table-controls {
+            opacity: 1;
+        }
+        #editor .block-table .table-btn {
+            font-family: var(--font-ui);
+            font-size: 0.65rem;
+            padding: 0.2em 0.5em;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-muted);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #editor .block-table .table-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+
+        /* 表格插入弹窗 */
+        #table-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 300;
+        }
+        #table-modal.show { opacity: 1; pointer-events: auto; }
+        .table-modal-content {
+            background: var(--bg-surface);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 1.5rem;
+            width: 280px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        .table-modal-title {
+            font-family: var(--font-ui);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        .table-size-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin-bottom: 1rem;
+        }
+        .table-size-cell {
+            aspect-ratio: 1;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .table-size-cell:hover,
+        .table-size-cell.active {
+            background: var(--accent-calm);
+            border-color: var(--accent-calm);
+        }
+        .table-size-label {
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .table-modal-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .table-modal-actions button {
+            flex: 1;
+        }
+
+        /* 浅色主题表格适配 */
+        [data-theme="soft-paper"] #editor .block-table th,
+        [data-theme="soft-paper"] #editor .block-table td {
+            border-color: rgba(0,0,0,0.12);
+        }
+        [data-theme="soft-paper"] #editor .block-table th {
+            background: rgba(0,0,0,0.03);
+        }
+        [data-theme="soft-paper"] #editor .block-table .table-btn {
+            background: rgba(0,0,0,0.04);
+            border-color: rgba(0,0,0,0.08);
+        }
+        [data-theme="soft-paper"] #editor .block-table .table-btn:hover {
+            background: rgba(0,0,0,0.08);
+        }
+        [data-theme="soft-paper"] #table-modal .table-modal-content {
+            border-color: rgba(0,0,0,0.08);
+        }
+        [data-theme="soft-paper"] .table-size-cell {
+            border-color: rgba(0,0,0,0.12);
+        }
+
+        /* 竹子主题表格适配 */
+        [data-theme="bamboo"] #editor .block-table th,
+        [data-theme="bamboo"] #editor .block-table td {
+            border-color: rgba(38, 81, 114, 0.15);
+        }
+        [data-theme="bamboo"] #editor .block-table th {
+            background: rgba(38, 81, 114, 0.04);
+        }
+        [data-theme="bamboo"] #editor .block-table .table-btn {
+            background: rgba(38, 81, 114, 0.04);
+            border-color: rgba(38, 81, 114, 0.1);
+            color: #309597;
+        }
+        [data-theme="bamboo"] #editor .block-table .table-btn:hover {
+            background: rgba(38, 81, 114, 0.08);
+            color: #265172;
+        }
+        [data-theme="bamboo"] #table-modal .table-modal-content {
+            border-color: rgba(38, 81, 114, 0.1);
+        }
+        [data-theme="bamboo"] .table-size-cell {
+            border-color: rgba(38, 81, 114, 0.15);
+        }
+
         /* 行内格式样式 */
         #editor strong { font-weight: 600; color: var(--text-primary); }
         #editor em { font-style: italic; color: var(--text-secondary); }
@@ -1238,6 +1402,7 @@
                 <span class="shortcut-key">### + Space</span><span class="shortcut-desc">标题 3</span>
                 <span class="shortcut-key">> + Space</span><span class="shortcut-desc">引用</span>
                 <span class="shortcut-key">- + Space</span><span class="shortcut-desc">列表</span>
+                <span class="shortcut-key">| + Space</span><span class="shortcut-desc">表格</span>
                 <span class="shortcut-key">`code`</span><span class="shortcut-desc">行内代码</span>
                 <span class="shortcut-key">**text**</span><span class="shortcut-desc">加粗</span>
                 <span class="shortcut-key">*text*</span><span class="shortcut-desc">斜体</span>
@@ -1257,7 +1422,7 @@
     </aside>
 
     <div id="editor-container">
-        <div id="editor" contenteditable="true" data-placeholder="只写一行也没关系...&#10;光标在这里等你，没有评判。&#10;&#10;试试输入 # 标题、> 引用、- 列表、**加粗**" spellcheck="false"></div>
+        <div id="editor" contenteditable="true" data-placeholder="只写一行也没关系...&#10;光标在这里等你，没有评判。&#10;&#10;试试输入 # 标题、> 引用、- 列表、| 表格、**加粗**" spellcheck="false"></div>
         <div id="editor-preview" style="display: none;"></div>
     </div>
 
@@ -1275,6 +1440,8 @@
         <button class="fmt-btn" data-cmd="quote" title="引用">Quote</button>
         <div class="fmt-sep"></div>
         <button class="fmt-btn" data-cmd="link" title="插入链接">Link</button>
+        <div class="fmt-sep"></div>
+        <button class="fmt-btn" data-cmd="table" title="插入表格">Table</button>
     </div>
 
     <aside id="shame-buffer">
@@ -1324,6 +1491,19 @@
             <div class="link-modal-actions">
                 <button class="tool-btn" id="link-cancel">取消</button>
                 <button class="tool-btn" id="link-confirm" style="color: var(--accent-calm);">确认插入</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 表格插入弹窗 -->
+    <div id="table-modal">
+        <div class="table-modal-content">
+            <div class="table-modal-title">插入表格</div>
+            <div class="table-size-grid" id="table-size-grid"></div>
+            <div class="table-size-label" id="table-size-label">0 × 0</div>
+            <div class="table-modal-actions">
+                <button class="tool-btn" id="table-cancel">取消</button>
+                <button class="tool-btn" id="table-confirm" style="color: var(--accent-calm);">插入</button>
             </div>
         </div>
     </div>
@@ -1789,6 +1969,9 @@ const formatToolbar = document.getElementById('format-toolbar');
 const linkPreview = document.getElementById('link-preview');
 const linkModal = document.getElementById('link-modal');
 const linkUrlInput = document.getElementById('link-url-input');
+const tableModal = document.getElementById('table-modal');
+const tableSizeGrid = document.getElementById('table-size-grid');
+const tableSizeLabel = document.getElementById('table-size-label');
 const fileInputImport = document.getElementById('input-import');
 const statsBar = document.getElementById('stats-bar');
 const outlinePanel = document.getElementById('outline-panel');
@@ -1936,6 +2119,14 @@ function checkBlockConversion() {
     if (!block) return;
 
     const text = block.textContent;
+
+    // 检测表格快捷语法 | + Space
+    if (/^\| $/.test(text)) {
+        block.remove();
+        insertTableBlock(3, 3);
+        return;
+    }
+
     const conversions = [
         { pattern: /^### $/, type: 'heading3' },
         { pattern: /^## $/, type: 'heading2' },
@@ -2139,6 +2330,10 @@ function domToMarkdown(root) {
 
     blocks.forEach(block => {
         const type = getBlockType(block);
+        if (type === 'table') {
+            md += tableBlockToMd(block) + '\n\n';
+            return;
+        }
         const inner = inlineDomToMd(block);
         switch (type) {
             case 'heading1': md += '# ' + inner.trim() + '\n\n'; break;
@@ -2151,6 +2346,30 @@ function domToMarkdown(root) {
         }
     });
     return md.replace(/\n{3,}/g, '\n\n').trim() + '\n';
+}
+
+function tableBlockToMd(block) {
+    const table = block.querySelector('table');
+    if (!table) return '';
+    const thead = table.querySelector('thead');
+    const tbody = table.querySelector('tbody');
+    if (!thead || !tbody) return '';
+
+    let md = '';
+    const headerRow = thead.querySelector('tr');
+    if (headerRow) {
+        const ths = headerRow.querySelectorAll('th');
+        md += '| ' + Array.from(ths).map(th => th.textContent.trim()).join(' | ') + ' |\n';
+        md += '| ' + Array.from(ths).map(() => '---').join(' | ') + ' |\n';
+    }
+
+    const rows = tbody.querySelectorAll('tr');
+    rows.forEach(tr => {
+        const tds = tr.querySelectorAll('td');
+        md += '| ' + Array.from(tds).map(td => td.textContent.trim()).join(' | ') + ' |\n';
+    });
+
+    return md.trim();
 }
 
 function inlineDomToMd(node) {
@@ -2213,6 +2432,8 @@ window.addEventListener('DOMContentLoaded', () => {
     updateStats();
     // 默认显示统计栏
     statsBar.classList.add('visible');
+    // 初始化表格大小选择网格
+    initTableSizeGrid();
 
     // 自动保存 & 版本记录
     // 删除操作：即时记录，不做防抖合并，确保每次按键都是独立时间轴条目
@@ -2440,6 +2661,11 @@ formatToolbar.addEventListener('mousedown', (e) => {
         return;
     }
 
+    if (cmd === 'table') {
+        openTableModal();
+        return;
+    }
+
     if (['h1','h2','h3','ul','quote'].includes(cmd)) {
         const block = getCurrentBlock();
         if (block) {
@@ -2488,6 +2714,193 @@ function insertLink() {
     document.execCommand('createLink', false, url);
     editor.dispatchEvent(new Event('input'));
     state.savedSelection = null;
+}
+
+// === 表格插入逻辑 ===
+let tableSelectedRows = 0;
+let tableSelectedCols = 0;
+const TABLE_GRID_ROWS = 6;
+const TABLE_GRID_COLS = 6;
+
+function initTableSizeGrid() {
+    tableSizeGrid.innerHTML = '';
+    for (let r = 0; r < TABLE_GRID_ROWS; r++) {
+        for (let c = 0; c < TABLE_GRID_COLS; c++) {
+            const cell = document.createElement('div');
+            cell.className = 'table-size-cell';
+            cell.dataset.row = r + 1;
+            cell.dataset.col = c + 1;
+            tableSizeGrid.appendChild(cell);
+        }
+    }
+}
+
+function updateTableGridHighlight(rows, cols) {
+    tableSizeGrid.querySelectorAll('.table-size-cell').forEach(cell => {
+        const r = parseInt(cell.dataset.row);
+        const c = parseInt(cell.dataset.col);
+        cell.classList.toggle('active', r <= rows && c <= cols);
+    });
+    tableSizeLabel.textContent = rows + ' × ' + cols;
+}
+
+tableSizeGrid.addEventListener('mouseover', (e) => {
+    const cell = e.target.closest('.table-size-cell');
+    if (!cell) return;
+    const rows = parseInt(cell.dataset.row);
+    const cols = parseInt(cell.dataset.col);
+    updateTableGridHighlight(rows, cols);
+});
+
+tableSizeGrid.addEventListener('click', (e) => {
+    const cell = e.target.closest('.table-size-cell');
+    if (!cell) return;
+    tableSelectedRows = parseInt(cell.dataset.row);
+    tableSelectedCols = parseInt(cell.dataset.col);
+    insertTableBlock(tableSelectedRows, tableSelectedCols);
+    tableModal.classList.remove('show');
+});
+
+tableSizeGrid.addEventListener('mouseleave', () => {
+    updateTableGridHighlight(tableSelectedRows, tableSelectedCols);
+});
+
+document.getElementById('table-cancel').addEventListener('click', () => tableModal.classList.remove('show'));
+document.getElementById('table-confirm').addEventListener('click', () => {
+    if (tableSelectedRows > 0 && tableSelectedCols > 0) {
+        insertTableBlock(tableSelectedRows, tableSelectedCols);
+    }
+    tableModal.classList.remove('show');
+});
+
+tableModal.addEventListener('click', (e) => {
+    if (e.target === tableModal) tableModal.classList.remove('show');
+});
+
+function openTableModal() {
+    tableSelectedRows = 0;
+    tableSelectedCols = 0;
+    updateTableGridHighlight(0, 0);
+    tableModal.classList.add('show');
+}
+
+function insertTableBlock(rows, cols) {
+    const block = createBlock('table');
+    block.contentEditable = 'false';
+
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+
+    // 创建表头
+    const headerRow = document.createElement('tr');
+    for (let c = 0; c < cols; c++) {
+        const th = document.createElement('th');
+        th.contentEditable = 'true';
+        th.textContent = '标题 ' + (c + 1);
+        headerRow.appendChild(th);
+    }
+    thead.appendChild(headerRow);
+
+    // 创建数据行
+    for (let r = 0; r < rows - 1; r++) {
+        const tr = document.createElement('tr');
+        for (let c = 0; c < cols; c++) {
+            const td = document.createElement('td');
+            td.contentEditable = 'true';
+            td.textContent = '';
+            tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+    }
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    block.appendChild(table);
+
+    // 添加控制按钮
+    const controls = document.createElement('div');
+    controls.className = 'table-controls';
+    controls.innerHTML =
+        '<button class="table-btn" data-action="add-row">+ 行</button>' +
+        '<button class="table-btn" data-action="add-col">+ 列</button>' +
+        '<button class="table-btn" data-action="del-row">- 行</button>' +
+        '<button class="table-btn" data-action="del-col">- 列</button>' +
+        '<button class="table-btn" data-action="del-table">删除表格</button>';
+    block.appendChild(controls);
+
+    // 在当前块后插入表格
+    const currentBlock = getCurrentBlock();
+    if (currentBlock) {
+        currentBlock.after(block);
+    } else {
+        editor.appendChild(block);
+    }
+
+    // 添加控制按钮事件
+    controls.addEventListener('click', (e) => {
+        const btn = e.target.closest('.table-btn');
+        if (!btn) return;
+        handleTableAction(block, btn.dataset.action);
+    });
+
+    editor.dispatchEvent(new Event('input'));
+    addHistorySnapshot('insert-table');
+}
+
+function handleTableAction(block, action) {
+    const table = block.querySelector('table');
+    if (!table) return;
+    const tbody = table.querySelector('tbody');
+    const thead = table.querySelector('thead');
+
+    switch (action) {
+        case 'add-row': {
+            const cols = thead.querySelectorAll('th').length;
+            const tr = document.createElement('tr');
+            for (let i = 0; i < cols; i++) {
+                const td = document.createElement('td');
+                td.contentEditable = 'true';
+                tr.appendChild(td);
+            }
+            tbody.appendChild(tr);
+            break;
+        }
+        case 'add-col': {
+            const th = document.createElement('th');
+            th.contentEditable = 'true';
+            th.textContent = '标题';
+            thead.querySelector('tr').appendChild(th);
+            tbody.querySelectorAll('tr').forEach(tr => {
+                const td = document.createElement('td');
+                td.contentEditable = 'true';
+                tr.appendChild(td);
+            });
+            break;
+        }
+        case 'del-row': {
+            const rows = tbody.querySelectorAll('tr');
+            if (rows.length > 1) rows[rows.length - 1].remove();
+            break;
+        }
+        case 'del-col': {
+            const ths = thead.querySelectorAll('th');
+            if (ths.length > 1) {
+                ths[ths.length - 1].remove();
+                tbody.querySelectorAll('tr').forEach(tr => {
+                    const tds = tr.querySelectorAll('td');
+                    if (tds.length > 0) tds[tds.length - 1].remove();
+                });
+            }
+            break;
+        }
+        case 'del-table': {
+            block.remove();
+            break;
+        }
+    }
+    editor.dispatchEvent(new Event('input'));
+    addHistorySnapshot('table-edit');
 }
 
 // === 链接 Hover 预览 ===
