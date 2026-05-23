@@ -1576,7 +1576,7 @@
         <div class="toolbar-group">
             <button class="tool-btn" id="btn-outline" title="大纲"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24H42M6 12H42M6 36H42"/></svg>大纲</button>
             <button class="tool-btn" id="btn-split" title="分屏预览"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V44M8 4H40C42.2091 4 44 5.79086 44 8V40C44 42.2091 42.2091 44 40 44H8C5.79086 44 4 42.2091 4 40V8C4 5.79086 5.79086 4 8 4Z"/></svg>分屏</button>
-            <button class="tool-btn" id="btn-search" title="搜索 (Ctrl+F)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="22" r="12"/><path d="M42 42L30 30"/></svg>搜索</button>
+            <button class="tool-btn" id="btn-search" title="搜索 (Ctrl+F)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="19" cy="19" r="11"/><path d="M31.5 31.5L41 41"/></svg>搜索</button>
             <button class="tool-btn" id="btn-stats" title="字数统计"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8H20V20H8V8Z"/><path d="M28 8H40V20H28V8Z"/><path d="M8 28H20V40H8V28Z"/><path d="M28 28H40V40H28V28Z"/></svg>统计</button>
             <button class="tool-btn" id="btn-history" title="回溯历史"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><path d="M24 16V24L30 30"/><path d="M16 8L12 12L20 12"/></svg>回溯</button>
         </div>
@@ -1688,8 +1688,11 @@
     </div>
 
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.18/mammoth.browser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.12.313/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.12.313/build/pdf.min.js" onerror="window.pdfLoadError = true"></script>
 <script>
+if (window.pdfjsLib) {
+    window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.12.313/build/pdf.worker.min.js';
+}
 // === 多文档存储系统 ===
 const STORAGE_KEY = 'snapdoc_docs';
 const ACTIVE_DOC_KEY = 'snapdoc_active_doc';
@@ -4131,8 +4134,8 @@ async function handleImport(event) {
         }
     } else if (ext === 'pdf') {
         showToastCustom('正在识别 PDF 文档...');
-        if (typeof pdfjsLib === 'undefined') {
-            showToastCustom('PDF 库加载失败，请刷新页面');
+        if (typeof pdfjsLib === 'undefined' || window.pdfLoadError) {
+            showToastCustom('PDF 库加载失败，请刷新页面或检查网络');
             return;
         }
         try {
@@ -4141,7 +4144,11 @@ async function handleImport(event) {
             insertRecognizedText(text, 'PDF 文档');
         } catch (error) {
             console.error(error);
-            showToastCustom('PDF 文档识别失败');
+            if (error?.message?.includes('worker')) {
+                showToastCustom('PDF 解析失败：无法加载 worker，请刷新页面');
+            } else {
+                showToastCustom('PDF 文档识别失败');
+            }
         }
     } else {
         showToastCustom('只支持 .md / .txt / .docx / .pdf 文件');
@@ -4149,7 +4156,9 @@ async function handleImport(event) {
 }
 
 async function extractTextFromPdfData(data) {
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.12.313/build/pdf.worker.min.js';
+    if (window.pdfjsLib && !window.pdfjsLib.GlobalWorkerOptions?.workerSrc) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.12.313/build/pdf.worker.min.js';
+    }
     const pdf = await pdfjsLib.getDocument({ data }).promise;
     let text = '';
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
