@@ -42,7 +42,7 @@
     <style>
         :root {
             --bg-deep: #121212;
-            --bg-surface: #1A1A1A;
+            --bg-surface: #121212;
             --text-primary: #E0E0E0;
             --text-secondary: #666666;
             --text-muted: #444444;
@@ -58,7 +58,7 @@
         /* === 背景主题变量 === */
         [data-theme="deep-teal"] {
             --bg-deep: #0F1A1F;
-            --bg-surface: #162229;
+            --bg-surface: #0F1A1F;
             --text-primary: #D8E4E8;
             --text-secondary: #6B8A96;
             --text-muted: #3D5A66;
@@ -68,7 +68,7 @@
         }
         [data-theme="warm-stone"] {
             --bg-deep: #1A1714;
-            --bg-surface: #24201B;
+            --bg-surface: #1A1714;
             --text-primary: #E0D8D0;
             --text-secondary: #8C7B6B;
             --text-muted: #5A4D40;
@@ -78,7 +78,7 @@
         }
         [data-theme="pure-ink"] {
             --bg-deep: #0A0A0A;
-            --bg-surface: #141414;
+            --bg-surface: #0A0A0A;
             --text-primary: #CCCCCC;
             --text-secondary: #555555;
             --text-muted: #333333;
@@ -87,7 +87,7 @@
             --quote-bg: rgba(74, 93, 107, 0.04);
         }
         [data-theme="soft-paper"] {
-            --bg-deep: #F2EDE8;
+            --bg-deep: #FAF7F3;
             --bg-surface: #FAF7F3;
             --text-primary: #2A2520;
             --text-secondary: #7A7068;
@@ -96,7 +96,7 @@
             --accent-shame: #9B7A6A;
             --quote-bg: rgba(155, 122, 106, 0.08);
         }
-        [data-theme="soft-paper"] body::before { opacity: 0.06; mix-blend-mode: multiply; }
+        [data-theme="soft-paper"] body::before { opacity: 0; mix-blend-mode: multiply; }
         [data-theme="soft-paper"] #editor ::selection { background: rgba(90, 122, 138, 0.2); color: #2A2520; }
         [data-theme="soft-paper"] .tool-btn:hover, [data-theme="soft-paper"] .tool-btn.active { color: #2A2520; background: rgba(0,0,0,0.04); }
         [data-theme="soft-paper"] #toolbar { background: rgba(250, 247, 243, 0.9); border-color: rgba(0,0,0,0.06); }
@@ -109,9 +109,37 @@
         [data-theme="soft-paper"] #clipboard-drawer { background: #FAF7F3; border-left-color: rgba(0,0,0,0.06); }
         [data-theme="soft-paper"] .link-modal-content, [data-theme="soft-paper"] .modal-content { background: #FAF7F3; border-color: rgba(0,0,0,0.06); }
         [data-theme="soft-paper"] .link-input { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.08); color: #2A2520; }
-        [data-theme="soft-paper"] #editor code { background: rgba(0,0,0,0.05); color: #5A7A8A; }
+        [data-theme="soft-paper"] #editor code { background: transparent; color: #5A7A8A; }
         [data-theme="soft-paper"] #editor a { color: #5A7A8A; border-bottom-color: #5A7A8A; }
         [data-theme="soft-paper"] .share-link { background: rgba(90, 122, 138, 0.08); color: #5A7A8A; }
+
+        /* === 竹子主题 === */
+        [data-theme="bamboo"] {
+            --bg-deep: #EFFADC;
+            --bg-surface: #EFFADC;
+            --text-primary: #265172;
+            --text-secondary: #309597;
+            --text-muted: #9ECFC3;
+            --accent-calm: #309597;
+            --accent-shame: #265172;
+            --quote-bg: rgba(48, 149, 151, 0.06);
+        }
+        [data-theme="bamboo"] body::before { opacity: 0; }
+        [data-theme="bamboo"] #editor ::selection { background: rgba(48, 149, 151, 0.2); color: #265172; }
+        [data-theme="bamboo"] .tool-btn:hover, [data-theme="bamboo"] .tool-btn.active { color: #265172; background: rgba(38, 81, 114, 0.04); }
+        [data-theme="bamboo"] #toolbar { background: rgba(239, 250, 220, 0.9); border-color: rgba(38, 81, 114, 0.06); }
+        [data-theme="bamboo"] #format-toolbar { background: rgba(239, 250, 220, 0.95); border-color: rgba(38, 81, 114, 0.08); }
+        [data-theme="bamboo"] .fmt-btn { color: #309597; }
+        [data-theme="bamboo"] .fmt-btn:hover { color: #265172; background: rgba(38, 81, 114, 0.04); }
+        [data-theme="bamboo"] .fmt-btn.active { color: #309597; background: rgba(48, 149, 151, 0.1); }
+        [data-theme="bamboo"] #anti-copy-toast { background: #EFFADC; border-left-color: #309597; color: #309597; }
+        [data-theme="bamboo"] #shame-buffer { background: #EFFADC; border-left-color: rgba(38, 81, 114, 0.04); }
+        [data-theme="bamboo"] #clipboard-drawer { background: #EFFADC; border-left-color: rgba(38, 81, 114, 0.06); }
+        [data-theme="bamboo"] .link-modal-content, [data-theme="bamboo"] .modal-content { background: #EFFADC; border-color: rgba(38, 81, 114, 0.06); }
+        [data-theme="bamboo"] .link-input { background: rgba(38, 81, 114, 0.03); border-color: rgba(38, 81, 114, 0.08); color: #265172; }
+        [data-theme="bamboo"] #editor code { background: transparent; color: #309597; }
+        [data-theme="bamboo"] #editor a { color: #309597; border-bottom-color: #309597; }
+        [data-theme="bamboo"] .share-link { background: rgba(48, 149, 151, 0.08); color: #309597; }
 
         /* === ADHD友好全局过渡系统 === */
         /* 所有可见UI组件统一过渡，消除任何瞬间跳变 */
@@ -196,7 +224,7 @@
             inset: 0;
             background-image: var(--noise-url);
             background-size: cover;
-            opacity: 0.15;
+            opacity: 0;
             pointer-events: none;
             z-index: 0;
             mix-blend-mode: overlay;
@@ -244,17 +272,18 @@
         #editor {
             width: 100%;
             min-height: 60vh;
-            background: transparent;
+            background: var(--bg-deep);
             border: none;
             color: var(--text-primary);
             font-family: var(--font-body);
             font-size: 1.1rem;
             line-height: 1.9;
             caret-color: var(--accent-calm);
-            transition: background-color 1.8s ease;
         }
 
-        #editor:focus { background-color: rgba(74, 93, 107, 0.02); }
+        #editor:focus { 
+            outline: none;
+        }
 
         #editor ::selection {
             background: rgba(74, 93, 107, 0.3);
@@ -312,7 +341,7 @@
 
         #editor .block-quote {
             border-left: 2px solid var(--accent-shame);
-            background: var(--quote-bg);
+            background: transparent;
             padding: 0.6em 1.2em;
             margin: 0.8em 0;
             border-radius: 0 4px 4px 0;
@@ -356,7 +385,7 @@
         #editor code {
             font-family: var(--font-ui);
             font-size: 0.85em;
-            background: rgba(255,255,255,0.06);
+            background: transparent;
             padding: 0.15em 0.4em;
             border-radius: 3px;
             color: var(--accent-calm);
@@ -433,6 +462,51 @@
             opacity: 0;
             pointer-events: none;
             transform: translateX(-50%) translateY(20px);
+        }
+
+        /* 禅模式黑屏过渡层 */
+        #zen-overlay {
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+        #zen-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #zen-overlay.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .zen-text {
+            color: #ffffff;
+            font-family: var(--font-body);
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: 
+                opacity 0.8s ease 0.3s,
+                transform 0.8s ease 0.3s;
+        }
+        #zen-overlay.active .zen-text {
+            opacity: 1;
+            transform: scale(1);
+        }
+        #zen-overlay.fade-out .zen-text {
+            opacity: 0;
+            transform: scale(1.1);
+            transition: 
+                opacity 0.6s ease,
+                transform 0.6s ease;
         }
 
         /* 工具栏分组 */
@@ -541,7 +615,7 @@
         .link-input {
             width: 100%;
             background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1.6px solid #000000;
             color: var(--text-primary);
             font-family: var(--font-ui);
             font-size: 0.85rem;
@@ -690,7 +764,7 @@
         }
         #search-input {
             background: transparent;
-            border: none;
+            border: 1.6px solid #000000;
             color: var(--text-primary);
             font-family: var(--font-ui);
             font-size: 0.9rem;
@@ -1098,6 +1172,9 @@
         .theme-paper .theme-preview { background: #F2EDE8; }
         .theme-paper .theme-preview::after { background: #2A2520; }
         .theme-paper .theme-label { background: #F2EDE8; color: #7A7068; }
+        .theme-bamboo .theme-preview { background: #EFFADC; }
+        .theme-bamboo .theme-preview::after { background: #265172; }
+        .theme-bamboo .theme-label { background: #EFFADC; color: #309597; }
 
         @media print {
             body, body::before { background: #fff !important; color: #1a1a1a !important; overflow: visible !important; height: auto !important; }
@@ -1217,49 +1294,26 @@
     <div id="toolbar">
         <!-- 编辑组 -->
         <div class="toolbar-group">
-            <button class="tool-btn" id="btn-voice" title="语音草稿"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 20V24C10 27.713 11.475 31.274 14.1005 33.8995C16.726 36.525 20.287 38 24 38C27.713 38 31.274 36.525 33.8995 33.8995C36.525 31.274 38 27.713 38 24V20M24 38V46M16 46H32M24 2C22.4087 2 20.8826 2.63214 19.7574 3.75736C18.6321 4.88258 18 6.4087 18 8V24C18 25.5913 18.6321 27.1174 19.7574 28.2426C20.8826 29.3679 22.4087 30 24 30C25.5913 30 27.1174 29.3679 28.2426 28.2426C29.3679 27.1174 30 25.5913 30 24V8C30 6.4087 29.3679 4.88258 28.2426 3.75736C27.1174 2.63214 25.5913 2 24 2Z"/></svg>语音</button>
             <button class="tool-btn" id="btn-outline" title="大纲"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 24H42M6 12H42M6 36H42"/></svg>大纲</button>
             <button class="tool-btn" id="btn-split" title="分屏预览"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V44M8 4H40C42.2091 4 44 5.79086 44 8V40C44 42.2091 42.2091 44 40 44H8C5.79086 44 4 42.2091 4 40V8C4 5.79086 5.79086 4 8 4Z"/></svg>分屏</button>
-            <button class="tool-btn" id="btn-spellcheck" title="拼写检查"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M42 24H36L30 6H18L12 24H6M28 24L24 36L20 24"/><path d="M24 36V44"/></svg>拼写</button>
             <button class="tool-btn" id="btn-search" title="搜索 (Ctrl+F)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="22" cy="22" r="12"/><path d="M42 42L30 30"/></svg>搜索</button>
             <button class="tool-btn" id="btn-stats" title="字数统计"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8H20V20H8V8Z"/><path d="M28 8H40V20H28V8Z"/><path d="M8 28H20V40H8V28Z"/><path d="M28 28H40V40H28V28Z"/></svg>统计</button>
             <button class="tool-btn" id="btn-history" title="回溯历史"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><path d="M24 16V24L30 30"/><path d="M16 8L12 12L20 12"/></svg>回溯</button>
         </div>
         <!-- 导入导出组 -->
         <div class="toolbar-group">
-            <button class="tool-btn" id="btn-import" title="导入 Markdown/TXT"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 30V6M34 16L24 6L14 16M6 30V38C6 39.0609 6.42143 40.0783 7.17157 40.8284C7.92172 41.5786 8.93913 42 10 42H38C39.0609 42 40.0783 41.5786 40.8284 40.8284C41.5786 40.0783 42 39.0609 42 38V30"/></svg>导入</button>
-            <button class="tool-btn" id="btn-import-docx" title="导入 Word"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M40 16L28 4H12C10.9391 4 9.92172 4.42143 9.17157 5.17157C8.42143 5.92172 8 6.93913 8 8V40C8 41.0609 8.42143 42.0783 9.17157 42.8284C9.92172 43.5786 10.9391 44 12 44H36C37.0609 44 38.0783 43.5786 38.8284 42.8284C39.5786 42.0783 40 41.0609 40 40V16ZM28 4V16H40M32 26H16M32 34H16M20 18H16"/></svg>Word</button>
-            <button class="tool-btn" id="btn-import-pdf" title="导入 PDF"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4H36L44 16V44H12V4Z"/><path d="M36 4V16H44"/><path d="M18 28H30"/><path d="M18 36H30"/><path d="M18 20H24"/></svg>PDF</button>
-            <button class="tool-btn" id="btn-export" title="导出 Markdown"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M42 30V38C42 39.0609 41.5786 40.0783 40.8284 40.8284C40.0783 41.5786 39.0609 42 38 42H10C8.93913 42 7.92172 41.5786 7.17157 40.8284C6.42143 40.0783 6 39.0609 6 38V30M34 20L24 30L14 20M24 30V6"/></svg>MD</button>
-            <button class="tool-btn" id="btn-export-pdf" title="导出 PDF"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4H36L44 16V44H12V4Z"/><path d="M36 4V16H44"/><path d="M18 28H30"/><path d="M18 36H30"/><path d="M18 20H24"/></svg>PDF</button>
+            <button class="tool-btn" id="btn-import" title="导入 Markdown/TXT/Word/PDF"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 30V6M34 16L24 6L14 16M6 30V38C6 39.0609 6.42143 40.0783 7.17157 40.8284C7.92172 41.5786 8.93913 42 10 42H38C39.0609 42 40.0783 41.5786 40.8284 40.8284C41.5786 40.0783 42 39.0609 42 38V30"/></svg>导入</button>
+            <button class="tool-btn" id="btn-export" title="导出 Markdown/PDF"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M42 30V38C42 39.0609 41.5786 40.0783 40.8284 40.8284C40.0783 41.5786 39.0609 42 38 42H10C8.93913 42 7.92172 41.5786 7.17157 40.8284C6.42143 40.0783 6 39.0609 6 38V30M34 20L24 30L14 20M24 30V6"/></svg>导出</button>
         </div>
-        <!-- 分享组 -->
-        <div class="toolbar-group">
-            <button class="tool-btn" id="btn-share" title="共享"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M17.18 27.02L30.84 34.98M30.82 13.02L17.18 20.98M42 10C42 13.3137 39.3137 16 36 16C32.6863 16 30 13.3137 30 10C30 6.68629 32.6863 4 36 4C39.3137 4 42 6.68629 42 10ZM18 24C18 27.3137 15.3137 30 12 30C8.68629 30 6 27.3137 6 24C6 20.6863 8.68629 18 12 18C15.3137 18 18 20.6863 18 24ZM42 38C42 41.3137 39.3137 44 36 44C32.6863 44 30 41.3137 30 38C30 34.6863 32.6863 32 36 32C39.3137 32 42 34.6863 42 38Z"/></svg>共享</button>
-        </div>
+
         <!-- 系统组 -->
         <div class="toolbar-group">
             <button class="tool-btn" id="btn-docs" title="我的文档"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4H34L42 16V44H14V4Z"/><path d="M34 4V16H42"/><path d="M20 24H36"/><path d="M20 32H36"/></svg>文档</button>
             <button class="tool-btn" id="btn-versions" title="历史版本"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V12M24 36V44M12 24H4M44 24H36M14.1 14.1L8.44 8.44M39.56 39.56L33.9 33.9M14.1 33.9L8.44 39.56M39.56 8.44L33.9 14.1"/><circle cx="24" cy="24" r="6"/></svg>历史</button>
             <button class="tool-btn" id="btn-shortcuts" title="快捷键 (Ctrl+/)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="36" height="36" rx="4"/><path d="M14 18H18M14 24H18M14 30H18M22 18H26M22 24H26M22 30H26M30 18H34M30 24H34M30 30H34"/></svg>快捷键</button>
-            <button class="tool-btn" id="btn-settings" title="设置"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="8"/><path d="M24 2V10M24 38V46M2 24H10M38 24H46M8.44 8.44L14.1 14.1M33.9 33.9L39.56 39.56M8.44 39.56L14.1 33.9M33.9 14.1L39.56 8.44"/></svg>设置</button>
-        </div>
-        <!-- 用户组 -->
-        <div class="toolbar-group" id="user-group">
-            <button class="tool-btn" id="btn-login" title="登录"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V24M24 24L16 16M24 24L32 16"/><circle cx="24" cy="24" r="16"/><path d="M24 24L24 44"/></svg>登录</button>
-            <div id="user-menu" style="display:none;position:absolute;bottom:100%;right:0;margin-bottom:8px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);min-width:160px;z-index:1000;">
-                <div id="user-info" style="padding:8px 12px;border-bottom:1px solid var(--border);margin-bottom:4px;">
-                    <div id="user-name" style="font-weight:600;font-size:0.85rem;"></div>
-                    <div id="user-email" style="font-size:0.75rem;color:var(--text-secondary);"></div>
-                </div>
-                <button class="tool-btn" id="btn-sync" style="width:100%;text-align:left;justify-content:flex-start;padding:6px 12px;font-size:0.8rem;" title="同步数据"><svg class="tool-icon" style="width:16px;height:16px;" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4"><path d="M24 4V24M24 24L16 16M24 24L32 16"/><circle cx="24" cy="24" r="16"/><path d="M24 24L24 44"/></svg>同步</button>
-                <button class="tool-btn" id="btn-logout" style="width:100%;text-align:left;justify-content:flex-start;padding:6px 12px;font-size:0.8rem;color:#ff6b6b;" title="退出登录"><svg class="tool-icon" style="width:16px;height:16px;" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4"><path d="M18 14L30 24L18 34"/><path d="M30 24H6"/><path d="M30 6H42V42H30"/></svg>退出</button>
-            </div>
         </div>
     </div>
-    <input type="file" id="input-docx" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
-    <input type="file" id="input-pdf" accept=".pdf,application/pdf" style="display:none">
-    <input type="file" id="input-md" accept=".md,.txt,text/markdown,text/plain" style="display:none">
+    <input type="file" id="input-import" accept=".md,.txt,.docx,.pdf,text/markdown,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" style="display:none">
 
     <!-- 链接插入弹窗 -->
     <div id="link-modal">
@@ -1311,6 +1365,10 @@
                     <div class="theme-preview"></div>
                     <div class="theme-label">柔纸白</div>
                 </div>
+                <div class="theme-option theme-bamboo" data-theme-value="bamboo" role="radio" aria-checked="false" tabindex="0" aria-label="竹子背景主题">
+                    <div class="theme-preview"></div>
+                    <div class="theme-label">竹子</div>
+                </div>
             </div>
             <button class="tool-btn" onclick="document.getElementById('settings-modal').classList.remove('show')" style="margin-top: 1.8rem; width: 100%; text-align: center;">完成</button>
         </div>
@@ -1329,6 +1387,11 @@
     </div>
 
     <div class="feedback-watermark" id="watermark" style="display:none;"><svg width="16" height="16" style="vertical-align:middle;margin-right:4px;"><use href="#icon-seedling"/></svg>求反馈中，勿催</div>
+
+    <!-- 禅模式黑屏过渡层 -->
+    <div id="zen-overlay">
+        <div class="zen-text">深呼吸</div>
+    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.18/mammoth.browser.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.12.313/build/pdf.min.js"></script>
@@ -1725,19 +1788,13 @@ const formatToolbar = document.getElementById('format-toolbar');
 const linkPreview = document.getElementById('link-preview');
 const linkModal = document.getElementById('link-modal');
 const linkUrlInput = document.getElementById('link-url-input');
-const fileInputDocx = document.getElementById('input-docx');
-const fileInputPdf = document.getElementById('input-pdf');
-const fileInputMd = document.getElementById('input-md');
+const fileInputImport = document.getElementById('input-import');
 const statsBar = document.getElementById('stats-bar');
 const outlinePanel = document.getElementById('outline-panel');
 const outlineList = document.getElementById('outline-list');
 
-document.getElementById('btn-import').addEventListener('click', () => fileInputMd.click());
-document.getElementById('btn-import-docx').addEventListener('click', () => fileInputDocx.click());
-document.getElementById('btn-import-pdf').addEventListener('click', () => fileInputPdf.click());
-fileInputMd.addEventListener('change', handleMdImport);
-fileInputDocx.addEventListener('change', handleDocxImport);
-fileInputPdf.addEventListener('change', handlePdfImport);
+document.getElementById('btn-import').addEventListener('click', () => fileInputImport.click());
+fileInputImport.addEventListener('change', handleImport);
 
 // === 撤销/重做栈 ===
 const undoStack = [];
@@ -2197,13 +2254,6 @@ window.addEventListener('DOMContentLoaded', () => {
         if (outlinePanel.classList.contains('open')) {
             updateOutline();
         }
-        // 拼写检查（防抖 1s）
-        clearTimeout(spellCheckTimer);
-        spellCheckTimer = setTimeout(() => {
-            if (isSpellCheckEnabled) {
-                performSpellCheck();
-            }
-        }, 1000);
         // 保存撤销状态（防抖 500ms）
         clearTimeout(undoSaveTimer);
         undoSaveTimer = setTimeout(() => {
@@ -2278,7 +2328,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // 拖拽图片
     editor.addEventListener('dragover', (e) => {
         e.preventDefault();
-        editor.style.backgroundColor = 'rgba(74, 93, 107, 0.05)';
+        editor.style.backgroundColor = 'transparent';
     });
     editor.addEventListener('dragleave', (e) => {
         editor.style.backgroundColor = '';
@@ -2501,42 +2551,6 @@ function showToast() {
     toast.classList.add('show');
     setTimeout(() => toast.classList.remove('show'), 2500);
 }
-
-// === 语音转文字 ===
-const btnVoice = document.getElementById('btn-voice');
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    state.recognition = new SpeechRecognition();
-    state.recognition.continuous = true;
-    state.recognition.lang = 'zh-CN';
-    state.recognition.interimResults = false;
-    state.recognition.onresult = (event) => {
-        const transcript = event.results[event.results.length - 1][0].transcript;
-        editor.focus();
-        document.execCommand('insertText', false, transcript);
-        editor.dispatchEvent(new Event('input'));
-    };
-    state.recognition.onend = () => {
-        state.isRecording = false;
-        btnVoice.classList.remove('recording');
-        btnVoice.innerHTML = '<svg width="16" height="16" style="vertical-align:middle;margin-right:4px;"><use href="#icon-mic"/></svg>语音草稿';
-    };
-} else {
-    btnVoice.style.display = 'none';
-}
-
-btnVoice.addEventListener('click', () => {
-    if (!state.recognition) return;
-    if (state.isRecording) {
-        state.recognition.stop();
-    } else {
-        state.isRecording = true;
-        btnVoice.classList.add('recording');
-        btnVoice.innerHTML = '<svg width="16" height="16" style="vertical-align:middle;margin-right:4px;"><use href="#icon-stop"/></svg>停止录音';
-        state.recognition.start();
-        editor.focus();
-    }
-});
 
 // === 羞耻缓冲带 + 实时编辑时间轴 ===
 let lastSnapshotText = '';
@@ -3126,162 +3140,6 @@ editor.addEventListener('input', () => {
 
 document.getElementById('btn-split').addEventListener('click', toggleSplitMode);
 
-// === 拼写检查 ===
-let isSpellCheckEnabled = false;
-
-// 常见英文拼写错误词典
-const COMMON_MISSPELLINGS = {
-    'teh': 'the', 'adn': 'and', 'taht': 'that', 'wiht': 'with',
-    'fo': 'of', 'ot': 'to', 'si': 'is', 'ti': 'it',
-    'jsut': 'just', 'os': 'so', 'no': 'not', 'onw': 'now',
-    'thier': 'their', 'recieve': 'receive', 'seperate': 'separate',
-    'occured': 'occurred', 'definately': 'definitely', 'accomodate': 'accommodate',
-    'beleive': 'believe', 'occurance': 'occurrence', 'untill': 'until',
-    'wich': 'which', 'thn': 'than', 'alot': 'a lot', 'becuase': 'because',
-    'truely': 'truly', 'noticable': 'noticeable', 'arguement': 'argument',
-    'independant': 'independent', 'ocassion': 'occasion', 'persistant': 'persistent',
-    'posession': 'possession', 'supercede': 'supersede', 'tommorow': 'tomorrow',
-    'wierd': 'weird', 'acheive': 'achieve', 'calender': 'calendar',
-    'collegue': 'colleague', 'concious': 'conscious', 'decieve': 'deceive',
-    'embarass': 'embarrass', 'existance': 'existence', 'foriegn': 'foreign',
-    'goverment': 'government', 'harrass': 'harass', 'hieght': 'height',
-    'immediatly': 'immediately', 'indispensible': 'indispensable', 'liason': 'liaison',
-    'millenium': 'millennium', 'neccessary': 'necessary', 'noticable': 'noticeable',
-    'paralell': 'parallel', 'peice': 'piece', 'playwrite': 'playwright',
-    'preceeding': 'preceding', 'priviledge': 'privilege', 'publically': 'publicly',
-    'recomend': 'recommend', 'refering': 'referring', 'relevent': 'relevant',
-    'rythm': 'rhythm', 'sieze': 'seize', 'succeed': 'succeed',
-    'suprise': 'surprise', 'tendancy': 'tendency', 'therefor': 'therefore',
-    'threshhold': 'threshold', 'tommorrow': 'tomorrow', 'tounge': 'tongue',
-    'truely': 'truly', 'unforseen': 'unforeseen', 'unneccesary': 'unnecessary',
-    'untill': 'until', 'wierd': 'weird', 'whereever': 'wherever',
-    'wich': 'which', 'yourslef': 'yourself'
-};
-
-// 中文常见错误
-const COMMON_CN_ERRORS = [
-    { wrong: '的得地', pattern: /的[^\u4e00-\u9fa5]*地/g },
-];
-
-function toggleSpellCheck() {
-    isSpellCheckEnabled = !isSpellCheckEnabled;
-    document.getElementById('btn-spellcheck').classList.toggle('active', isSpellCheckEnabled);
-    if (isSpellCheckEnabled) {
-        performSpellCheck();
-        showToastCustom('拼写检查已开启');
-    } else {
-        clearSpellCheckMarks();
-        showToastCustom('拼写检查已关闭');
-    }
-}
-
-function performSpellCheck() {
-    if (!isSpellCheckEnabled) return;
-    clearSpellCheckMarks();
-
-    const text = getEditorText();
-    if (!text.trim()) return;
-
-    const issues = [];
-
-    // 检查英文拼写
-    const words = text.match(/[a-zA-Z]+/g) || [];
-    words.forEach(word => {
-        const lower = word.toLowerCase();
-        if (COMMON_MISSPELLINGS[lower]) {
-            // 找到所有出现位置
-            let idx = text.toLowerCase().indexOf(lower);
-            while (idx !== -1) {
-                issues.push({
-                    start: idx,
-                    end: idx + lower.length,
-                    word: word,
-                    suggestion: COMMON_MISSPELLINGS[lower],
-                    type: 'spelling'
-                });
-                idx = text.toLowerCase().indexOf(lower, idx + 1);
-            }
-        }
-    });
-
-    // 检查重复词
-    const sentences = text.split(/[。！？.!?\n]/);
-    sentences.forEach(sentence => {
-        const sentenceWords = sentence.match(/[\u4e00-\u9fa5]+/g) || [];
-        sentenceWords.forEach(word => {
-            if (word.length >= 2) {
-                const pattern = new RegExp(word + word, 'g');
-                let match;
-                while ((match = pattern.exec(text)) !== null) {
-                    issues.push({
-                        start: match.index,
-                        end: match.index + word.length * 2,
-                        word: word + word,
-                        suggestion: word,
-                        type: 'duplicate'
-                    });
-                }
-            }
-        });
-    });
-
-    if (issues.length > 0) {
-        showSpellCheckPanel(issues);
-    }
-}
-
-function clearSpellCheckMarks() {
-    const existing = document.getElementById('spellcheck-panel');
-    if (existing) existing.remove();
-}
-
-function showSpellCheckPanel(issues) {
-    clearSpellCheckMarks();
-
-    const panel = document.createElement('div');
-    panel.id = 'spellcheck-panel';
-
-    let html = '<div class="spellcheck-header"><div class="spellcheck-title">发现 ' + issues.length + ' 处问题</div><button class="spellcheck-close" onclick="clearSpellCheckMarks()"><svg width="14" height="14"><use href="#icon-x"/></svg></button></div>';
-    html += '<div class="spellcheck-list">';
-    issues.slice(0, 10).forEach((issue, i) => {
-        html += '<div class="spellcheck-item" data-index="' + i + '">' +
-            '<div class="spellcheck-word">' + escapeHtml(issue.word) + '</div>' +
-            '<div class="spellcheck-suggestion">建议: ' + escapeHtml(issue.suggestion) + '</div>' +
-            '</div>';
-    });
-    if (issues.length > 10) {
-        html += '<div class="spellcheck-more">还有 ' + (issues.length - 10) + ' 处...</div>';
-    }
-    html += '</div>';
-    panel.innerHTML = html;
-
-    // 样式
-    if (!document.getElementById('spellcheck-styles')) {
-        const style = document.createElement('style');
-        style.id = 'spellcheck-styles';
-        style.textContent = `
-            #spellcheck-panel { position:fixed;bottom:5rem;right:2rem;background:var(--bg-surface);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:1.2rem;width:280px;max-height:400px;overflow-y:auto;z-index:90;box-shadow:0 8px 32px rgba(0,0,0,0.3); }
-            .spellcheck-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem; }
-            .spellcheck-title { font-family:var(--font-ui);font-size:0.75rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px; }
-            .spellcheck-close { background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1rem;padding:0.2rem; }
-            .spellcheck-close:hover { color:var(--text-primary); }
-            .spellcheck-list { display:flex;flex-direction:column;gap:0.5rem; }
-            .spellcheck-item { background:rgba(212,127,127,0.08);border:1px solid rgba(212,127,127,0.15);border-radius:6px;padding:0.6rem 0.8rem;cursor:pointer;transition:all 0.2s; }
-            .spellcheck-item:hover { background:rgba(212,127,127,0.12); }
-            .spellcheck-word { font-family:var(--font-body);font-size:0.85rem;color:#D47F7F; }
-            .spellcheck-suggestion { font-family:var(--font-ui);font-size:0.75rem;color:var(--text-secondary);margin-top:0.2rem; }
-            .spellcheck-more { text-align:center;color:var(--text-muted);font-size:0.75rem;padding:0.5rem; }
-            [data-theme="soft-paper"] #spellcheck-panel { border-color:rgba(0,0,0,0.1);box-shadow:0 8px 32px rgba(0,0,0,0.1); }
-            [data-theme="soft-paper"] .spellcheck-item { background:rgba(180,100,100,0.05);border-color:rgba(180,100,100,0.1); }
-        `;
-        document.head.appendChild(style);
-    }
-
-    document.body.appendChild(panel);
-}
-
-document.getElementById('btn-spellcheck').addEventListener('click', toggleSpellCheck);
-
 // === 文档模板系统 ===
 const TEMPLATES = {
     blank: {
@@ -3481,6 +3339,9 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ESC 禅模式
+const zenOverlay = document.getElementById('zen-overlay');
+let isZenTransitioning = false;
+
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         if (searchPanel.classList.contains('visible')) {
@@ -3501,13 +3362,42 @@ document.addEventListener('keydown', (e) => {
             document.getElementById('btn-outline').classList.remove('active');
             return;
         }
-        // 禅模式：切换 body 的 zen-mode 类
-        document.body.classList.toggle('zen-mode');
-        shameBuffer.classList.remove('open');
-        clipboardDrawer.classList.remove('open');
-        formatToolbar.classList.remove('visible');
-        linkModal.classList.remove('show');
-        settingsModal.classList.remove('show');
+        
+        // 禅模式：带黑屏过渡动画
+        if (isZenTransitioning) return;
+        
+        const isEnteringZen = !document.body.classList.contains('zen-mode');
+        
+        if (isEnteringZen) {
+            // 进入禅模式：先黑屏 -> 显示文字 -> 渐隐 -> 显示界面
+            isZenTransitioning = true;
+            zenOverlay.classList.add('active');
+            
+            // 1.5秒后文字开始渐隐
+            setTimeout(() => {
+                zenOverlay.classList.add('fade-out');
+            }, 1500);
+            
+            // 2.5秒后完全隐藏黑屏层，并进入禅模式
+            setTimeout(() => {
+                zenOverlay.classList.remove('active', 'fade-out');
+                document.body.classList.add('zen-mode');
+                shameBuffer.classList.remove('open');
+                clipboardDrawer.classList.remove('open');
+                formatToolbar.classList.remove('visible');
+                linkModal.classList.remove('show');
+                settingsModal.classList.remove('show');
+                isZenTransitioning = false;
+            }, 2500);
+        } else {
+            // 退出禅模式：直接切换
+            document.body.classList.remove('zen-mode');
+            shameBuffer.classList.remove('open');
+            clipboardDrawer.classList.remove('open');
+            formatToolbar.classList.remove('visible');
+            linkModal.classList.remove('show');
+            settingsModal.classList.remove('show');
+        }
     }
 });
 
@@ -3516,32 +3406,37 @@ document.getElementById('btn-search').addEventListener('click', openSearch);
 document.getElementById('btn-stats').addEventListener('click', toggleStats);
 document.getElementById('btn-shortcuts').addEventListener('click', openShortcuts);
 
-// === Markdown 导出 ===
-document.getElementById('btn-export').addEventListener('click', exportMarkdown);
-function exportMarkdown() {
-    const raw = domToMarkdown(editor);
+// === 统一导出 ===
+document.getElementById('btn-export').addEventListener('click', handleExport);
+
+function handleExport() {
+    const raw = getEditorText();
     if (!raw.trim()) { showToastCustom('暂无内容可导出'); return; }
+    
     const now = new Date();
     const pad = (n) => String(n).padStart(2, '0');
-    const filename = 'snapdoc-' + now.getFullYear() + pad(now.getMonth()+1) + pad(now.getDate()) + '-' + pad(now.getHours()) + pad(now.getMinutes()) + '.md';
+    const timestamp = 'snapdoc-' + now.getFullYear() + pad(now.getMonth()+1) + pad(now.getDate()) + '-' + pad(now.getHours()) + pad(now.getMinutes());
+    
+    if (confirm('导出格式：\n\n确定 = Markdown\n取消 = PDF')) {
+        exportMarkdown(timestamp);
+    } else {
+        exportPDF(timestamp);
+    }
+}
+
+function exportMarkdown(filename) {
+    const raw = domToMarkdown(editor);
     const cleaned = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n').trim() + '\n';
     const blob = new Blob([cleaned], { type: 'text/markdown;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = filename; a.style.display = 'none';
+    a.href = url; a.download = filename + '.md'; a.style.display = 'none';
     document.body.appendChild(a); a.click();
     setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
-    showToastCustom('已导出 · ' + filename);
+    showToastCustom('已导出 · ' + filename + '.md');
 }
 
-// === PDF 导出 ===
-document.getElementById('btn-export-pdf').addEventListener('click', exportPDF);
-function exportPDF() {
-    const raw = getEditorText();
-    if (!raw.trim()) { showToastCustom('暂无内容可导出'); return; }
-    const now = new Date();
-    const pad = (n) => String(n).padStart(2, '0');
-    const filename = 'snapdoc-' + now.getFullYear() + pad(now.getMonth()+1) + pad(now.getDate()) + '-' + pad(now.getHours()) + pad(now.getMinutes());
+function exportPDF(filename) {
     const originalTitle = document.title;
     document.title = filename;
     let restored = false;
@@ -3558,144 +3453,52 @@ function exportPDF() {
     window.print();
 }
 
-// === 分享导出 HTML ===
-document.getElementById('btn-share').addEventListener('click', shareDocument);
-function shareDocument() {
-    const raw = getEditorText();
-    if (!raw.trim()) { showToastCustom('暂无内容可分享'); return; }
-    const doc = getDoc(getActiveDocId());
-    const title = doc?.title || '未命名文档';
-    const now = new Date().toLocaleString('zh-CN');
-
-    // 将编辑器内容转换为干净的 HTML
-    let contentHtml = editor.innerHTML;
-    // 清理 block 类，转换为标准 HTML
-    contentHtml = contentHtml.replace(/<div class="block block-heading1"[^>]*>(.*?)<\/div>/g, '<h1>$1</h1>');
-    contentHtml = contentHtml.replace(/<div class="block block-heading2"[^>]*>(.*?)<\/div>/g, '<h2>$1</h2>');
-    contentHtml = contentHtml.replace(/<div class="block block-heading3"[^>]*>(.*?)<\/div>/g, '<h3>$1</h3>');
-    contentHtml = contentHtml.replace(/<div class="block block-quote"[^>]*>(.*?)<\/div>/g, '<blockquote>$1</blockquote>');
-    contentHtml = contentHtml.replace(/<div class="block block-list-item"[^>]*>(.*?)<\/div>/g, '<li>$1</li>');
-    contentHtml = contentHtml.replace(/<div class="block block-body-l"[^>]*>(.*?)<\/div>/g, '<p>$1</p>');
-    contentHtml = contentHtml.replace(/<div class="block block-image"[^>]*>(.*?)<\/div>/g, '<div class="image-block">$1</div>');
-    contentHtml = contentHtml.replace(/<br>/g, '<br/>');
-
-    const shareHtml = `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${escapeHtml(title)}</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC",sans-serif;background:#f5f5f0;color:#2c2c2c;line-height:1.8;max-width:720px;margin:0 auto;padding:3rem 2rem}
-.header{border-bottom:1px solid #e0e0d8;padding-bottom:1.5rem;margin-bottom:2rem}
-.header h1{font-size:1.8rem;font-weight:600;color:#1a1a1a;margin-bottom:0.5rem}
-.header .meta{font-size:0.85rem;color:#888}
-h1{font-size:1.6rem;margin:2rem 0 1rem;color:#1a1a1a}
-h2{font-size:1.3rem;margin:1.8rem 0 0.8rem;color:#2a2a2a}
-h3{font-size:1.1rem;margin:1.5rem 0 0.6rem;color:#3a3a3a}
-p{margin:0.8rem 0;color:#333}
-blockquote{border-left:3px solid #8b9a8b;padding-left:1rem;margin:1rem 0;color:#666;font-style:italic}
-li{margin:0.4rem 0 0.4rem 1.5rem;color:#333}
-strong{font-weight:600;color:#1a1a1a}
-em{font-style:italic;color:#444}
-code{background:#f0f0ea;padding:0.15rem 0.4rem;border-radius:3px;font-family:monospace;font-size:0.9em;color:#555}
-.image-block{margin:1rem 0}
-.image-block img{max-width:100%;border-radius:6px}
-.footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid #e0e0d8;font-size:0.8rem;color:#aaa;text-align:center}
-a{color:#4a7c59;text-decoration:none}
-a:hover{text-decoration:underline}
-@media print{body{padding:1cm 2cm}}
-</style>
-</head>
-<body>
-<div class="header">
-<h1>${escapeHtml(title)}</h1>
-<div class="meta">创建于 ${now} · 由 SnapDoc 编辑器生成</div>
-</div>
-<div class="content">
-${contentHtml}
-</div>
-<div class="footer">
-<p>本文档由 <a href="https://github.com" target="_blank">SnapDoc</a> 生成</p>
-</div>
-</body>
-</html>`;
-
-    const blob = new Blob([shareHtml], { type: 'text/html;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'share-' + title.replace(/[^\w\u4e00-\u9fa5]/g, '_') + '.html';
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
-    showToastCustom('已生成分享文件');
-}
-
-async function handleMdImport(event) {
+async function handleImport(event) {
     const file = event.target.files?.[0];
-    fileInputMd.value = '';
+    fileInputImport.value = '';
     if (!file) return;
+    
     const ext = file.name.toLowerCase().split('.').pop();
-    if (!['md', 'txt', 'markdown'].includes(ext)) {
-        showToastCustom('只支持 .md / .txt 文件');
-        return;
-    }
-    showToastCustom('正在读取文件...');
-    try {
-        const text = await file.text();
-        if (!text.trim()) {
-            showToastCustom('文件内容为空');
+    
+    if (['md', 'txt', 'markdown'].includes(ext)) {
+        showToastCustom('正在读取文件...');
+        try {
+            const text = await file.text();
+            if (!text.trim()) {
+                showToastCustom('文件内容为空');
+                return;
+            }
+            insertRecognizedText(text, file.name);
+        } catch (error) {
+            console.error(error);
+            showToastCustom('文件读取失败');
+        }
+    } else if (ext === 'docx') {
+        showToastCustom('正在识别 Word 文档...');
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            const result = await mammoth.extractRawText({ arrayBuffer });
+            insertRecognizedText(result.value || '', 'Word 文档');
+        } catch (error) {
+            console.error(error);
+            showToastCustom('Word 文档识别失败');
+        }
+    } else if (ext === 'pdf') {
+        showToastCustom('正在识别 PDF 文档...');
+        if (typeof pdfjsLib === 'undefined') {
+            showToastCustom('PDF 库加载失败，请刷新页面');
             return;
         }
-        insertRecognizedText(text, file.name);
-    } catch (error) {
-        console.error(error);
-        showToastCustom('文件读取失败');
-    }
-}
-
-async function handleDocxImport(event) {
-    const file = event.target.files?.[0];
-    fileInputDocx.value = '';
-    if (!file) return;
-    if (!file.name.toLowerCase().endsWith('.docx')) {
-        showToastCustom('只支持 .docx 文件');
-        return;
-    }
-    showToastCustom('正在识别 Word 文档...');
-    try {
-        const arrayBuffer = await file.arrayBuffer();
-        const result = await mammoth.extractRawText({ arrayBuffer });
-        insertRecognizedText(result.value || '', 'Word 文档');
-    } catch (error) {
-        console.error(error);
-        showToastCustom('Word 文档识别失败');
-    }
-}
-
-async function handlePdfImport(event) {
-    const file = event.target.files?.[0];
-    fileInputPdf.value = '';
-    if (!file) return;
-    if (!file.name.toLowerCase().endsWith('.pdf')) {
-        showToastCustom('只支持 PDF 文件');
-        return;
-    }
-    showToastCustom('正在识别 PDF 文档...');
-    if (typeof pdfjsLib === 'undefined') {
-        showToastCustom('PDF 库加载失败，请刷新页面');
-        return;
-    }
-    try {
-        const arrayBuffer = await file.arrayBuffer();
-        const text = await extractTextFromPdfData(arrayBuffer);
-        insertRecognizedText(text, 'PDF 文档');
-    } catch (error) {
-        console.error(error);
-        showToastCustom('PDF 文档识别失败');
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            const text = await extractTextFromPdfData(arrayBuffer);
+            insertRecognizedText(text, 'PDF 文档');
+        } catch (error) {
+            console.error(error);
+            showToastCustom('PDF 文档识别失败');
+        }
+    } else {
+        showToastCustom('只支持 .md / .txt / .docx / .pdf 文件');
     }
 }
 
@@ -3814,396 +3617,6 @@ function escapeHtml(text) { const div = document.createElement('div'); div.textC
 function escapeAttr(text) { return text.replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
 window.addEventListener('resize', () => { if (shameBuffer.classList.contains('open')) drawEmotionChart(); });
-
-// === GitHub OAuth 登录系统 ===
-const GITHUB_CLIENT_ID = 'Ov231iDEL8kRhHX1dzKo';
-const GITHUB_REDIRECT_URI = 'https://junnyofficial.github.io/SnapDoc/auth/callback.html';
-const GITHUB_OAUTH_URL = 'https://github.com/login/oauth/authorize';
-
-// 登录状态管理
-let currentUser = null;
-let githubToken = null;
-
-// 检查登录状态
-async function checkAuthStatus() {
-    const stored = localStorage.getItem('snapdoc_auth');
-    if (stored) {
-        try {
-            const auth = JSON.parse(stored);
-            if (auth.token && auth.expires > Date.now()) {
-                githubToken = auth.token;
-                currentUser = auth.user;
-                updateUserUI();
-                return true;
-            }
-        } catch (e) {
-            console.error('Auth parse error:', e);
-        }
-    }
-    updateUserUI();
-    return false;
-}
-
-// 开始 OAuth 登录
-function startGitHubLogin() {
-    // 生成随机 state 防止 CSRF
-    const state = generateRandomState();
-    sessionStorage.setItem('oauth_state', state);
-    
-    // 构建授权 URL
-    const params = new URLSearchParams({
-        client_id: GITHUB_CLIENT_ID,
-        redirect_uri: GITHUB_REDIRECT_URI,
-        scope: 'gist read:user',
-        state: state
-    });
-    
-    const authUrl = GITHUB_OAUTH_URL + '?' + params.toString();
-    
-    // 打开弹出窗口
-    const width = 500;
-    const height = 600;
-    const left = (window.screen.width - width) / 2;
-    const top = (window.screen.height - height) / 2;
-    
-    const popup = window.open(
-        authUrl,
-        'github-oauth',
-        `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no`
-    );
-    
-    // 监听消息
-    window.addEventListener('message', handleOAuthMessage);
-    
-    // 检测弹出窗口关闭
-    const checkClosed = setInterval(() => {
-        if (popup.closed) {
-            clearInterval(checkClosed);
-            window.removeEventListener('message', handleOAuthMessage);
-        }
-    }, 500);
-}
-
-// 处理 OAuth 回调消息
-function handleOAuthMessage(event) {
-    if (event.origin !== window.location.origin) return;
-
-    if (event.data.type === 'oauth_success') {
-        currentUser = event.data.user;
-        githubToken = event.data.token;
-
-        // 保存到 localStorage
-        const authData = {
-            token: githubToken,
-            user: currentUser,
-            expires: Date.now() + 30 * 24 * 60 * 60 * 1000 // 30天
-        };
-        localStorage.setItem('snapdoc_auth', JSON.stringify(authData));
-
-        showToastCustom('GitHub 登录成功！');
-        updateUserUI();
-    } else if (event.data.type === 'oauth_error') {
-        showToastCustom('登录失败: ' + event.data.error);
-    }
-}
-
-// 生成随机 state
-function generateRandomState() {
-    const array = new Uint8Array(16);
-    crypto.getRandomValues(array);
-    return Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
-}
-
-// 更新用户界面
-function updateUserUI() {
-    const loginBtn = document.getElementById('btn-login');
-    const userMenu = document.getElementById('user-menu');
-    const userName = document.getElementById('user-name');
-    const userEmail = document.getElementById('user-email');
-    
-    if (currentUser) {
-        loginBtn.innerHTML = '<svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><circle cx="24" cy="18" r="6"/><path d="M12 36C12 30 17 26 24 26C31 26 36 30 36 36"/></svg>' + (currentUser.name || currentUser.login);
-        loginBtn.title = '用户菜单';
-        userName.textContent = currentUser.name || currentUser.login;
-        userEmail.textContent = currentUser.email || '';
-    } else {
-        loginBtn.innerHTML = '<svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4V24M24 24L16 16M24 24L32 16"/><circle cx="24" cy="24" r="16"/><path d="M24 24L24 44"/></svg>登录';
-        loginBtn.title = '登录';
-        userMenu.style.display = 'none';
-    }
-}
-
-// 退出登录
-function logout() {
-    currentUser = null;
-    githubToken = null;
-    localStorage.removeItem('snapdoc_auth');
-    updateUserUI();
-    showToastCustom('已退出登录');
-}
-
-// 同步数据到 GitHub Gist
-async function syncToGitHub() {
-    if (!githubToken) {
-        showToastCustom('请先登录');
-        return;
-    }
-    
-    showToastCustom('正在同步...');
-    
-    try {
-        // 收集所有文档数据
-        const docs = getAllDocs();
-        const versions = getAllVersions();
-        
-        const syncData = {
-            docs: docs,
-            versions: versions,
-            lastSync: Date.now()
-        };
-        
-        // 加密数据
-        const encrypted = await encryptSyncData(syncData);
-        
-        // 创建或更新 Gist
-        const gistId = localStorage.getItem('snapdoc_gist_id');
-        if (gistId) {
-            await updateGist(gistId, encrypted);
-        } else {
-            const newGist = await createGist(encrypted);
-            localStorage.setItem('snapdoc_gist_id', newGist.id);
-        }
-        
-        showToastCustom('同步完成');
-    } catch (error) {
-        console.error('Sync error:', error);
-        showToastCustom('同步失败: ' + error.message);
-    }
-}
-
-// 从 GitHub Gist 恢复数据
-async function restoreFromGitHub() {
-    if (!githubToken) {
-        showToastCustom('请先登录');
-        return;
-    }
-    
-    const gistId = localStorage.getItem('snapdoc_gist_id');
-    if (!gistId) {
-        showToastCustom('没有找到云端数据');
-        return;
-    }
-    
-    showToastCustom('正在恢复数据...');
-    
-    try {
-        const gist = await getGist(gistId);
-        const encrypted = gist.files['snapdoc-data.json'].content;
-        
-        // 解密数据
-        const syncData = await decryptSyncData(encrypted);
-        
-        // 恢复文档
-        if (syncData.docs) {
-            restoreAllDocs(syncData.docs);
-        }
-        if (syncData.versions) {
-            restoreAllVersions(syncData.versions);
-        }
-        
-        showToastCustom('数据恢复完成');
-    } catch (error) {
-        console.error('Restore error:', error);
-        showToastCustom('恢复失败: ' + error.message);
-    }
-}
-
-// Gist API 封装
-async function createGist(content) {
-    const res = await fetch('https://api.github.com/gists', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'token ' + githubToken,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            description: 'SnapDoc 同步数据',
-            public: false,
-            files: {
-                'snapdoc-data.json': {
-                    content: content
-                }
-            }
-        })
-    });
-    if (!res.ok) throw new Error('创建 Gist 失败');
-    return res.json();
-}
-
-async function updateGist(gistId, content) {
-    const res = await fetch('https://api.github.com/gists/' + gistId, {
-        method: 'PATCH',
-        headers: {
-            'Authorization': 'token ' + githubToken,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            files: {
-                'snapdoc-data.json': {
-                    content: content
-                }
-            }
-        })
-    });
-    if (!res.ok) throw new Error('更新 Gist 失败');
-    return res.json();
-}
-
-async function getGist(gistId) {
-    const res = await fetch('https://api.github.com/gists/' + gistId, {
-        headers: { 'Authorization': 'token ' + githubToken }
-    });
-    if (!res.ok) throw new Error('获取 Gist 失败');
-    return res.json();
-}
-
-// 数据加密（使用用户密码派生密钥）
-async function encryptSyncData(data) {
-    const password = prompt('请输入同步密码（用于加密数据）：');
-    if (!password) throw new Error('需要密码');
-    
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-    const iv = crypto.getRandomValues(new Uint8Array(12));
-    
-    const key = await deriveKey(password, salt);
-    const encoder = new TextEncoder();
-    const encrypted = await crypto.subtle.encrypt(
-        { name: 'AES-GCM', iv },
-        key,
-        encoder.encode(JSON.stringify(data))
-    );
-    
-    return JSON.stringify({
-        salt: Array.from(salt),
-        iv: Array.from(iv),
-        data: Array.from(new Uint8Array(encrypted))
-    });
-}
-
-async function decryptSyncData(encryptedStr) {
-    const password = prompt('请输入同步密码（用于解密数据）：');
-    if (!password) throw new Error('需要密码');
-    
-    const encrypted = JSON.parse(encryptedStr);
-    const salt = new Uint8Array(encrypted.salt);
-    const iv = new Uint8Array(encrypted.iv);
-    const data = new Uint8Array(encrypted.data);
-    
-    const key = await deriveKey(password, salt);
-    const decrypted = await crypto.subtle.decrypt(
-        { name: 'AES-GCM', iv },
-        key,
-        data
-    );
-    
-    const decoder = new TextDecoder();
-    return JSON.parse(decoder.decode(decrypted));
-}
-
-async function deriveKey(password, salt) {
-    const encoder = new TextEncoder();
-    const keyMaterial = await crypto.subtle.importKey(
-        'raw',
-        encoder.encode(password),
-        'PBKDF2',
-        false,
-        ['deriveKey']
-    );
-    return crypto.subtle.deriveKey(
-        {
-            name: 'PBKDF2',
-            salt: salt,
-            iterations: 100000,
-            hash: 'SHA-256'
-        },
-        keyMaterial,
-        { name: 'AES-GCM', length: 256 },
-        false,
-        ['encrypt', 'decrypt']
-    );
-}
-
-// 获取所有文档
-function getAllDocs() {
-    const docs = [];
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith('snapdoc_doc_')) {
-            try {
-                docs.push(JSON.parse(localStorage.getItem(key)));
-            } catch (e) {}
-        }
-    }
-    return docs;
-}
-
-// 获取所有版本
-function getAllVersions() {
-    try {
-        return JSON.parse(localStorage.getItem('snapdoc_versions') || '{}');
-    } catch (e) {
-        return {};
-    }
-}
-
-// 恢复所有文档
-function restoreAllDocs(docs) {
-    docs.forEach(doc => {
-        if (doc.id) {
-            localStorage.setItem('snapdoc_doc_' + doc.id, JSON.stringify(doc));
-        }
-    });
-    // 刷新文档列表
-    renderDocList();
-}
-
-// 恢复所有版本
-function restoreAllVersions(versions) {
-    localStorage.setItem('snapdoc_versions', JSON.stringify(versions));
-}
-
-// 事件绑定
-document.getElementById('btn-login').addEventListener('click', () => {
-    if (currentUser) {
-        // 已登录，显示/隐藏菜单
-        const menu = document.getElementById('user-menu');
-        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-    } else {
-        startGitHubLogin();
-    }
-});
-
-document.getElementById('btn-logout').addEventListener('click', () => {
-    document.getElementById('user-menu').style.display = 'none';
-    logout();
-});
-
-document.getElementById('btn-sync').addEventListener('click', () => {
-    document.getElementById('user-menu').style.display = 'none';
-    syncToGitHub();
-});
-
-// 点击其他地方关闭用户菜单
-document.addEventListener('click', (e) => {
-    const userGroup = document.getElementById('user-group');
-    if (userGroup && !userGroup.contains(e.target)) {
-        const menu = document.getElementById('user-menu');
-        if (menu) menu.style.display = 'none';
-    }
-});
-
-// 初始化时检查登录状态
-checkAuthStatus();
 
 </script>
 </body>
