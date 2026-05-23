@@ -381,38 +381,83 @@
 
         /* === 表格块样式 === */
         #editor .block-table {
-            margin: 1rem 0;
+            margin: 1.2rem 0;
             position: relative;
+            border-radius: 8px;
+            overflow: hidden;
         }
         #editor .block-table table {
             width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.92rem;
             line-height: 1.6;
+            border-radius: 8px;
+            overflow: hidden;
         }
         #editor .block-table th,
         #editor .block-table td {
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 0.5em 0.75em;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-right: 1px solid rgba(255,255,255,0.08);
+            padding: 0.55em 0.8em;
             text-align: left;
             min-width: 60px;
             color: var(--text-primary);
+            transition: background-color 0.15s ease;
+            position: relative;
         }
         #editor .block-table th {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.06);
             font-weight: 600;
             color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-bottom: 2px solid rgba(255,255,255,0.12);
+        }
+        #editor .block-table td {
+            background: transparent;
+        }
+        #editor .block-table tbody tr:hover td {
+            background: rgba(255,255,255,0.03);
+        }
+        #editor .block-table tbody tr:nth-child(even) td {
+            background: rgba(255,255,255,0.015);
+        }
+        #editor .block-table tbody tr:nth-child(even):hover td {
+            background: rgba(255,255,255,0.04);
         }
         #editor .block-table td:focus {
-            outline: 2px solid var(--accent-calm);
-            outline-offset: -2px;
+            outline: none;
+            background: rgba(74, 93, 107, 0.12) !important;
+        }
+        #editor .block-table th:last-child,
+        #editor .block-table td:last-child {
+            border-right: none;
+        }
+        #editor .block-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        /* 行号 */
+        #editor .block-table tbody tr {
+            counter-increment: row-num;
+        }
+        #editor .block-table .row-num {
+            width: 32px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            user-select: none;
+            border-right: 1px solid rgba(255,255,255,0.08);
         }
         #editor .block-table .table-controls {
             display: flex;
             gap: 0.3rem;
-            margin-top: 0.4rem;
+            margin-top: 0.5rem;
+            padding: 0 0.2rem;
             opacity: 0;
-            transition: opacity 0.2s ease;
+            transition: opacity 0.25s ease;
         }
         #editor .block-table:hover .table-controls,
         #editor .block-table:focus-within .table-controls {
@@ -421,17 +466,43 @@
         #editor .block-table .table-btn {
             font-family: var(--font-ui);
             font-size: 0.65rem;
-            padding: 0.2em 0.5em;
+            padding: 0.25em 0.6em;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.08);
             color: var(--text-muted);
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.2em;
         }
         #editor .block-table .table-btn:hover {
             background: rgba(255,255,255,0.1);
             color: var(--text-primary);
+            transform: translateY(-1px);
+        }
+        #editor .block-table .table-btn.danger:hover {
+            background: rgba(212, 127, 127, 0.15);
+            color: #D47F7F;
+            border-color: rgba(212, 127, 127, 0.2);
+        }
+        /* 排序按钮 */
+        #editor .block-table th .sort-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 0.3em;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+            font-size: 0.7em;
+        }
+        #editor .block-table th:hover .sort-btn {
+            opacity: 0.7;
+        }
+        #editor .block-table th .sort-btn.active {
+            opacity: 1;
+            color: var(--accent-calm);
         }
 
         /* 表格插入弹窗 */
@@ -500,10 +571,27 @@
         /* 浅色主题表格适配 */
         [data-theme="soft-paper"] #editor .block-table th,
         [data-theme="soft-paper"] #editor .block-table td {
-            border-color: rgba(0,0,0,0.12);
+            border-bottom-color: rgba(0,0,0,0.08);
+            border-right-color: rgba(0,0,0,0.08);
         }
         [data-theme="soft-paper"] #editor .block-table th {
             background: rgba(0,0,0,0.03);
+            border-bottom-color: rgba(0,0,0,0.12);
+        }
+        [data-theme="soft-paper"] #editor .block-table tbody tr:hover td {
+            background: rgba(0,0,0,0.02);
+        }
+        [data-theme="soft-paper"] #editor .block-table tbody tr:nth-child(even) td {
+            background: rgba(0,0,0,0.01);
+        }
+        [data-theme="soft-paper"] #editor .block-table tbody tr:nth-child(even):hover td {
+            background: rgba(0,0,0,0.03);
+        }
+        [data-theme="soft-paper"] #editor .block-table td:focus {
+            background: rgba(90, 122, 138, 0.1) !important;
+        }
+        [data-theme="soft-paper"] #editor .block-table .row-num {
+            border-right-color: rgba(0,0,0,0.08);
         }
         [data-theme="soft-paper"] #editor .block-table .table-btn {
             background: rgba(0,0,0,0.04);
@@ -511,6 +599,10 @@
         }
         [data-theme="soft-paper"] #editor .block-table .table-btn:hover {
             background: rgba(0,0,0,0.08);
+        }
+        [data-theme="soft-paper"] #editor .block-table .table-btn.danger:hover {
+            background: rgba(180, 80, 80, 0.1);
+            color: #B45050;
         }
         [data-theme="soft-paper"] #table-modal .table-modal-content {
             border-color: rgba(0,0,0,0.08);
@@ -522,10 +614,27 @@
         /* 竹子主题表格适配 */
         [data-theme="bamboo"] #editor .block-table th,
         [data-theme="bamboo"] #editor .block-table td {
-            border-color: rgba(38, 81, 114, 0.15);
+            border-bottom-color: rgba(38, 81, 114, 0.1);
+            border-right-color: rgba(38, 81, 114, 0.1);
         }
         [data-theme="bamboo"] #editor .block-table th {
             background: rgba(38, 81, 114, 0.04);
+            border-bottom-color: rgba(38, 81, 114, 0.15);
+        }
+        [data-theme="bamboo"] #editor .block-table tbody tr:hover td {
+            background: rgba(38, 81, 114, 0.03);
+        }
+        [data-theme="bamboo"] #editor .block-table tbody tr:nth-child(even) td {
+            background: rgba(38, 81, 114, 0.015);
+        }
+        [data-theme="bamboo"] #editor .block-table tbody tr:nth-child(even):hover td {
+            background: rgba(38, 81, 114, 0.05);
+        }
+        [data-theme="bamboo"] #editor .block-table td:focus {
+            background: rgba(48, 149, 151, 0.12) !important;
+        }
+        [data-theme="bamboo"] #editor .block-table .row-num {
+            border-right-color: rgba(38, 81, 114, 0.1);
         }
         [data-theme="bamboo"] #editor .block-table .table-btn {
             background: rgba(38, 81, 114, 0.04);
@@ -535,6 +644,10 @@
         [data-theme="bamboo"] #editor .block-table .table-btn:hover {
             background: rgba(38, 81, 114, 0.08);
             color: #265172;
+        }
+        [data-theme="bamboo"] #editor .block-table .table-btn.danger:hover {
+            background: rgba(180, 80, 80, 0.1);
+            color: #B45050;
         }
         [data-theme="bamboo"] #table-modal .table-modal-content {
             border-color: rgba(38, 81, 114, 0.1);
@@ -2798,6 +2911,14 @@ function insertTableBlock(rows, cols) {
         const th = document.createElement('th');
         th.contentEditable = 'true';
         th.textContent = '标题 ' + (c + 1);
+        // 添加排序按钮
+        const sortBtn = document.createElement('span');
+        sortBtn.className = 'sort-btn';
+        sortBtn.innerHTML = '↕';
+        sortBtn.title = '点击排序';
+        sortBtn.dataset.colIndex = c;
+        sortBtn.dataset.sortDir = 'none';
+        th.appendChild(sortBtn);
         headerRow.appendChild(th);
     }
     thead.appendChild(headerRow);
@@ -2826,7 +2947,7 @@ function insertTableBlock(rows, cols) {
         '<button class="table-btn" data-action="add-col">+ 列</button>' +
         '<button class="table-btn" data-action="del-row">- 行</button>' +
         '<button class="table-btn" data-action="del-col">- 列</button>' +
-        '<button class="table-btn" data-action="del-table">删除表格</button>';
+        '<button class="table-btn danger" data-action="del-table">删除表格</button>';
     block.appendChild(controls);
 
     // 在当前块后插入表格
@@ -2844,8 +2965,87 @@ function insertTableBlock(rows, cols) {
         handleTableAction(block, btn.dataset.action);
     });
 
+    // 添加排序事件
+    thead.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const colIndex = parseInt(btn.dataset.colIndex);
+            const currentDir = btn.dataset.sortDir;
+            const newDir = currentDir === 'asc' ? 'desc' : 'asc';
+
+            // 重置所有排序按钮
+            thead.querySelectorAll('.sort-btn').forEach(b => {
+                b.dataset.sortDir = 'none';
+                b.classList.remove('active');
+                b.innerHTML = '↕';
+            });
+
+            btn.dataset.sortDir = newDir;
+            btn.classList.add('active');
+            btn.innerHTML = newDir === 'asc' ? '↑' : '↓';
+
+            sortTable(table, colIndex, newDir);
+        });
+    });
+
+    // Tab导航：在最后一个单元格按Tab添加新行
+    table.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+            const activeEl = document.activeElement;
+            if (!activeEl || (activeEl.tagName !== 'TD' && activeEl.tagName !== 'TH')) return;
+
+            const allCells = Array.from(table.querySelectorAll('th, td'));
+            const currentIndex = allCells.indexOf(activeEl);
+            const isLastCell = currentIndex === allCells.length - 1;
+
+            if (isLastCell && !e.shiftKey) {
+                e.preventDefault();
+                const cols = thead.querySelectorAll('th').length;
+                const tr = document.createElement('tr');
+                for (let i = 0; i < cols; i++) {
+                    const td = document.createElement('td');
+                    td.contentEditable = 'true';
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+                tr.querySelector('td').focus();
+                editor.dispatchEvent(new Event('input'));
+            }
+        }
+    });
+
     editor.dispatchEvent(new Event('input'));
     addHistorySnapshot('insert-table');
+}
+
+function sortTable(table, colIndex, direction) {
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+
+    rows.sort((a, b) => {
+        const aCells = a.querySelectorAll('td');
+        const bCells = b.querySelectorAll('td');
+        if (colIndex >= aCells.length || colIndex >= bCells.length) return 0;
+
+        const aVal = aCells[colIndex].textContent.trim();
+        const bVal = bCells[colIndex].textContent.trim();
+
+        // 尝试数字排序
+        const aNum = parseFloat(aVal);
+        const bNum = parseFloat(bVal);
+        if (!isNaN(aNum) && !isNaN(bNum) && aVal !== '' && bVal !== '') {
+            return direction === 'asc' ? aNum - bNum : bNum - aNum;
+        }
+
+        // 字符串排序
+        return direction === 'asc'
+            ? aVal.localeCompare(bVal, 'zh-CN')
+            : bVal.localeCompare(aVal, 'zh-CN');
+    });
+
+    rows.forEach(row => tbody.appendChild(row));
+    editor.dispatchEvent(new Event('input'));
+    addHistorySnapshot('table-sort');
 }
 
 function handleTableAction(block, action) {
@@ -2870,11 +3070,38 @@ function handleTableAction(block, action) {
             const th = document.createElement('th');
             th.contentEditable = 'true';
             th.textContent = '标题';
+            const sortBtn = document.createElement('span');
+            sortBtn.className = 'sort-btn';
+            sortBtn.innerHTML = '↕';
+            sortBtn.title = '点击排序';
+            const newIndex = thead.querySelectorAll('th').length;
+            sortBtn.dataset.colIndex = newIndex;
+            sortBtn.dataset.sortDir = 'none';
+            sortBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const currentDir = sortBtn.dataset.sortDir;
+                const newDir = currentDir === 'asc' ? 'desc' : 'asc';
+                thead.querySelectorAll('.sort-btn').forEach(b => {
+                    b.dataset.sortDir = 'none';
+                    b.classList.remove('active');
+                    b.innerHTML = '↕';
+                });
+                sortBtn.dataset.sortDir = newDir;
+                sortBtn.classList.add('active');
+                sortBtn.innerHTML = newDir === 'asc' ? '↑' : '↓';
+                sortTable(table, newIndex, newDir);
+            });
+            th.appendChild(sortBtn);
             thead.querySelector('tr').appendChild(th);
             tbody.querySelectorAll('tr').forEach(tr => {
                 const td = document.createElement('td');
                 td.contentEditable = 'true';
                 tr.appendChild(td);
+            });
+            // 更新所有sort-btn的colIndex
+            thead.querySelectorAll('th').forEach((th, idx) => {
+                const sb = th.querySelector('.sort-btn');
+                if (sb) sb.dataset.colIndex = idx;
             });
             break;
         }
@@ -2890,6 +3117,11 @@ function handleTableAction(block, action) {
                 tbody.querySelectorAll('tr').forEach(tr => {
                     const tds = tr.querySelectorAll('td');
                     if (tds.length > 0) tds[tds.length - 1].remove();
+                });
+                // 更新所有sort-btn的colIndex
+                thead.querySelectorAll('th').forEach((th, idx) => {
+                    const sb = th.querySelector('.sort-btn');
+                    if (sb) sb.dataset.colIndex = idx;
                 });
             }
             break;
