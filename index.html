@@ -160,6 +160,68 @@
         [data-theme="soft-paper"] .sidebar-doc-item.active { background: rgba(90, 122, 138, 0.1); }
         [data-theme="soft-paper"] .sidebar-doc-delete:hover { background: rgba(180, 80, 80, 0.08); }
 
+        /* === 晴空主题 === */
+        [data-theme="clear-sky"] {
+            --bg-deep: #D6EAF0;
+            --bg-surface: #FEFDF8;
+            --text-primary: #2A3439;
+            --text-secondary: #919CA3;
+            --text-muted: #B8C4CA;
+            --accent-calm: #A2D9F0;
+            --accent-shame: #919CA3;
+            --quote-bg: rgba(162, 217, 240, 0.1);
+            --surface-border: rgba(145, 156, 163, 0.12);
+            --surface-border-light: rgba(145, 156, 163, 0.08);
+            --surface-hover: rgba(145, 156, 163, 0.05);
+            --surface-bg: rgba(145, 156, 163, 0.03);
+            --surface-bg-light: rgba(145, 156, 163, 0.02);
+            --surface-bg-medium: rgba(162, 217, 240, 0.1);
+            --surface-bg-highlight: rgba(162, 217, 240, 0.15);
+        }
+        [data-theme="clear-sky"] body::before { opacity: 0; }
+        [data-theme="clear-sky"] #editor ::selection { background: rgba(162, 217, 240, 0.3); color: #2A3439; }
+        [data-theme="clear-sky"] .tool-btn:hover, [data-theme="clear-sky"] .tool-btn.active { color: #2A3439; background: rgba(145, 156, 163, 0.06); }
+        [data-theme="clear-sky"] #toolbar { background: rgba(254, 253, 248, 0.95); border-color: rgba(145, 156, 163, 0.1); }
+        [data-theme="clear-sky"] #format-toolbar { background: rgba(254, 253, 248, 0.98); border-color: rgba(145, 156, 163, 0.12); }
+        [data-theme="clear-sky"] .fmt-btn { color: #919CA3; }
+        [data-theme="clear-sky"] .fmt-btn:hover { color: #2A3439; background: rgba(145, 156, 163, 0.06); }
+        [data-theme="clear-sky"] .fmt-btn.active { color: #A2D9F0; background: rgba(162, 217, 240, 0.15); }
+        [data-theme="clear-sky"] .toc-item.active { background: rgba(162, 217, 240, 0.15); }
+        [data-theme="clear-sky"] .doc-tag { background: rgba(162, 217, 240, 0.15); }
+        [data-theme="clear-sky"] .sidebar-item.active { background: rgba(162, 217, 240, 0.15); }
+        [data-theme="clear-sky"] .sidebar-doc-item.active { background: rgba(162, 217, 240, 0.2); }
+
+        /* === 琥珀主题 === */
+        [data-theme="amber"] {
+            --bg-deep: #E8D1A7;
+            --bg-surface: #FEFDFB;
+            --text-primary: #442D2C;
+            --text-secondary: #84592B;
+            --text-muted: #9D9167;
+            --accent-calm: #743014;
+            --accent-shame: #84592B;
+            --quote-bg: rgba(116, 48, 20, 0.08);
+            --surface-border: rgba(132, 89, 43, 0.12);
+            --surface-border-light: rgba(132, 89, 43, 0.08);
+            --surface-hover: rgba(132, 89, 43, 0.05);
+            --surface-bg: rgba(132, 89, 43, 0.03);
+            --surface-bg-light: rgba(132, 89, 43, 0.02);
+            --surface-bg-medium: rgba(116, 48, 20, 0.1);
+            --surface-bg-highlight: rgba(116, 48, 20, 0.15);
+        }
+        [data-theme="amber"] body::before { opacity: 0; }
+        [data-theme="amber"] #editor ::selection { background: rgba(116, 48, 20, 0.2); color: #442D2C; }
+        [data-theme="amber"] .tool-btn:hover, [data-theme="amber"] .tool-btn.active { color: #442D2C; background: rgba(132, 89, 43, 0.06); }
+        [data-theme="amber"] #toolbar { background: rgba(254, 253, 251, 0.95); border-color: rgba(132, 89, 43, 0.1); }
+        [data-theme="amber"] #format-toolbar { background: rgba(254, 253, 251, 0.98); border-color: rgba(132, 89, 43, 0.12); }
+        [data-theme="amber"] .fmt-btn { color: #84592B; }
+        [data-theme="amber"] .fmt-btn:hover { color: #442D2C; background: rgba(132, 89, 43, 0.06); }
+        [data-theme="amber"] .fmt-btn.active { color: #743014; background: rgba(116, 48, 20, 0.15); }
+        [data-theme="amber"] .toc-item.active { background: rgba(116, 48, 20, 0.15); }
+        [data-theme="amber"] .doc-tag { background: rgba(116, 48, 20, 0.15); }
+        [data-theme="amber"] .sidebar-item.active { background: rgba(116, 48, 20, 0.15); }
+        [data-theme="amber"] .sidebar-doc-item.active { background: rgba(116, 48, 20, 0.2); }
+
         /* === 竹子主题 === */
         [data-theme="bamboo"] {
             --bg-deep: #EFFADC;
@@ -734,6 +796,21 @@
             border-radius: 4px;
         }
         .sidebar-add-btn:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+        .sidebar-section-action {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: var(--font-ui);
+            transition: all 0.15s ease;
+        }
+        .sidebar-section-action:hover {
             background: var(--surface-hover);
             color: var(--text-primary);
         }
@@ -3359,6 +3436,12 @@
         .theme-paper .theme-preview { background: #F2EDE8; }
         .theme-paper .theme-preview::after { background: #2A2520; }
         .theme-paper .theme-label { background: #F2EDE8; color: #7A7068; }
+        .theme-clear-sky .theme-preview { background: #D6EAF0; }
+        .theme-clear-sky .theme-preview::after { background: #A2D9F0; }
+        .theme-clear-sky .theme-label { background: #FEFDF8; color: #919CA3; }
+        .theme-amber .theme-preview { background: #E8D1A7; }
+        .theme-amber .theme-preview::after { background: #743014; }
+        .theme-amber .theme-label { background: #FEFDFB; color: #84592B; }
         .theme-bamboo .theme-preview { background: #EFFADC; }
         .theme-bamboo .theme-preview::after { background: #265172; }
         .theme-bamboo .theme-label { background: #EFFADC; color: #309597; }
@@ -3640,45 +3723,7 @@
                     <span>回收站</span>
                 </div>
             </div>
-            <div class="sidebar-footer">
-            <button class="sidebar-btn" id="sidebar-bold" title="粗体 (Ctrl+B)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
-                <span>粗体</span>
-            </button>
-            <button class="sidebar-btn" id="sidebar-italic" title="斜体 (Ctrl+I)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
-                <span>斜体</span>
-            </button>
-            <button class="sidebar-btn" id="sidebar-strikethrough" title="删除线">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.3 4.9c-2.3-.6-4.4-1-6.2-.9-2.7 0-5.3.7-5.3 3.6 0 1.5 1.8 3.3 6 3.9h.5m6.5 3.7c.3.4.4.8.4 1.3 0 2.9-2.7 3.6-6.2 3.6-2.3 0-4.4-.3-6-.9M4 12h16"/></svg>
-                <span>删除线</span>
-            </button>
-            <button class="sidebar-btn" id="sidebar-highlight" title="高亮">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg>
-                <span>高亮</span>
-            </button>
-            <div style="height: 1px; background: var(--surface-border-light); margin: 0.5rem 0;"></div>
-            <button class="sidebar-btn" id="sidebar-docs" title="我的文档">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                <span>文档</span>
-            </button>
-            <button class="sidebar-btn" id="sidebar-versions" title="历史版本">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M24 4V12M24 36V44M12 24H4M44 24H36M14.1 14.1L8.44 8.44M39.56 39.56L33.9 33.9M14.1 33.9L8.44 39.56M39.56 8.44L33.9 14.1"/><circle cx="24" cy="24" r="6"/></svg>
-                <span>历史</span>
-            </button>
-            <button class="sidebar-btn" id="sidebar-shortcuts" title="快捷键 (Ctrl+/)">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="36" height="36" rx="4"/><path d="M14 18H18M14 24H18M14 30H18M22 18H26M22 24H26M22 30H26M30 18H34M30 24H34M30 30H34"/></svg>
-                <span>快捷键</span>
-            </button>
-            <button class="sidebar-btn" id="sidebar-settings" title="切换主题">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="24" cy="24" r="6"/><path d="M24 4V10M24 38V44M4 24H10M38 24H44M9.86 9.86L14.1 14.1M33.9 33.9L38.14 38.14M9.86 38.14L14.1 33.9M33.9 14.1L38.14 9.86"/></svg>
-                <span>主题</span>
-            </button>
-            <button class="sidebar-btn" id="sidebar-tag" title="添加标签">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-                <span>标签</span>
-            </button>
-        </div>
+            <div class="sidebar-footer"></div>
     </div>
 
     <!-- 侧边栏切换按钮（收起时显示） -->
@@ -3700,6 +3745,10 @@
         <div class="toolbar-group">
             <button class="tool-btn" id="btn-import" title="导入 Markdown/TXT/Word/PDF"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 30V6M34 16L24 6L14 16M6 30V38C6 39.0609 6.42143 40.0783 7.17157 40.8284C7.92172 41.5786 8.93913 42 10 42H38C39.0609 42 40.0783 41.5786 40.8284 40.8284C41.5786 40.0783 42 39.0609 42 38V30"/></svg>导入</button>
             <button class="tool-btn" id="btn-export" title="导出 Markdown/PDF"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M42 30V38C42 39.0609 41.5786 40.0783 40.8284 40.8284C40.0783 41.5786 39.0609 42 38 42H10C8.93913 42 7.92172 41.5786 7.17157 40.8284C6.42143 40.0783 6 39.0609 6 38V30M34 20L24 30L14 20M24 30V6"/></svg>导出</button>
+            <button class="tool-btn" id="btn-docs" title="我的文档"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>文档</button>
+            <button class="tool-btn" id="btn-versions" title="历史版本"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><path d="M24 16V24L30 30"/><path d="M16 8L12 12L20 12"/></svg>历史</button>
+            <button class="tool-btn" id="btn-settings" title="切换主题"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="6"/><path d="M24 4V10M24 38V44M4 24H10M38 24H44M9.86 9.86L14.1 14.1M33.9 33.9L38.14 38.14M9.86 38.14L14.1 33.9M33.9 14.1L38.14 9.86"/></svg>主题</button>
+            <button class="tool-btn" id="btn-shortcuts" title="快捷键 (Ctrl+/)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="10" width="8" height="8" rx="1"/><rect x="30" y="10" width="8" height="8" rx="1"/><rect x="10" y="30" width="8" height="8" rx="1"/><rect x="30" y="30" width="8" height="8" rx="1"/></svg>快捷键</button>
         </div>
     </div>
     <input type="file" id="input-import" accept=".md,.txt,.docx,.pdf,text/markdown,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf" style="display:none">
@@ -3766,6 +3815,14 @@
                 <div class="theme-option theme-paper selected" data-theme-value="soft-paper" role="radio" aria-checked="true" tabindex="0" aria-label="柔纸白背景主题">
                     <div class="theme-preview"></div>
                     <div class="theme-label">柔纸白</div>
+                </div>
+                <div class="theme-option theme-clear-sky" data-theme-value="clear-sky" role="radio" aria-checked="false" tabindex="0" aria-label="晴空背景主题">
+                    <div class="theme-preview"></div>
+                    <div class="theme-label">晴空</div>
+                </div>
+                <div class="theme-option theme-amber" data-theme-value="amber" role="radio" aria-checked="false" tabindex="0" aria-label="琥珀背景主题">
+                    <div class="theme-preview"></div>
+                    <div class="theme-label">琥珀</div>
                 </div>
                 <div class="theme-option theme-bamboo" data-theme-value="bamboo" role="radio" aria-checked="false" tabindex="0" aria-label="竹子背景主题">
                     <div class="theme-preview"></div>
@@ -8286,7 +8343,8 @@ function updateStats() {
 
 // 显示/隐藏统计栏
 function toggleStats() {
-    statsBar.classList.toggle('visible');
+    const isVisible = statsBar.classList.toggle('visible');
+    btnStats.classList.toggle('active', isVisible);
 }
 
 // === 大纲视图 ===
@@ -8611,55 +8669,12 @@ document.getElementById('sidebar-new-doc').addEventListener('click', () => {
     showToastCustom('已创建新文档');
 });
 
-document.getElementById('sidebar-settings').addEventListener('click', () => {
+document.getElementById('sidebar-settings')?.addEventListener('click', () => {
     toggleSidebar();
     settingsModal.classList.add('show');
 });
 
-document.getElementById('sidebar-bold').addEventListener('click', () => {
-    toggleSidebar();
-    document.execCommand('bold');
-});
-
-document.getElementById('sidebar-italic').addEventListener('click', () => {
-    toggleSidebar();
-    document.execCommand('italic');
-});
-
-document.getElementById('sidebar-strikethrough').addEventListener('click', () => {
-    toggleSidebar();
-    document.execCommand('strikethrough');
-});
-
-document.getElementById('sidebar-highlight').addEventListener('click', () => {
-    toggleSidebar();
-    document.execCommand('hiliteColor');
-});
-
-document.getElementById('sidebar-docs').addEventListener('click', () => {
-    toggleSidebar();
-    const modal = document.getElementById('docs-modal');
-    if (modal) modal.classList.add('show');
-});
-
-document.getElementById('sidebar-versions').addEventListener('click', () => {
-    toggleSidebar();
-    const modal = document.getElementById('versions-modal');
-    if (modal) modal.classList.add('show');
-});
-
-document.getElementById('sidebar-shortcuts').addEventListener('click', () => {
-    toggleSidebar();
-    shortcutsModal.classList.add('show');
-});
-
-document.getElementById('sidebar-tag').addEventListener('click', () => {
-    toggleSidebar();
-    const modal = document.getElementById('tag-modal');
-    if (modal) modal.classList.add('show');
-});
-
-document.getElementById('sidebar-search-input').addEventListener('input', (e) => {
+document.getElementById('sidebar-search-input')?.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase();
     const docs = getDocs();
     sidebarDocsList.querySelectorAll('.sidebar-doc-item').forEach(item => {
