@@ -4736,6 +4736,9 @@ function setEditorHTML(html) {
     ensureBlocks();
 }
 
+// === 全局变量声明 ===
+let currentFilterTag = null;
+
 // === 初始化 ===
 window.addEventListener('DOMContentLoaded', () => {
     if (state.content) {
@@ -7711,12 +7714,15 @@ function removeTag(tag) {
     renderTags();
 }
 
-document.getElementById('btn-tag').addEventListener('click', () => {
-    renderTags();
-    tagModal.classList.add('show');
-    tagInput.value = '';
-    tagInput.focus();
-});
+const btnTag = document.getElementById('btn-tag');
+if (btnTag) {
+    btnTag.addEventListener('click', () => {
+        renderTags();
+        tagModal.classList.add('show');
+        tagInput.value = '';
+        tagInput.focus();
+    });
+}
 
 tagInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
@@ -8337,7 +8343,6 @@ function openDocsPanel() {
 // === 左侧侧边栏功能 ===
 const leftSidebar = document.getElementById('left-sidebar');
 const sidebarDocsList = document.getElementById('sidebar-docs-list');
-let currentFilterTag = null;
 
 function toggleSidebar() {
     const sidebar = document.getElementById('left-sidebar');
