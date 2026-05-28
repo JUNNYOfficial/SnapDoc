@@ -8340,8 +8340,11 @@ const sidebarDocsList = document.getElementById('sidebar-docs-list');
 let currentFilterTag = null;
 
 function toggleSidebar() {
-    leftSidebar.classList.toggle('collapsed');
-    document.body.classList.toggle('sidebar-open');
+    const sidebar = document.getElementById('left-sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('collapsed');
+        document.body.classList.toggle('sidebar-open');
+    }
 }
 
 function renderSidebarDocs() {
