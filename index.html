@@ -9275,9 +9275,14 @@ document.addEventListener('keydown', (e) => {
 });
 
 // === 工具栏按钮事件 ===
-document.getElementById('btn-search').addEventListener('click', openSearch);
-document.getElementById('btn-stats').addEventListener('click', toggleStats);
-document.getElementById('btn-shortcuts').addEventListener('click', openShortcuts);
+const btnSearch = document.getElementById('btn-search');
+if (btnSearch) btnSearch.addEventListener('click', openSearch);
+
+const btnStats = document.getElementById('btn-stats');
+if (btnStats) btnStats.addEventListener('click', toggleStats);
+
+const btnShortcuts = document.getElementById('btn-shortcuts');
+if (btnShortcuts) btnShortcuts.addEventListener('click', openShortcuts);
 
 // === 统一导出 ===
 document.getElementById('btn-export').addEventListener('click', handleExport);
