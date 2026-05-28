@@ -9457,26 +9457,157 @@ async function convertPdfToMarkdown(data) {
 }
 
 function convertLinesToMarkdown(lines) {
-    let markdown = '';
+    const sentenceEndPunctuation = /[。！？.!?]$/;
+    const paragraphEndMarker = /^[\s]*$/;
+    const titlePattern = /^[A-Z][^.!?]{2,50}$/;
+    const listItemPattern = /^(\d+\.|[-•*+>])\s+/;
+    const indentPattern = /^\s{2,}/;
     
-    for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed) continue;
+    let markdown = '';
+    let currentParagraph = '';
+    let inList = false;
+    let pendingLines = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
         
-        if (trimmed.match(/^[A-Z][^.!?]*$/)) {
-            markdown += `## ${trimmed}\n\n`;
-        } else if (trimmed.match(/^\d+\./)) {
-            markdown += `${trimmed}\n`;
-        } else if (trimmed.match(/^[-•*]\s/)) {
-            markdown += `${trimmed}\n`;
-        } else if (trimmed.length > 50 && !trimmed.includes(' ')) {
-            markdown += `${trimmed}\n\n`;
+        if (!line) {
+            if (currentParagraph.trim()) {
+                pendingLines.push(currentParagraph.trim());
+            }
+            currentParagraph = '';
+            inList = false;
+            continue;
+        }
+        
+        const listMatch = line.match(listItemPattern);
+        if (listMatch) {
+            if (currentParagraph.trim()) {
+                pendingLines.push(currentParagraph.trim());
+            }
+            pendingLines.push(line);
+            currentParagraph = '';
+            inList = true;
+            continue;
+        }
+        
+        const isTitle = titlePattern.test(line) && line.length < 80;
+        
+        if (isTitle) {
+            if (currentParagraph.trim()) {
+                pendingLines.push(currentParagraph.trim());
+            }
+            pendingLines.push(`## ${line}`);
+            currentParagraph = '';
+            inList = false;
+            continue;
+        }
+        
+        if (indentPattern.test(line) || line.startsWith('>')) {
+            if (currentParagraph.trim() && !currentParagraph.startsWith('>')) {
+                pendingLines.push(currentParagraph.trim());
+                currentParagraph = '';
+            }
+            const cleanLine = line.replace(/^\s+/, '');
+            currentParagraph += (currentParagraph ? '\n' : '') + (cleanLine.startsWith('>') ? cleanLine : `> ${cleanLine}`);
+            continue;
+        }
+        
+        if (inList) {
+            pendingLines.push(line);
+            inList = false;
         } else {
-            markdown += `${trimmed}\n\n`;
+            const shouldMerge = !sentenceEndPunctuation.test(currentParagraph.trim()) && 
+                               !currentParagraph.trim().endsWith('"') &&
+                               !currentParagraph.trim().endsWith("'") &&
+                               !currentParagraph.trim().endsWith(')') &&
+                               !line.startsWith('"') &&
+                               !line.startsWith("'") &&
+                               !line.startsWith('(') &&
+                               !line.match(/^[A-Z][a-z]/) &&
+                               !line.match(/^\d+$/);
+            
+            if (shouldMerge && currentParagraph) {
+                const lastChar = currentParagraph.trim().slice(-1);
+                const needsSpace = !lastChar.match(/[\s,，、;:：；]/);
+                currentParagraph += (needsSpace ? ' ' : '') + line;
+            } else {
+                if (currentParagraph.trim()) {
+                    pendingLines.push(currentParagraph.trim());
+                }
+                currentParagraph = line;
+            }
         }
     }
     
-    return markdown;
+    if (currentParagraph.trim()) {
+        pendingLines.push(currentParagraph.trim());
+    }
+    
+    let result = '';
+    let prevWasList = false;
+    
+    for (let i = 0; i < pendingLines.length; i++) {
+        const item = pendingLines[i];
+        const isListItem = listItemPattern.test(item);
+        
+        if (isListItem) {
+            result += item + '\n';
+            prevWasList = true;
+        } else if (item.startsWith('## ')) {
+            result += (result ? '\n' : '') + item + '\n\n';
+            prevWasList = false;
+        } else if (item.startsWith('>')) {
+            result += (result && !result.endsWith('\n')) ? '\n\n' : '';
+            result += item + '\n\n';
+            prevWasList = false;
+        } else {
+            result += (result && !result.endsWith('\n\n') && !prevWasList) ? '\n\n' : '';
+            result += item + '\n\n';
+            prevWasList = false;
+        }
+    }
+    
+    result = result.replace(/\n{3,}/g, '\n\n').trim();
+    
+    return result;
+}
+
+function validateMarkdownFormat(text) {
+    const issues = [];
+    
+    if (text.match(/\n{4,}/)) {
+        issues.push('发现连续多个空行，已自动清理');
+    }
+    
+    const titles = text.match(/^#{1,6}\s+.+/gm);
+    if (titles) {
+        titles.forEach(title => {
+            if (!title.match(/^#{1,6}\s+\S/)) {
+                issues.push(`标题格式可能有误: ${title}`);
+            }
+        });
+    }
+    
+    const listItems = text.match(/^(\d+\.|[-•*+])\s+.+/gm);
+    if (listItems) {
+        listItems.forEach(item => {
+            if (!item.match(/^(\d+\.|[-•*+])\s+\S/)) {
+                issues.push(`列表项格式可能有误: ${item}`);
+            }
+        });
+    }
+    
+    const quotes = text.match(/^>\s?.+/gm);
+    if (quotes) {
+        quotes.forEach(quote => {
+            if (!quote.match(/^>\s?\S/)) {
+                issues.push(`引用格式可能有误: ${quote}`);
+            }
+        });
+    }
+    
+    return issues;
 }
 
 async function extractTextFromPdfData(data) {
