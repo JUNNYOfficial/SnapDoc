@@ -308,6 +308,7 @@
             flex-direction: column;
             gap: 0.5rem;
             scroll-behavior: smooth;
+            background: var(--bg-deep);
         }
         #save-status {
             display: flex;
@@ -2378,20 +2379,14 @@
             height: 14px;
             display: inline-block;
             vertical-align: middle;
-            filter: var(--icon-filter);
-        }
-        .fmt-btn:hover .fmt-icon {
-            filter: var(--icon-filter-hover);
+            color: inherit;
         }
         .emoji-svg {
             width: 16px;
             height: 16px;
             display: inline-block;
             vertical-align: middle;
-            filter: var(--icon-filter);
-        }
-        .emoji-svg:hover {
-            filter: var(--icon-filter-hover);
+            color: inherit;
         }
 
         /* 标签弹窗 */
@@ -4841,6 +4836,10 @@ window.addEventListener('DOMContentLoaded', () => {
         if (e.target === e.currentTarget || e.target.id === 'editor-container') editor.focus();
     });
 
+    // 侧边栏切换事件
+    document.getElementById('btn-close-sidebar').addEventListener('click', toggleSidebar);
+    document.getElementById('btn-open-sidebar').addEventListener('click', toggleSidebar);
+
     // 选中文字时显示格式工具栏
     document.addEventListener('selectionchange', updateFormatToolbar);
     editor.addEventListener('touchend', () => setTimeout(updateFormatToolbar, 150));
@@ -5276,10 +5275,6 @@ function openLangSelectModal(callback) {
         }
     `;
     document.head.appendChild(style);
-    
-    // 侧边栏切换事件
-    document.getElementById('btn-close-sidebar').addEventListener('click', toggleSidebar);
-    document.getElementById('btn-open-sidebar').addEventListener('click', toggleSidebar);
 }
 
 function highlightSyntax(codeEl, lang) {
@@ -6273,7 +6268,7 @@ function createChartBlock(type, labels, values, title) {
     
     const chartActions = document.createElement('div');
     chartActions.className = 'chart-actions';
-    chartActions.innerHTML = '<button class="chart-action-btn" title="编辑数据"><img src="svg/Edit.svg" style="width: 14px; height: 14px; filter: var(--icon-filter);"></button><button class="chart-action-btn danger" title="删除图表">×</button>';
+    chartActions.innerHTML = '<button class="chart-action-btn" title="编辑数据"><img src="svg/Edit.svg" style="width: 14px; height: 14px;"></button><button class="chart-action-btn danger" title="删除图表">×</button>';
     chartContainer.appendChild(chartActions);
     
     block.appendChild(chartContainer);
@@ -7625,9 +7620,12 @@ function applyTheme(themeValue) {
 }
 
 // 打开设置面板
-document.getElementById('btn-settings').addEventListener('click', () => {
-    settingsModal.classList.add('show');
-});
+const btnSettings = document.getElementById('btn-settings');
+if (btnSettings) {
+    btnSettings.addEventListener('click', () => {
+        settingsModal.classList.add('show');
+    });
+}
 
 // 点击遮罩关闭
 settingsModal.addEventListener('click', (e) => {
@@ -8339,6 +8337,7 @@ function openDocsPanel() {
 // === 左侧侧边栏功能 ===
 const leftSidebar = document.getElementById('left-sidebar');
 const sidebarDocsList = document.getElementById('sidebar-docs-list');
+let currentFilterTag = null;
 
 function toggleSidebar() {
     leftSidebar.classList.toggle('collapsed');
