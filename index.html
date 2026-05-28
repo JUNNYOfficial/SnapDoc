@@ -872,14 +872,23 @@
             border-radius: 2px;
         }
         .sidebar-footer {
-            padding: 1rem;
+            padding: 0.5rem 1rem;
             border-top: 1px solid var(--surface-border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            flex-wrap: nowrap;
         }
         .sidebar-btn {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            width: 100%;
+            justify-content: center;
+            gap: 0.3rem;
+            width: auto;
+            min-width: 36px;
+            height: 36px;
+            padding: 0 0.5rem;
             background: none;
             border: none;
             color: var(--text-secondary);
