@@ -8960,8 +8960,11 @@ function loadDocContent(doc) {
     showToastCustom('已切换: ' + doc.title);
 }
 
-document.getElementById('btn-docs').addEventListener('click', openDocsPanel);
-document.getElementById('btn-versions').addEventListener('click', openVersionsPanel);
+const btnDocs = document.getElementById('btn-docs');
+if (btnDocs) btnDocs.addEventListener('click', openDocsPanel);
+
+const btnVersions = document.getElementById('btn-versions');
+if (btnVersions) btnVersions.addEventListener('click', openVersionsPanel);
 
 // === 分屏预览 ===
 const editorContainer = document.getElementById('editor-container');
