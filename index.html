@@ -5276,6 +5276,10 @@ function openLangSelectModal(callback) {
         }
     `;
     document.head.appendChild(style);
+    
+    // 侧边栏切换事件
+    document.getElementById('btn-close-sidebar').addEventListener('click', toggleSidebar);
+    document.getElementById('btn-open-sidebar').addEventListener('click', toggleSidebar);
 }
 
 function highlightSyntax(codeEl, lang) {
@@ -8394,9 +8398,6 @@ function renderSidebarDocs() {
         });
     });
 }
-
-document.getElementById('btn-close-sidebar').addEventListener('click', toggleSidebar);
-document.getElementById('btn-open-sidebar').addEventListener('click', toggleSidebar);
 
 // 右侧边栏功能
 const rightSidebar = document.getElementById('right-sidebar');
