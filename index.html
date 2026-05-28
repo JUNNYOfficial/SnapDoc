@@ -63,6 +63,9 @@
             --surface-bg-medium: rgba(255,255,255,0.1);
             --surface-bg-highlight: rgba(255,255,255,0.15);
             --surface-border-dashed: rgba(255,255,255,0.3);
+            --shadow-sidebar: rgba(0,0,0,0.3);
+            --shadow-modal: rgba(0,0,0,0.7);
+            --shadow-overlay: rgba(0,0,0,0.5);
         }
 
         /* === 背景主题变量 === */
@@ -130,6 +133,9 @@
             --surface-bg-medium: rgba(0,0,0,0.06);
             --surface-bg-highlight: rgba(0,0,0,0.08);
             --surface-border-dashed: rgba(0,0,0,0.2);
+            --shadow-sidebar: rgba(0,0,0,0.08);
+            --shadow-modal: rgba(0,0,0,0.4);
+            --shadow-overlay: rgba(0,0,0,0.25);
         }
         [data-theme="soft-paper"] body::before { opacity: 0; mix-blend-mode: multiply; }
         [data-theme="soft-paper"] #editor ::selection { background: rgba(90, 122, 138, 0.2); color: #2A2520; }
@@ -172,6 +178,9 @@
             --surface-bg-medium: rgba(38, 81, 114, 0.06);
             --surface-bg-highlight: rgba(38, 81, 114, 0.08);
             --surface-border-dashed: rgba(38, 81, 114, 0.2);
+            --shadow-sidebar: rgba(38, 81, 114, 0.08);
+            --shadow-modal: rgba(38, 81, 114, 0.3);
+            --shadow-overlay: rgba(38, 81, 114, 0.2);
         }
         [data-theme="bamboo"] body::before { opacity: 0; }
         [data-theme="bamboo"] #editor ::selection { background: rgba(48, 149, 151, 0.2); color: #265172; }
@@ -365,7 +374,7 @@
             width: 260px;
             background: var(--bg-surface);
             border-right: 2px solid var(--surface-border);
-            box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+            box-shadow: 4px 0 12px var(--shadow-sidebar);
             display: flex;
             flex-direction: column;
             z-index: 100;
@@ -384,7 +393,7 @@
             width: 280px;
             background: var(--bg-surface);
             border-left: 2px solid var(--surface-border);
-            box-shadow: -4px 0 12px rgba(0,0,0,0.15);
+            box-shadow: -4px 0 12px var(--shadow-sidebar);
             display: flex;
             flex-direction: column;
             z-index: 100;
@@ -910,7 +919,7 @@
         #trash-modal {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.85);
+            background: var(--shadow-modal);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1123,7 +1132,7 @@
         }
 
         #editor .block-code {
-            background: rgba(0,0,0,0.4);
+            background: var(--surface-bg-medium);
             border-radius: 8px;
             padding: 1rem 1.2rem;
             font-family: 'JetBrains Mono', monospace;
@@ -1162,7 +1171,7 @@
         #editor .block-mindmap {
             margin: 1rem 0;
             padding: 1rem;
-            background: rgba(0,0,0,0.2);
+            background: var(--surface-bg-highlight);
             border-radius: 12px;
             min-height: 200px;
             position: relative;
@@ -1348,34 +1357,6 @@
             font-size: 0.75rem;
             color: var(--text-muted);
         }
-        [data-theme="soft-paper"] .block-db-table {
-            border-color: rgba(0,0,0,0.08);
-        }
-        [data-theme="soft-paper"] .db-table-container {
-            background: rgba(0,0,0,0.02);
-        }
-        [data-theme="soft-paper"] .db-table-header {
-            background: rgba(74, 93, 107, 0.08);
-            border-bottom-color: rgba(0,0,0,0.08);
-        }
-        [data-theme="soft-paper"] .db-table th {
-            background: rgba(0,0,0,0.03);
-            border-bottom-color: rgba(0,0,0,0.06);
-        }
-        [data-theme="soft-paper"] .db-table td {
-            border-bottom-color: rgba(0,0,0,0.04);
-        }
-        [data-theme="soft-paper"] .db-table tr:hover td {
-            background: rgba(0,0,0,0.02);
-        }
-        [data-theme="soft-paper"] .db-table-footer {
-            background: rgba(0,0,0,0.02);
-            border-top-color: rgba(0,0,0,0.06);
-        }
-        [data-theme="soft-paper"] .db-add-row:hover {
-            background: rgba(74, 93, 107, 0.15);
-        }
-
         #editor .video-container,
         #editor .audio-container {
             margin: 1rem 0;
