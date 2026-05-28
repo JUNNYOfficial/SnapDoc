@@ -9462,22 +9462,51 @@ function convertLinesToMarkdown(lines) {
     const titlePattern = /^[A-Z][^.!?]{2,50}$/;
     const listItemPattern = /^(\d+\.|[-•*+>])\s+/;
     const indentPattern = /^\s{2,}/;
+    const tocPattern = /^(.*?)\.{3,}\s*(\d+)$/;
     
     let markdown = '';
     let currentParagraph = '';
     let inList = false;
     let pendingLines = [];
+    let inToc = false;
+    let tocEntries = [];
     
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
         
         if (!line) {
+            if (tocEntries.length > 0) {
+                pendingLines.push({ type: 'toc', entries: tocEntries });
+                tocEntries = [];
+                inToc = false;
+            }
             if (currentParagraph.trim()) {
                 pendingLines.push(currentParagraph.trim());
             }
             currentParagraph = '';
             inList = false;
             continue;
+        }
+        
+        const tocMatch = line.match(tocPattern);
+        if (tocMatch) {
+            const title = tocMatch[1].trim();
+            const pageNum = tocMatch[2];
+            if (title && pageNum && !title.match(listItemPattern)) {
+                tocEntries.push({ title, pageNum });
+                inToc = true;
+                if (currentParagraph.trim()) {
+                    pendingLines.push(currentParagraph.trim());
+                    currentParagraph = '';
+                }
+                continue;
+            }
+        }
+        
+        if (inToc && tocEntries.length > 0) {
+            pendingLines.push({ type: 'toc', entries: tocEntries });
+            tocEntries = [];
+            inToc = false;
         }
         
         const listMatch = line.match(listItemPattern);
@@ -9540,6 +9569,10 @@ function convertLinesToMarkdown(lines) {
         }
     }
     
+    if (tocEntries.length > 0) {
+        pendingLines.push({ type: 'toc', entries: tocEntries });
+    }
+    
     if (currentParagraph.trim()) {
         pendingLines.push(currentParagraph.trim());
     }
@@ -9549,22 +9582,32 @@ function convertLinesToMarkdown(lines) {
     
     for (let i = 0; i < pendingLines.length; i++) {
         const item = pendingLines[i];
-        const isListItem = listItemPattern.test(item);
         
-        if (isListItem) {
-            result += item + '\n';
-            prevWasList = true;
-        } else if (item.startsWith('## ')) {
-            result += (result ? '\n' : '') + item + '\n\n';
-            prevWasList = false;
-        } else if (item.startsWith('>')) {
-            result += (result && !result.endsWith('\n')) ? '\n\n' : '';
-            result += item + '\n\n';
+        if (typeof item === 'object' && item.type === 'toc') {
+            result += '\n';
+            item.entries.forEach(entry => {
+                result += `${entry.title} ...... ${entry.pageNum}\n`;
+            });
+            result += '\n';
             prevWasList = false;
         } else {
-            result += (result && !result.endsWith('\n\n') && !prevWasList) ? '\n\n' : '';
-            result += item + '\n\n';
-            prevWasList = false;
+            const isListItem = listItemPattern.test(item);
+            
+            if (isListItem) {
+                result += item + '\n';
+                prevWasList = true;
+            } else if (item.startsWith('## ')) {
+                result += (result ? '\n' : '') + item + '\n\n';
+                prevWasList = false;
+            } else if (item.startsWith('>')) {
+                result += (result && !result.endsWith('\n')) ? '\n\n' : '';
+                result += item + '\n\n';
+                prevWasList = false;
+            } else {
+                result += (result && !result.endsWith('\n\n') && !prevWasList) ? '\n\n' : '';
+                result += item + '\n\n';
+                prevWasList = false;
+            }
         }
     }
     
