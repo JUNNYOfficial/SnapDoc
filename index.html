@@ -7,6 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@400;500;600&family=Open+Dyslexic:wght@400;600&display=swap" rel="stylesheet">
     <svg style="display:none" aria-hidden="true">
         <defs>
             <symbol id="icon-seedling" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v10"/><path d="M12 10a5 5 0 0 1 5-5h0a5 5 0 0 1 5 5v0a5 5 0 0 1-5 5h0a5 5 0 0 1-5-5v0Z"/><path d="M12 10a5 5 0 0 0-5-5h0a5 5 0 0 0-5 5v0a5 5 0 0 0 5 5h0a5 5 0 0 0 5-5v0Z"/></symbol>
@@ -66,6 +67,15 @@
             --shadow-sidebar: rgba(0,0,0,0.3);
             --shadow-modal: rgba(0,0,0,0.7);
             --shadow-overlay: rgba(0,0,0,0.5);
+            
+            /* === 读写障碍友好模式变量 === */
+            --dyslexic-font: 'OpenDyslexic', 'Lexend', sans-serif;
+            --dyslexic-letter-spacing: 0.05em;
+            --dyslexic-line-height: 2.2;
+            --dyslexic-font-size: 1.2rem;
+            --dyslexic-contrast-bg: #FFFFFF;
+            --dyslexic-contrast-text: #000000;
+            --dyslexic-word-spacing: 0.2em;
         }
 
         /* === 背景主题变量 === */
@@ -266,6 +276,124 @@
         [data-theme="bamboo"] .toc-item.active { background: rgba(48, 149, 151, 0.08); }
         [data-theme="bamboo"] .doc-tag { background: rgba(48, 149, 151, 0.08); }
         [data-theme="bamboo"] .related-doc-icon { background: rgba(48, 149, 151, 0.08); }
+
+        /* === 读写障碍友好模式样式 === */
+        /* 基于BBC Reith与Qalam字体开发理念，由神经科学家Alessia Nicotra博士指导 */
+        [data-accessibility="dyslexic"] {
+            --font-body: var(--dyslexic-font);
+        }
+        
+        [data-accessibility="dyslexic"] #editor {
+            font-family: var(--dyslexic-font) !important;
+            letter-spacing: var(--dyslexic-letter-spacing);
+            line-height: var(--dyslexic-line-height);
+            font-size: var(--dyslexic-font-size);
+            word-spacing: var(--dyslexic-word-spacing);
+        }
+        
+        [data-accessibility="dyslexic"] #editor .block {
+            letter-spacing: var(--dyslexic-letter-spacing);
+            line-height: var(--dyslexic-line-height);
+        }
+        
+        [data-accessibility="dyslexic"] #editor .block-heading1 {
+            font-family: var(--dyslexic-font) !important;
+            letter-spacing: 0.03em;
+            line-height: 1.4;
+        }
+        
+        [data-accessibility="dyslexic"] #editor .block-heading2 {
+            font-family: var(--dyslexic-font) !important;
+            letter-spacing: 0.03em;
+            line-height: 1.5;
+        }
+        
+        [data-accessibility="dyslexic"] #editor .block-heading3 {
+            font-family: var(--dyslexic-font) !important;
+            letter-spacing: 0.03em;
+            line-height: 1.6;
+        }
+        
+        [data-accessibility="dyslexic"] #editor .block-body-l {
+            font-family: var(--dyslexic-font) !important;
+            letter-spacing: var(--dyslexic-letter-spacing);
+            line-height: var(--dyslexic-line-height);
+            font-size: var(--dyslexic-font-size);
+        }
+        
+        [data-accessibility="dyslexic"] #editor .block-body-s {
+            font-family: var(--dyslexic-font) !important;
+            letter-spacing: var(--dyslexic-letter-spacing);
+            line-height: var(--dyslexic-line-height);
+            font-size: calc(var(--dyslexic-font-size) * 0.9);
+        }
+        
+        [data-accessibility="dyslexic"] #editor .block-quote {
+            font-family: var(--dyslexic-font) !important;
+            letter-spacing: var(--dyslexic-letter-spacing);
+            line-height: var(--dyslexic-line-height);
+        }
+        
+        [data-accessibility="dyslexic"] #editor .block-list-item {
+            letter-spacing: var(--dyslexic-letter-spacing);
+            line-height: var(--dyslexic-line-height);
+        }
+        
+        /* 高对比度模式增强 */
+        [data-accessibility="high-contrast"] {
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #666666;
+            --bg-deep: #FFFFFF;
+            --bg-surface: #FFFFFF;
+            --accent-calm: #0066CC;
+            --accent-shame: #CC6600;
+            --surface-border: #000000;
+            --surface-border-light: #CCCCCC;
+            --surface-bg: #F5F5F5;
+            --surface-bg-medium: #E8E8E8;
+            --surface-bg-highlight: #D8D8D8;
+        }
+        
+        [data-accessibility="high-contrast"] body::before {
+            opacity: 0;
+        }
+        
+        [data-accessibility="high-contrast"] #editor ::selection {
+            background: #0066CC !important;
+            color: #FFFFFF !important;
+        }
+        
+        [data-accessibility="high-contrast"] #editor .block-quote {
+            border-left-width: 4px;
+            border-left-color: #0066CC;
+        }
+        
+        [data-accessibility="high-contrast"] *:focus-visible {
+            outline-width: 3px;
+            outline-offset: 3px;
+            outline-color: #0066CC;
+        }
+        
+        /* 同时启用友好化和高对比度 */
+        [data-accessibility="dyslexic high-contrast"] {
+            --font-body: var(--dyslexic-font);
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --text-muted: #666666;
+            --bg-deep: #FFFFFF;
+            --bg-surface: #FFFFFF;
+        }
+        
+        [data-accessibility="dyslexic high-contrast"] #editor {
+            font-family: var(--dyslexic-font) !important;
+            letter-spacing: var(--dyslexic-letter-spacing);
+            line-height: var(--dyslexic-line-height);
+            font-size: var(--dyslexic-font-size);
+            word-spacing: var(--dyslexic-word-spacing);
+            color: #000000;
+            background: #FFFFFF;
+        }
 
         /* === ADHD友好全局过渡系统 === */
         /* 所有可见UI组件统一过渡，消除任何瞬间跳变 */
@@ -3346,6 +3474,421 @@
             .tool-btn { font-size: 0.8rem; padding: 0.35rem 0.5rem; min-width: 28px; }
             #editor .block-heading1 { font-size: 1.7rem; }
             #editor .block-heading2 { font-size: 1.35rem; }
+            
+            /* 阅读友好设置面板响应式 */
+            .accessibility-panel {
+                padding: 1.5rem;
+                margin: 1rem;
+                max-height: 90vh;
+            }
+            .quick-toggle {
+                flex-direction: column;
+            }
+            .toggle-btn span {
+                font-size: 0.75rem;
+            }
+            .accessibility-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* === 阅读友好设置面板 === */
+        #accessibility-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s var(--ease-paper);
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+        #accessibility-modal.show { opacity: 1; pointer-events: auto; }
+        .accessibility-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--surface-border-light);
+            padding: 2rem;
+            max-width: 480px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-radius: 12px;
+        }
+        [data-theme="soft-paper"] .accessibility-panel { border-color: rgba(0,0,0,0.06); }
+        .accessibility-title {
+            font-family: var(--font-ui);
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .accessibility-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.8rem;
+            line-height: 1.6;
+        }
+        .accessibility-section {
+            margin-bottom: 1.8rem;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .section-title {
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .section-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .quick-toggle {
+            display: flex;
+            gap: 0.8rem;
+        }
+        .toggle-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--surface-bg);
+            border: 2px solid var(--surface-border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.25s var(--ease-paper);
+        }
+        .toggle-btn:hover {
+            border-color: var(--accent-calm);
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+        .toggle-btn.active {
+            border-color: var(--accent-calm);
+            background: rgba(74, 93, 107, 0.15);
+            color: var(--accent-calm);
+        }
+        .toggle-btn svg {
+            width: 24px;
+            height: 24px;
+        }
+        .toggle-btn span {
+            font-size: 0.8rem;
+            font-family: var(--font-ui);
+        }
+        .setting-item {
+            margin-bottom: 1.2rem;
+        }
+        .setting-label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        .setting-select {
+            width: 100%;
+            background: var(--surface-bg);
+            border: 1px solid var(--surface-border);
+            border-radius: 6px;
+            padding: 0.6rem 0.8rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .setting-select:focus {
+            outline: none;
+            border-color: var(--accent-calm);
+        }
+        .setting-select option {
+            background: var(--bg-surface);
+            color: var(--text-primary);
+        }
+        .slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .slider-wrapper input[type="range"] {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--surface-bg-medium);
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .slider-wrapper input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent-calm);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .slider-wrapper input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        .slider-value {
+            font-family: var(--font-ui);
+            font-size: 0.8rem;
+            color: var(--accent-calm);
+            min-width: 60px;
+            text-align: right;
+        }
+        .accessibility-actions {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--surface-border-light);
+        }
+        .accessibility-actions .tool-btn {
+            flex: 1;
+            padding: 0.7rem;
+        }
+        .accessibility-actions .tool-btn.secondary {
+            background: var(--surface-bg);
+            color: var(--text-secondary);
+            border: 1px solid var(--surface-border);
+        }
+        .accessibility-actions .tool-btn.secondary:hover {
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+
+        /* 预设方案网格 */
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+        }
+        .preset-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 1rem;
+            background: var(--surface-bg);
+            border: 1px solid var(--surface-border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.25s var(--ease-paper);
+            text-align: center;
+        }
+        .preset-btn:hover {
+            border-color: var(--accent-calm);
+            background: var(--surface-hover);
+            color: var(--text-primary);
+        }
+        .preset-btn.active {
+            border-color: var(--accent-calm);
+            background: rgba(74, 93, 107, 0.15);
+            color: var(--accent-calm);
+        }
+        .preset-icon {
+            font-size: 1.5rem;
+        }
+        .preset-name {
+            font-family: var(--font-ui);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .preset-desc {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* 科学依据说明 */
+        .science-info {
+            background: var(--surface-bg);
+            border-left: 3px solid var(--accent-calm);
+            padding: 1rem;
+            border-radius: 0 6px 6px 0;
+        }
+        .science-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* 切换开关样式 */
+        .toggle-switch {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .switch-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .switch-track {
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            background: var(--surface-bg-medium);
+            border-radius: 12px;
+            position: relative;
+            transition: background 0.25s var(--ease-paper);
+        }
+        .switch-btn.active .switch-track {
+            background: var(--accent-calm);
+        }
+        .switch-thumb {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.25s var(--ease-paper);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .switch-btn.active .switch-thumb {
+            transform: translateX(20px);
+        }
+
+        /* 行高亮追踪样式 */
+        #line-highlight-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            background: rgba(74, 93, 107, 0.1);
+            border-radius: 4px;
+            pointer-events: none;
+            z-index: 10;
+            transition: top 0.15s ease-out, height 0.15s ease-out;
+        }
+
+        [data-accessibility="dyslexic"] #line-highlight-overlay {
+            background: rgba(74, 93, 107, 0.15);
+        }
+
+        [data-accessibility="high-contrast"] #line-highlight-overlay {
+            background: rgba(0, 102, 204, 0.2);
+        }
+
+        /* 背景色选择器 */
+        .bg-color-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .color-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .color-btn:hover {
+            transform: scale(1.1);
+        }
+        .color-btn.active {
+            border-color: var(--accent-calm);
+            box-shadow: 0 0 0 2px rgba(74, 93, 107, 0.3);
+        }
+
+        /* 专注模式样式 */
+        .focus-mode {
+            overflow: hidden;
+        }
+        .focus-mode #editor-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 2rem;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        .focus-mode #editor {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 阅读进度指示条样式 */
+        #reading-progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(74, 93, 107, 0.1);
+            z-index: 1000;
+            display: none;
+        }
+        #reading-progress-fill {
+            height: 100%;
+            background: var(--accent-calm);
+            width: 0%;
+            transition: width 0.1s ease-out;
+        }
+        #reading-progress-text {
+            position: absolute;
+            right: 10px;
+            top: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        #reading-progress-bar:hover #reading-progress-text {
+            opacity: 1;
+        }
+        [data-accessibility="dyslexic"] #reading-progress-bar {
+            display: block;
+        }
+        [data-accessibility="high-contrast"] #reading-progress-fill {
+            background: #0066cc;
+        }
+
+        /* 文本对齐方式选择器 */
+        .text-align-picker {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .align-btn {
+            width: 40px;
+            height: 32px;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            background: var(--bg-secondary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .align-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        .align-btn.active {
+            border-color: var(--accent-calm);
+            background: rgba(74, 93, 107, 0.1);
+            color: var(--accent-calm);
         }
 
         /* === 设置面板 === */
@@ -3535,6 +4078,11 @@
             <span id="save-indicator" class="saved"></span>
             <span id="save-text">已保存</span>
             <span id="save-time"></span>
+        </div>
+        <!-- 阅读进度指示条 -->
+        <div id="reading-progress-bar">
+            <div id="reading-progress-fill"></div>
+            <span id="reading-progress-text">0%</span>
         </div>
         <div id="editor" contenteditable="true" data-placeholder="只写一行也没关系...&#10;光标在这里等你，没有评判。&#10;&#10;试试输入 # 标题、> 引用、- 列表、| 表格、**加粗**" spellcheck="false"></div>
         <div id="editor-preview" style="display: none;"></div>
@@ -3748,6 +4296,7 @@
             <button class="tool-btn" id="btn-docs" title="我的文档"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>文档</button>
             <button class="tool-btn" id="btn-versions" title="历史版本"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="16"/><path d="M24 16V24L30 30"/><path d="M16 8L12 12L20 12"/></svg>历史</button>
             <button class="tool-btn" id="btn-settings" title="切换主题"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="6"/><path d="M24 4V10M24 38V44M4 24H10M38 24H44M9.86 9.86L14.1 14.1M33.9 33.9L38.14 38.14M9.86 38.14L14.1 33.9M33.9 14.1L38.14 9.86"/></svg>主题</button>
+            <button class="tool-btn" id="btn-accessibility" title="阅读友好设置"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M24 4C24 4 14 14 14 24C14 34 20 42 24 44C28 42 34 34 34 24C34 14 24 4 24 4ZM24 16C27.3137 16 30 18.6863 30 22C30 25.3137 27.3137 28 24 28C20.6863 28 18 25.3137 18 22C18 18.6863 20.6863 16 24 16Z"/><path d="M38 14C38 14 42 18 42 24C42 30 38 34 38 34"/></svg>阅读</button>
             <button class="tool-btn" id="btn-shortcuts" title="快捷键 (Ctrl+/)"><svg class="tool-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="10" width="8" height="8" rx="1"/><rect x="30" y="10" width="8" height="8" rx="1"/><rect x="10" y="30" width="8" height="8" rx="1"/><rect x="30" y="30" width="8" height="8" rx="1"/></svg>快捷键</button>
         </div>
     </div>
@@ -3830,6 +4379,262 @@
                 </div>
             </div>
             <button class="tool-btn" onclick="document.getElementById('settings-modal').classList.remove('show')" style="margin-top: 1.8rem; width: 100%; text-align: center;">完成</button>
+        </div>
+    </div>
+
+    <!-- 阅读友好设置面板 -->
+    <div id="accessibility-modal" role="dialog" aria-modal="true" aria-label="阅读友好设置">
+        <div class="accessibility-panel">
+            <div class="accessibility-title">阅读友好设置</div>
+            <p class="accessibility-desc">基于神经科学研究，为读写障碍和ADHD人群优化的排版功能</p>
+            
+            <!-- 一键开关 -->
+            <div class="accessibility-section">
+                <div class="section-header">
+                    <span class="section-title">快速启用</span>
+                </div>
+                <div class="quick-toggle">
+                    <button class="toggle-btn" id="btn-quick-dyslexic" title="启用读写障碍友好模式">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.01 17.461 2 12 2z"/></svg>
+                        <span>友好化模式</span>
+                    </button>
+                    <button class="toggle-btn" id="btn-quick-contrast" title="启用高对比度模式">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        <span>高对比度</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 自定义选项 -->
+            <div class="accessibility-section">
+                <div class="section-header">
+                    <span class="section-title">自定义排版</span>
+                    <span class="section-hint">实时预览效果</span>
+                </div>
+                
+                <!-- 字体选择 -->
+                <div class="setting-item">
+                    <label class="setting-label">字体</label>
+                    <select class="setting-select" id="font-select">
+                        <option value="default">默认字体</option>
+                        <option value="opendyslexic">OpenDyslexic</option>
+                        <option value="lexend">Lexend</option>
+                        <option value="atkinson">Atkinson Hyperlegible</option>
+                    </select>
+                </div>
+
+                <!-- 字间距 -->
+                <div class="setting-item">
+                    <label class="setting-label">字间距</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="letter-spacing" min="0" max="10" value="5" step="0.5">
+                        <span class="slider-value" id="letter-spacing-value">0.05em</span>
+                    </div>
+                </div>
+
+                <!-- 字间距 -->
+                <div class="setting-item">
+                    <label class="setting-label">词间距</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="word-spacing" min="0" max="30" value="20" step="1">
+                        <span class="slider-value" id="word-spacing-value">0.2em</span>
+                    </div>
+                </div>
+
+                <!-- 行高 -->
+                <div class="setting-item">
+                    <label class="setting-label">行高</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="line-height" min="1.5" max="3" value="2.2" step="0.1">
+                        <span class="slider-value" id="line-height-value">2.2</span>
+                    </div>
+                </div>
+
+                <!-- 字体大小 -->
+                <div class="setting-item">
+                    <label class="setting-label">字体大小</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="font-size" min="1" max="1.8" value="1.2" step="0.1">
+                        <span class="slider-value" id="font-size-value">1.2rem</span>
+                    </div>
+                </div>
+
+                <!-- 字重 -->
+                <div class="setting-item">
+                    <label class="setting-label">字重</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="font-weight" min="400" max="700" value="400" step="100">
+                        <span class="slider-value" id="font-weight-value">400 (常规)</span>
+                    </div>
+                </div>
+
+                <!-- 行宽限制 -->
+                <div class="setting-item">
+                    <label class="setting-label">最大行宽</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="max-width" min="400" max="900" value="650" step="50">
+                        <span class="slider-value" id="max-width-value">650px</span>
+                    </div>
+                </div>
+
+                <!-- 段落间距 -->
+                <div class="setting-item">
+                    <label class="setting-label">段落间距</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="paragraph-spacing" min="0" max="30" value="16" step="2">
+                        <span class="slider-value" id="paragraph-spacing-value">16px</span>
+                    </div>
+                </div>
+
+                <!-- 文字阴影效果 -->
+                <div class="setting-item">
+                    <label class="setting-label">文字阴影</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="text-shadow" min="0" max="10" value="0" step="1">
+                        <span class="slider-value" id="text-shadow-value">关闭</span>
+                    </div>
+                </div>
+
+                <!-- 段落缩进 -->
+                <div class="setting-item">
+                    <label class="setting-label">段落缩进</label>
+                    <div class="slider-wrapper">
+                        <input type="range" id="paragraph-indent" min="0" max="50" value="0" step="5">
+                        <span class="slider-value" id="paragraph-indent-value">0px</span>
+                    </div>
+                </div>
+
+                <!-- 文本对齐方式 -->
+                <div class="setting-item">
+                    <label class="setting-label">文本对齐</label>
+                    <div class="text-align-picker">
+                        <button class="align-btn" data-align="left" title="左对齐">
+                            <svg width="20" height="14" viewBox="0 0 20 14">
+                                <rect x="0" y="0" width="16" height="2" fill="currentColor"/>
+                                <rect x="0" y="4" width="20" height="2" fill="currentColor"/>
+                                <rect x="0" y="8" width="14" height="2" fill="currentColor"/>
+                                <rect x="0" y="12" width="18" height="2" fill="currentColor"/>
+                            </svg>
+                        </button>
+                        <button class="align-btn" data-align="center" title="居中对齐">
+                            <svg width="20" height="14" viewBox="0 0 20 14">
+                                <rect x="2" y="0" width="16" height="2" fill="currentColor"/>
+                                <rect x="0" y="4" width="20" height="2" fill="currentColor"/>
+                                <rect x="3" y="8" width="14" height="2" fill="currentColor"/>
+                                <rect x="1" y="12" width="18" height="2" fill="currentColor"/>
+                            </svg>
+                        </button>
+                        <button class="align-btn" data-align="justify" title="两端对齐">
+                            <svg width="20" height="14" viewBox="0 0 20 14">
+                                <rect x="0" y="0" width="20" height="2" fill="currentColor"/>
+                                <rect x="0" y="4" width="20" height="2" fill="currentColor"/>
+                                <rect x="0" y="8" width="20" height="2" fill="currentColor"/>
+                                <rect x="0" y="12" width="20" height="2" fill="currentColor"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 行高亮追踪 -->
+                <div class="setting-item">
+                    <div class="toggle-switch">
+                        <label class="setting-label">行高亮追踪</label>
+                        <button class="switch-btn" id="btn-line-highlight" title="启用当前行高亮追踪">
+                            <span class="switch-track">
+                                <span class="switch-thumb"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 高亮颜色选择 -->
+                <div class="setting-item">
+                    <label class="setting-label">高亮颜色</label>
+                    <div class="highlight-color-picker">
+                        <button class="color-btn" data-color="rgba(74, 93, 107, 0.15)" title="蓝灰色"></button>
+                        <button class="color-btn" data-color="rgba(102, 187, 106, 0.15)" title="绿色"></button>
+                        <button class="color-btn" data-color="rgba(255, 235, 59, 0.2)" title="黄色"></button>
+                        <button class="color-btn" data-color="rgba(255, 193, 7, 0.2)" title="橙色"></button>
+                        <button class="color-btn" data-color="rgba(233, 30, 99, 0.15)" title="粉色"></button>
+                        <button class="color-btn" data-color="rgba(156, 39, 176, 0.15)" title="紫色"></button>
+                        <button class="color-btn" data-color="rgba(0, 188, 212, 0.15)" title="青色"></button>
+                        <button class="color-btn" data-color="rgba(0, 102, 204, 0.2)" title="蓝色"></button>
+                    </div>
+                </div>
+
+                <!-- 背景色选择 -->
+                <div class="setting-item">
+                    <label class="setting-label">背景色</label>
+                    <div class="bg-color-picker">
+                        <button class="color-btn" data-color="#FFFFFF" title="纯白"></button>
+                        <button class="color-btn" data-color="#FFFFF0" title="奶油白"></button>
+                        <button class="color-btn" data-color="#F5F5DC" title="米色"></button>
+                        <button class="color-btn" data-color="#FFF8DC" title="玉米黄"></button>
+                        <button class="color-btn" data-color="#FDF5E6" title="亚麻色"></button>
+                        <button class="color-btn" data-color="#E8E4D9" title="灰白色"></button>
+                        <button class="color-btn" data-color="#121212" title="深黑"></button>
+                        <button class="color-btn" data-color="#1E1E1E" title="炭灰"></button>
+                    </div>
+                </div>
+
+                <!-- 专注模式 -->
+                <div class="setting-item">
+                    <div class="toggle-switch">
+                        <label class="setting-label">专注模式</label>
+                        <button class="switch-btn" id="btn-focus-mode" title="隐藏侧边栏等干扰元素">
+                            <span class="switch-track">
+                                <span class="switch-thumb"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 预设方案 -->
+            <div class="accessibility-section">
+                <div class="section-header">
+                    <span class="section-title">推荐预设</span>
+                    <span class="section-hint">基于科学研究</span>
+                </div>
+                <div class="preset-grid">
+                    <button class="preset-btn" data-preset="dyslexia" title="读写障碍优化">
+                        <div class="preset-icon">📖</div>
+                        <div class="preset-name">读写障碍</div>
+                        <div class="preset-desc">优化字母识别</div>
+                    </button>
+                    <button class="preset-btn" data-preset="adhd" title="ADHD注意力优化">
+                        <div class="preset-icon">🎯</div>
+                        <div class="preset-name">ADHD</div>
+                        <div class="preset-desc">减少视觉干扰</div>
+                    </button>
+                    <button class="preset-btn" data-preset="vision" title="低视力优化">
+                        <div class="preset-icon">👁️</div>
+                        <div class="preset-name">低视力</div>
+                        <div class="preset-desc">增强可读性</div>
+                    </button>
+                    <button class="preset-btn" data-preset="night" title="夜间阅读">
+                        <div class="preset-icon">🌙</div>
+                        <div class="preset-name">夜间</div>
+                        <div class="preset-desc">护眼模式</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 科学依据说明 -->
+            <div class="accessibility-section">
+                <div class="section-header">
+                    <span class="section-title">科学依据</span>
+                </div>
+                <div class="science-info">
+                    <p>本功能基于BBC Reith与Qalam字体的开发理念，由神经科学家Alessia Nicotra博士指导设计。研究表明，适当的字间距、行高和字体选择可以显著提升读写障碍人群的阅读速度和准确性。</p>
+                </div>
+            </div>
+
+            <!-- 重置按钮 -->
+            <div class="accessibility-actions">
+                <button class="tool-btn secondary" id="btn-reset-accessibility">重置默认</button>
+                <button class="tool-btn" onclick="document.getElementById('accessibility-modal').classList.remove('show')">完成</button>
+            </div>
         </div>
     </div>
 
@@ -7727,6 +8532,779 @@ themeOptions.forEach(opt => {
             prev.focus();
         }
     });
+});
+
+// === 阅读友好设置系统 ===
+const accessibilityModal = document.getElementById('accessibility-modal');
+const btnAccessibility = document.getElementById('btn-accessibility');
+const btnQuickDyslexic = document.getElementById('btn-quick-dyslexic');
+const btnQuickContrast = document.getElementById('btn-quick-contrast');
+const btnResetAccessibility = document.getElementById('btn-reset-accessibility');
+
+// 自定义设置控件
+const fontSelect = document.getElementById('font-select');
+const letterSpacingSlider = document.getElementById('letter-spacing');
+const letterSpacingValue = document.getElementById('letter-spacing-value');
+const wordSpacingSlider = document.getElementById('word-spacing');
+const wordSpacingValue = document.getElementById('word-spacing-value');
+const lineHeightSlider = document.getElementById('line-height');
+const lineHeightValue = document.getElementById('line-height-value');
+const fontSizeSlider = document.getElementById('font-size');
+const fontSizeValue = document.getElementById('font-size-value');
+const fontWeightSlider = document.getElementById('font-weight');
+const fontWeightValue = document.getElementById('font-weight-value');
+const maxWidthSlider = document.getElementById('max-width');
+const maxWidthValue = document.getElementById('max-width-value');
+const paragraphSpacingSlider = document.getElementById('paragraph-spacing');
+const paragraphSpacingValue = document.getElementById('paragraph-spacing-value');
+
+// 行高亮追踪控件
+const btnLineHighlight = document.getElementById('btn-line-highlight');
+
+// 专注模式控件
+const btnFocusMode = document.getElementById('btn-focus-mode');
+
+// 文字阴影控件
+const textShadowSlider = document.getElementById('text-shadow');
+const textShadowValue = document.getElementById('text-shadow-value');
+
+// 段落缩进控件
+const paragraphIndentSlider = document.getElementById('paragraph-indent');
+const paragraphIndentValue = document.getElementById('paragraph-indent-value');
+
+// 默认设置
+const defaultAccessibilitySettings = {
+    dyslexicEnabled: false,
+    highContrastEnabled: false,
+    font: 'default',
+    letterSpacing: 3,
+    wordSpacing: 5,
+    lineHeight: 2.0,
+    fontSize: 1.1,
+    fontWeight: 400,
+    lineHighlightEnabled: false,
+    maxWidth: 650,
+    paragraphSpacing: 16,
+    backgroundColor: '',
+    focusModeEnabled: false,
+    textShadow: 0,
+    paragraphIndent: 0,
+    highlightColor: 'rgba(74, 93, 107, 0.15)',
+    textAlign: 'left'
+};
+
+// 预设方案配置
+const presetConfigs = {
+    dyslexia: {
+        name: '读写障碍',
+        dyslexicEnabled: true,
+        highContrastEnabled: false,
+        font: 'opendyslexic',
+        letterSpacing: 8,
+        wordSpacing: 25,
+        lineHeight: 2.2,
+        fontSize: 1.3,
+        fontWeight: 500,
+        maxWidth: 600,
+        paragraphSpacing: 20
+    },
+    adhd: {
+        name: 'ADHD',
+        dyslexicEnabled: true,
+        highContrastEnabled: false,
+        font: 'lexend',
+        letterSpacing: 6,
+        wordSpacing: 30,
+        lineHeight: 2.4,
+        fontSize: 1.2,
+        fontWeight: 400,
+        maxWidth: 550,
+        paragraphSpacing: 24
+    },
+    vision: {
+        name: '低视力',
+        dyslexicEnabled: true,
+        highContrastEnabled: true,
+        font: 'atkinson',
+        letterSpacing: 5,
+        wordSpacing: 15,
+        lineHeight: 2.0,
+        fontSize: 1.5,
+        fontWeight: 600,
+        maxWidth: 700,
+        paragraphSpacing: 18
+    },
+    night: {
+        name: '夜间',
+        dyslexicEnabled: true,
+        highContrastEnabled: false,
+        font: 'lexend',
+        letterSpacing: 5,
+        wordSpacing: 20,
+        lineHeight: 2.2,
+        fontSize: 1.2,
+        fontWeight: 400,
+        maxWidth: 650,
+        paragraphSpacing: 16
+    }
+};
+
+// 获取保存的设置
+function getAccessibilitySettings() {
+    const saved = localStorage.getItem('snapdoc_accessibility');
+    return saved ? JSON.parse(saved) : { ...defaultAccessibilitySettings };
+}
+
+// 保存设置
+function saveAccessibilitySettings(settings) {
+    localStorage.setItem('snapdoc_accessibility', JSON.stringify(settings));
+}
+
+// 应用无障碍设置到DOM
+function applyAccessibilitySettings(settings) {
+    const accessibilityValues = [];
+    if (settings.dyslexicEnabled) accessibilityValues.push('dyslexic');
+    if (settings.highContrastEnabled) accessibilityValues.push('high-contrast');
+    
+    if (accessibilityValues.length > 0) {
+        document.documentElement.setAttribute('data-accessibility', accessibilityValues.join(' '));
+    } else {
+        document.documentElement.removeAttribute('data-accessibility');
+    }
+    
+    // 应用自定义字体
+    const fontMap = {
+        'default': 'var(--font-body)',
+        'opendyslexic': "'OpenDyslexic', sans-serif",
+        'lexend': "'Lexend', sans-serif",
+        'atkinson': "'Atkinson Hyperlegible', sans-serif"
+    };
+    
+    if (settings.font !== 'default') {
+        document.getElementById('editor').style.fontFamily = fontMap[settings.font];
+    } else {
+        document.getElementById('editor').style.fontFamily = '';
+    }
+    
+    // 应用自定义排版参数（仅在启用友好化模式时）
+    const editor = document.getElementById('editor');
+    const editorContainer = document.getElementById('editor-container');
+    
+    if (settings.dyslexicEnabled) {
+        editor.style.letterSpacing = `${settings.letterSpacing / 100}em`;
+        editor.style.wordSpacing = `${settings.wordSpacing / 100}em`;
+        editor.style.lineHeight = settings.lineHeight;
+        editor.style.fontSize = `${settings.fontSize}rem`;
+        editor.style.fontWeight = settings.fontWeight;
+        editorContainer.style.maxWidth = `${settings.maxWidth}px`;
+        editor.style.marginBottom = `${settings.paragraphSpacing}px`;
+        // 应用文字阴影效果
+        if (settings.textShadow > 0) {
+            editor.style.textShadow = `0 ${settings.textShadow}px ${settings.textShadow * 2}px rgba(0, 0, 0, 0.15)`;
+        } else {
+            editor.style.textShadow = '';
+        }
+        // 应用段落缩进
+        editor.style.textIndent = `${settings.paragraphIndent}px`;
+        // 应用文本对齐方式
+        editor.style.textAlign = settings.textAlign || 'left';
+    } else {
+        editor.style.letterSpacing = '';
+        editor.style.wordSpacing = '';
+        editor.style.lineHeight = '';
+        editor.style.fontSize = '';
+        editor.style.fontWeight = '';
+        editorContainer.style.maxWidth = '';
+        editor.style.marginBottom = '';
+        editor.style.textShadow = '';
+        editor.style.textIndent = '';
+        editor.style.textAlign = '';
+    }
+    
+    // 更新按钮状态
+    btnQuickDyslexic.classList.toggle('active', settings.dyslexicEnabled);
+    btnQuickContrast.classList.toggle('active', settings.highContrastEnabled);
+    btnLineHighlight.classList.toggle('active', settings.lineHighlightEnabled);
+    btnFocusMode.classList.toggle('active', settings.focusModeEnabled);
+    
+    // 更新工具按钮状态
+    if (btnAccessibility) {
+        btnAccessibility.classList.toggle('active', settings.dyslexicEnabled || settings.highContrastEnabled);
+    }
+    
+    // 启动或停止行高亮追踪
+    if (settings.lineHighlightEnabled) {
+        initLineHighlight();
+    } else {
+        stopLineHighlight();
+    }
+    
+    // 应用自定义背景色
+    applyBackgroundColor(settings.backgroundColor);
+    
+    // 更新背景色按钮状态
+    updateColorButtonStates(settings.backgroundColor);
+    
+    // 应用高亮颜色
+    applyHighlightColor(settings.highlightColor);
+    
+    // 更新高亮颜色按钮状态
+    updateHighlightColorButtonStates(settings.highlightColor);
+    
+    // 更新文本对齐按钮状态
+    updateAlignButtonStates(settings.textAlign);
+    
+    // 应用专注模式
+    applyFocusMode(settings.focusModeEnabled);
+}
+
+// 获取字重显示文本
+function getFontWeightLabel(value) {
+    const labels = {
+        400: '400 (常规)',
+        500: '500 (中等)',
+        600: '600 (半粗)',
+        700: '700 (粗体)'
+    };
+    return labels[value] || `${value}`;
+}
+
+// === 背景色自定义功能 ===
+function applyBackgroundColor(color) {
+    const editorContainer = document.getElementById('editor-container');
+    if (color) {
+        editorContainer.style.backgroundColor = color;
+        document.body.style.backgroundColor = color;
+    } else {
+        editorContainer.style.backgroundColor = '';
+        document.body.style.backgroundColor = '';
+    }
+}
+
+function updateColorButtonStates(selectedColor) {
+    const colorButtons = document.querySelectorAll('.color-btn');
+    colorButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.color === selectedColor);
+    });
+}
+
+// 背景色选择事件
+const colorButtons = document.querySelectorAll('.bg-color-picker .color-btn');
+colorButtons.forEach(btn => {
+    btn.style.backgroundColor = btn.dataset.color;
+    btn.addEventListener('click', () => {
+        const settings = getAccessibilitySettings();
+        const color = btn.dataset.color;
+        settings.backgroundColor = settings.backgroundColor === color ? '' : color;
+        saveAccessibilitySettings(settings);
+        applyAccessibilitySettings(settings);
+    });
+});
+
+// === 高亮颜色自定义功能 ===
+function applyHighlightColor(color) {
+    if (lineHighlightOverlay) {
+        lineHighlightOverlay.style.background = color || 'rgba(74, 93, 107, 0.15)';
+    }
+}
+
+function updateHighlightColorButtonStates(selectedColor) {
+    const highlightColorButtons = document.querySelectorAll('.highlight-color-picker .color-btn');
+    highlightColorButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.color === selectedColor);
+    });
+}
+
+// 高亮颜色选择事件
+const highlightColorButtons = document.querySelectorAll('.highlight-color-picker .color-btn');
+highlightColorButtons.forEach(btn => {
+    // 设置按钮背景色（使用rgba颜色）
+    btn.style.backgroundColor = btn.dataset.color;
+    btn.addEventListener('click', () => {
+        const settings = getAccessibilitySettings();
+        const color = btn.dataset.color;
+        settings.highlightColor = settings.highlightColor === color ? 'rgba(74, 93, 107, 0.15)' : color;
+        saveAccessibilitySettings(settings);
+        applyAccessibilitySettings(settings);
+    });
+});
+
+// === 文本对齐方式功能 ===
+function updateAlignButtonStates(selectedAlign) {
+    const alignButtons = document.querySelectorAll('.align-btn');
+    alignButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.align === selectedAlign);
+    });
+}
+
+// 文本对齐方式选择事件
+const alignButtons = document.querySelectorAll('.align-btn');
+alignButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const settings = getAccessibilitySettings();
+        settings.textAlign = btn.dataset.align;
+        saveAccessibilitySettings(settings);
+        applyAccessibilitySettings(settings);
+    });
+});
+
+// === 专注模式功能 ===
+function applyFocusMode(enabled) {
+    const sidebar = document.querySelector('.sidebar');
+    const toolbar = document.querySelector('.toolbar');
+    
+    if (enabled) {
+        if (sidebar) sidebar.style.display = 'none';
+        if (toolbar) toolbar.style.display = 'none';
+        document.body.classList.add('focus-mode');
+    } else {
+        if (sidebar) sidebar.style.display = '';
+        if (toolbar) toolbar.style.display = '';
+        document.body.classList.remove('focus-mode');
+    }
+}
+
+// 专注模式切换事件
+btnFocusMode.addEventListener('click', () => {
+    const settings = getAccessibilitySettings();
+    settings.focusModeEnabled = !settings.focusModeEnabled;
+    saveAccessibilitySettings(settings);
+    applyAccessibilitySettings(settings);
+});
+
+// === 防抖工具函数 ===
+function debounce(func, delay = 100) {
+    let timeoutId = null;
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+}
+
+// 防抖保存设置（仅用于localStorage保存，UI更新仍实时）
+const debouncedSaveSettings = debounce((settings) => {
+    localStorage.setItem('snapdoc_accessibility', JSON.stringify(settings));
+}, 300);
+
+// 优化后的保存函数（UI实时更新，localStorage防抖保存）
+function saveAccessibilitySettingsOptimized(settings) {
+    // UI更新立即执行
+    applyAccessibilitySettingsDirect(settings);
+    // localStorage保存使用防抖
+    debouncedSaveSettings(settings);
+}
+
+// 直接应用设置到UI（不包含保存逻辑）
+function applyAccessibilitySettingsDirect(settings) {
+    const accessibilityValues = [];
+    if (settings.dyslexicEnabled) accessibilityValues.push('dyslexic');
+    if (settings.highContrastEnabled) accessibilityValues.push('high-contrast');
+    
+    if (accessibilityValues.length > 0) {
+        document.documentElement.setAttribute('data-accessibility', accessibilityValues.join(' '));
+    } else {
+        document.documentElement.removeAttribute('data-accessibility');
+    }
+    
+    const fontMap = {
+        'default': 'var(--font-body)',
+        'opendyslexic': "'OpenDyslexic', sans-serif",
+        'lexend': "'Lexend', sans-serif",
+        'atkinson': "'Atkinson Hyperlegible', sans-serif"
+    };
+    
+    const editor = document.getElementById('editor');
+    const editorContainer = document.getElementById('editor-container');
+    
+    if (settings.font !== 'default') {
+        editor.style.fontFamily = fontMap[settings.font];
+    } else {
+        editor.style.fontFamily = '';
+    }
+    
+    if (settings.dyslexicEnabled) {
+        editor.style.letterSpacing = `${settings.letterSpacing / 100}em`;
+        editor.style.wordSpacing = `${settings.wordSpacing / 100}em`;
+        editor.style.lineHeight = settings.lineHeight;
+        editor.style.fontSize = `${settings.fontSize}rem`;
+        editor.style.fontWeight = settings.fontWeight;
+        editorContainer.style.maxWidth = `${settings.maxWidth}px`;
+        editor.style.marginBottom = `${settings.paragraphSpacing}px`;
+        // 应用文字阴影效果
+        if (settings.textShadow > 0) {
+            editor.style.textShadow = `0 ${settings.textShadow}px ${settings.textShadow * 2}px rgba(0, 0, 0, 0.15)`;
+        } else {
+            editor.style.textShadow = '';
+        }
+        // 应用段落缩进
+        editor.style.textIndent = `${settings.paragraphIndent || 0}px`;
+        // 应用文本对齐方式
+        editor.style.textAlign = settings.textAlign || 'left';
+    } else {
+        editor.style.letterSpacing = '';
+        editor.style.wordSpacing = '';
+        editor.style.lineHeight = '';
+        editor.style.fontSize = '';
+        editor.style.fontWeight = '';
+        editorContainer.style.maxWidth = '';
+        editor.style.marginBottom = '';
+        editor.style.textShadow = '';
+        editor.style.textIndent = '';
+        editor.style.textAlign = '';
+    }
+    
+    btnQuickDyslexic.classList.toggle('active', settings.dyslexicEnabled);
+    btnQuickContrast.classList.toggle('active', settings.highContrastEnabled);
+    btnLineHighlight.classList.toggle('active', settings.lineHighlightEnabled);
+    btnFocusMode.classList.toggle('active', settings.focusModeEnabled);
+    
+    if (btnAccessibility) {
+        btnAccessibility.classList.toggle('active', settings.dyslexicEnabled || settings.highContrastEnabled);
+    }
+    
+    if (settings.lineHighlightEnabled) {
+        initLineHighlight();
+    } else {
+        stopLineHighlight();
+    }
+    
+    applyBackgroundColor(settings.backgroundColor);
+    updateColorButtonStates(settings.backgroundColor);
+    applyHighlightColor(settings.highlightColor);
+    updateHighlightColorButtonStates(settings.highlightColor);
+    updateAlignButtonStates(settings.textAlign);
+    applyFocusMode(settings.focusModeEnabled);
+}
+
+// === 行高亮追踪功能 ===
+let lineHighlightOverlay = null;
+let lineHighlightActive = false;
+
+// === 阅读进度指示条功能 ===
+const progressBar = document.getElementById('reading-progress-bar');
+const progressFill = document.getElementById('reading-progress-fill');
+const progressText = document.getElementById('reading-progress-text');
+
+function updateReadingProgress() {
+    const editorContainer = document.getElementById('editor-container');
+    const scrollTop = editorContainer.scrollTop;
+    const scrollHeight = editorContainer.scrollHeight - editorContainer.clientHeight;
+    
+    if (scrollHeight > 0) {
+        const progress = Math.min(100, Math.max(0, (scrollTop / scrollHeight) * 100));
+        progressFill.style.width = `${progress}%`;
+        progressText.textContent = `${Math.round(progress)}%`;
+    }
+}
+
+// 监听滚动事件更新进度
+document.getElementById('editor-container').addEventListener('scroll', updateReadingProgress, { passive: true });
+
+// === 防抖工具函数 ===
+
+function initLineHighlight() {
+    if (lineHighlightActive) return;
+    lineHighlightActive = true;
+    
+    // 创建高亮覆盖层
+    if (!lineHighlightOverlay) {
+        lineHighlightOverlay = document.createElement('div');
+        lineHighlightOverlay.id = 'line-highlight-overlay';
+        const editorContainer = document.getElementById('editor-container');
+        editorContainer.style.position = 'relative';
+        editorContainer.appendChild(lineHighlightOverlay);
+    }
+    
+    // 添加鼠标移动和滚动事件监听
+    document.addEventListener('mousemove', updateLineHighlight);
+    editor.addEventListener('scroll', updateLineHighlight);
+    updateLineHighlight();
+}
+
+function stopLineHighlight() {
+    lineHighlightActive = false;
+    
+    if (lineHighlightOverlay) {
+        lineHighlightOverlay.remove();
+        lineHighlightOverlay = null;
+    }
+    
+    document.removeEventListener('mousemove', updateLineHighlight);
+    editor.removeEventListener('scroll', updateLineHighlight);
+}
+
+function updateLineHighlight(e) {
+    if (!lineHighlightOverlay || !lineHighlightActive) return;
+    
+    const editorContainer = document.getElementById('editor-container');
+    const rect = editorContainer.getBoundingClientRect();
+    
+    let mouseY = rect.height / 2; // 默认居中
+    if (e && e.clientY !== undefined) {
+        mouseY = e.clientY - rect.top;
+    }
+    
+    // 计算当前行位置
+    const lineHeight = parseFloat(getComputedStyle(editor).lineHeight) || 24;
+    const lineIndex = Math.floor(mouseY / lineHeight);
+    const top = lineIndex * lineHeight;
+    
+    // 更新高亮位置
+    lineHighlightOverlay.style.top = `${top}px`;
+    lineHighlightOverlay.style.height = `${lineHeight}px`;
+}
+
+// 行高亮切换
+btnLineHighlight.addEventListener('click', () => {
+    const settings = getAccessibilitySettings();
+    settings.lineHighlightEnabled = !settings.lineHighlightEnabled;
+    saveAccessibilitySettings(settings);
+    applyAccessibilitySettings(settings);
+});
+
+// === 快捷键支持 ===
+document.addEventListener('keydown', (e) => {
+    // Ctrl+Shift+D: 切换友好化模式
+    if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+        e.preventDefault();
+        const settings = getAccessibilitySettings();
+        settings.dyslexicEnabled = !settings.dyslexicEnabled;
+        saveAccessibilitySettings(settings);
+        applyAccessibilitySettings(settings);
+        showToastCustom(settings.dyslexicEnabled ? '已启用友好化模式' : '已关闭友好化模式');
+    }
+    
+    // Ctrl+Shift+C: 切换高对比度模式
+    if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+        e.preventDefault();
+        const settings = getAccessibilitySettings();
+        settings.highContrastEnabled = !settings.highContrastEnabled;
+        saveAccessibilitySettings(settings);
+        applyAccessibilitySettings(settings);
+        showToastCustom(settings.highContrastEnabled ? '已启用高对比度模式' : '已关闭高对比度模式');
+    }
+    
+    // Ctrl+Shift+H: 切换行高亮追踪
+    if (e.ctrlKey && e.shiftKey && e.key === 'H') {
+        e.preventDefault();
+        const settings = getAccessibilitySettings();
+        settings.lineHighlightEnabled = !settings.lineHighlightEnabled;
+        saveAccessibilitySettings(settings);
+        applyAccessibilitySettings(settings);
+        showToastCustom(settings.lineHighlightEnabled ? '已启用行高亮追踪' : '已关闭行高亮追踪');
+    }
+    
+    // Ctrl+Shift+A: 打开阅读友好设置面板
+    if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+        e.preventDefault();
+        accessibilityModal.classList.add('show');
+    }
+});
+
+// 初始化加载已保存的设置
+(function initAccessibility() {
+    const settings = getAccessibilitySettings();
+    applyAccessibilitySettings(settings);
+    
+    // 更新控件值
+    fontSelect.value = settings.font;
+    letterSpacingSlider.value = settings.letterSpacing;
+    letterSpacingValue.textContent = `${(settings.letterSpacing / 100).toFixed(2)}em`;
+    wordSpacingSlider.value = settings.wordSpacing;
+    wordSpacingValue.textContent = `${(settings.wordSpacing / 100).toFixed(2)}em`;
+    lineHeightSlider.value = settings.lineHeight;
+    lineHeightValue.textContent = settings.lineHeight;
+    fontSizeSlider.value = settings.fontSize;
+    fontSizeValue.textContent = `${settings.fontSize}rem`;
+    
+    // 新控件
+    fontWeightSlider.value = settings.fontWeight;
+    fontWeightValue.textContent = getFontWeightLabel(settings.fontWeight);
+    maxWidthSlider.value = settings.maxWidth;
+    maxWidthValue.textContent = `${settings.maxWidth}px`;
+    paragraphSpacingSlider.value = settings.paragraphSpacing;
+    paragraphSpacingValue.textContent = `${settings.paragraphSpacing}px`;
+})();
+
+// 打开阅读友好设置面板
+if (btnAccessibility) {
+    btnAccessibility.addEventListener('click', () => {
+        accessibilityModal.classList.add('show');
+    });
+}
+
+// 点击遮罩关闭
+accessibilityModal.addEventListener('click', (e) => {
+    if (e.target === accessibilityModal) accessibilityModal.classList.remove('show');
+});
+
+// 一键切换读写障碍友好模式
+btnQuickDyslexic.addEventListener('click', () => {
+    const settings = getAccessibilitySettings();
+    settings.dyslexicEnabled = !settings.dyslexicEnabled;
+    saveAccessibilitySettings(settings);
+    applyAccessibilitySettings(settings);
+});
+
+// 一键切换高对比度模式
+btnQuickContrast.addEventListener('click', () => {
+    const settings = getAccessibilitySettings();
+    settings.highContrastEnabled = !settings.highContrastEnabled;
+    saveAccessibilitySettings(settings);
+    applyAccessibilitySettings(settings);
+});
+
+// 字体选择
+fontSelect.addEventListener('change', () => {
+    const settings = getAccessibilitySettings();
+    settings.font = fontSelect.value;
+    saveAccessibilitySettings(settings);
+    applyAccessibilitySettings(settings);
+});
+
+// 字间距调整（使用防抖优化）
+letterSpacingSlider.addEventListener('input', () => {
+    const value = parseFloat(letterSpacingSlider.value);
+    letterSpacingValue.textContent = `${(value / 100).toFixed(2)}em`;
+    const settings = getAccessibilitySettings();
+    settings.letterSpacing = value;
+    saveAccessibilitySettingsOptimized(settings);
+});
+
+// 词间距调整（使用防抖优化）
+wordSpacingSlider.addEventListener('input', () => {
+    const value = parseFloat(wordSpacingSlider.value);
+    wordSpacingValue.textContent = `${(value / 100).toFixed(2)}em`;
+    const settings = getAccessibilitySettings();
+    settings.wordSpacing = value;
+    saveAccessibilitySettingsOptimized(settings);
+});
+
+// 行高调整（使用防抖优化）
+lineHeightSlider.addEventListener('input', () => {
+    const value = parseFloat(lineHeightSlider.value);
+    lineHeightValue.textContent = value.toFixed(1);
+    const settings = getAccessibilitySettings();
+    settings.lineHeight = value;
+    saveAccessibilitySettingsOptimized(settings);
+});
+
+// 字体大小调整（使用防抖优化）
+fontSizeSlider.addEventListener('input', () => {
+    const value = parseFloat(fontSizeSlider.value);
+    fontSizeValue.textContent = `${value.toFixed(1)}rem`;
+    const settings = getAccessibilitySettings();
+    settings.fontSize = value;
+    saveAccessibilitySettingsOptimized(settings);
+});
+
+// 字重调整（使用防抖优化）
+fontWeightSlider.addEventListener('input', () => {
+    const value = parseInt(fontWeightSlider.value);
+    fontWeightValue.textContent = getFontWeightLabel(value);
+    const settings = getAccessibilitySettings();
+    settings.fontWeight = value;
+    saveAccessibilitySettingsOptimized(settings);
+});
+
+// 最大行宽调整（使用防抖优化）
+maxWidthSlider.addEventListener('input', () => {
+    const value = parseInt(maxWidthSlider.value);
+    maxWidthValue.textContent = `${value}px`;
+    const settings = getAccessibilitySettings();
+    settings.maxWidth = value;
+    saveAccessibilitySettingsOptimized(settings);
+});
+
+// 段落间距调整（使用防抖优化）
+paragraphSpacingSlider.addEventListener('input', () => {
+    const value = parseInt(paragraphSpacingSlider.value);
+    paragraphSpacingValue.textContent = `${value}px`;
+    const settings = getAccessibilitySettings();
+    settings.paragraphSpacing = value;
+    saveAccessibilitySettingsOptimized(settings);
+});
+
+// 文字阴影调整（使用防抖优化）
+textShadowSlider.addEventListener('input', () => {
+    const value = parseInt(textShadowSlider.value);
+    textShadowValue.textContent = value === 0 ? '关闭' : `${value}px`;
+    const settings = getAccessibilitySettings();
+    settings.textShadow = value;
+    saveAccessibilitySettingsOptimized(settings);
+});
+
+// 段落缩进调整（使用防抖优化）
+paragraphIndentSlider.addEventListener('input', () => {
+    const value = parseInt(paragraphIndentSlider.value);
+    paragraphIndentValue.textContent = `${value}px`;
+    const settings = getAccessibilitySettings();
+    settings.paragraphIndent = value;
+    saveAccessibilitySettingsOptimized(settings);
+});
+
+// 应用预设方案
+const presetButtons = document.querySelectorAll('.preset-btn');
+presetButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const presetKey = btn.dataset.preset;
+        const presetConfig = presetConfigs[presetKey];
+        if (presetConfig) {
+            saveAccessibilitySettings({ ...presetConfig });
+            applyAccessibilitySettings(presetConfig);
+            
+            // 更新控件值
+            fontSelect.value = presetConfig.font;
+            letterSpacingSlider.value = presetConfig.letterSpacing;
+            letterSpacingValue.textContent = `${(presetConfig.letterSpacing / 100).toFixed(2)}em`;
+            wordSpacingSlider.value = presetConfig.wordSpacing;
+            wordSpacingValue.textContent = `${(presetConfig.wordSpacing / 100).toFixed(2)}em`;
+            lineHeightSlider.value = presetConfig.lineHeight;
+            lineHeightValue.textContent = presetConfig.lineHeight;
+            fontSizeSlider.value = presetConfig.fontSize;
+            fontSizeValue.textContent = `${presetConfig.fontSize}rem`;
+            fontWeightSlider.value = presetConfig.fontWeight;
+            fontWeightValue.textContent = getFontWeightLabel(presetConfig.fontWeight);
+            maxWidthSlider.value = presetConfig.maxWidth;
+            maxWidthValue.textContent = `${presetConfig.maxWidth}px`;
+            paragraphSpacingSlider.value = presetConfig.paragraphSpacing;
+            paragraphSpacingValue.textContent = `${presetConfig.paragraphSpacing}px`;
+            
+            // 更新预设按钮状态
+            presetButtons.forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+        }
+    });
+});
+
+// 重置默认设置
+btnResetAccessibility.addEventListener('click', () => {
+    saveAccessibilitySettings({ ...defaultAccessibilitySettings });
+    applyAccessibilitySettings(defaultAccessibilitySettings);
+    
+    // 重置控件值
+    fontSelect.value = defaultAccessibilitySettings.font;
+    letterSpacingSlider.value = defaultAccessibilitySettings.letterSpacing;
+    letterSpacingValue.textContent = `${(defaultAccessibilitySettings.letterSpacing / 100).toFixed(2)}em`;
+    wordSpacingSlider.value = defaultAccessibilitySettings.wordSpacing;
+    wordSpacingValue.textContent = `${(defaultAccessibilitySettings.wordSpacing / 100).toFixed(2)}em`;
+    lineHeightSlider.value = defaultAccessibilitySettings.lineHeight;
+    lineHeightValue.textContent = defaultAccessibilitySettings.lineHeight;
+    fontSizeSlider.value = defaultAccessibilitySettings.fontSize;
+    fontSizeValue.textContent = `${defaultAccessibilitySettings.fontSize}rem`;
+    
+    // 新控件
+    fontWeightSlider.value = defaultAccessibilitySettings.fontWeight;
+    fontWeightValue.textContent = getFontWeightLabel(defaultAccessibilitySettings.fontWeight);
+    maxWidthSlider.value = defaultAccessibilitySettings.maxWidth;
+    maxWidthValue.textContent = `${defaultAccessibilitySettings.maxWidth}px`;
+    paragraphSpacingSlider.value = defaultAccessibilitySettings.paragraphSpacing;
+    paragraphSpacingValue.textContent = `${defaultAccessibilitySettings.paragraphSpacing}px`;
+    
+    // 重置预设按钮状态
+    presetButtons.forEach(p => p.classList.remove('active'));
 });
 
 // === 标签系统 ===
