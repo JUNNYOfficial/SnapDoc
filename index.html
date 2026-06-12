@@ -9012,9 +9012,9 @@ function initLineHighlight() {
     if (!lineHighlightOverlay) {
         lineHighlightOverlay = document.createElement('div');
         lineHighlightOverlay.id = 'line-highlight-overlay';
-        const editorContainer = document.getElementById('editor-container');
-        editorContainer.style.position = 'relative';
-        editorContainer.appendChild(lineHighlightOverlay);
+        const editorElement = document.getElementById('editor');
+        editorElement.style.position = 'relative';
+        editorElement.appendChild(lineHighlightOverlay);
     }
     
     // 添加鼠标移动和滚动事件监听
@@ -9038,8 +9038,8 @@ function stopLineHighlight() {
 function updateLineHighlight(e) {
     if (!lineHighlightOverlay || !lineHighlightActive) return;
     
-    const editorContainer = document.getElementById('editor-container');
-    const rect = editorContainer.getBoundingClientRect();
+    const editorElement = document.getElementById('editor');
+    const rect = editorElement.getBoundingClientRect();
     
     let mouseY = rect.height / 2; // 默认居中
     if (e && e.clientY !== undefined) {
@@ -9047,7 +9047,7 @@ function updateLineHighlight(e) {
     }
     
     // 计算当前行位置
-    const lineHeight = parseFloat(getComputedStyle(editor).lineHeight) || 24;
+    const lineHeight = parseFloat(getComputedStyle(editorElement).lineHeight) || 28;
     const lineIndex = Math.floor(mouseY / lineHeight);
     const top = lineIndex * lineHeight;
     
