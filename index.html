@@ -3934,6 +3934,177 @@
             background: rgba(0, 102, 204, 0.2);
         }
 
+        /* 字符级高亮追踪样式 */
+        .char-highlight {
+            background: rgba(74, 93, 107, 0.3) !important;
+            border-radius: 2px;
+            padding: 0 1px;
+            margin: 0 -1px;
+            box-shadow: 0 0 8px rgba(74, 93, 107, 0.4);
+            transition: background 0.1s ease-out, box-shadow 0.1s ease-out;
+        }
+
+        [data-accessibility="dyslexic"] .char-highlight {
+            background: rgba(102, 187, 106, 0.4) !important;
+            box-shadow: 0 0 10px rgba(102, 187, 106, 0.5);
+        }
+
+        [data-accessibility="high-contrast"] .char-highlight {
+            background: rgba(255, 235, 59, 0.5) !important;
+            box-shadow: 0 0 12px rgba(255, 235, 59, 0.6);
+        }
+
+        /* 阅读标尺样式 */
+        #reading-ruler-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            top: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(74, 93, 107, 0.08) 0%,
+                rgba(74, 93, 107, 0.12) 30%,
+                rgba(74, 93, 107, 0.08) 70%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 8;
+            transition: top 0.15s ease-out;
+            border-top: 2px solid rgba(74, 93, 107, 0.25);
+            border-bottom: 2px solid rgba(74, 93, 107, 0.25);
+        }
+
+        #reading-ruler-overlay::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 1px;
+            background: rgba(74, 93, 107, 0.2);
+        }
+
+        [data-accessibility="dyslexic"] #reading-ruler-overlay {
+            background: linear-gradient(
+                to bottom,
+                rgba(102, 187, 106, 0.08) 0%,
+                rgba(102, 187, 106, 0.12) 30%,
+                rgba(102, 187, 106, 0.08) 70%,
+                transparent 100%
+            );
+            border-color: rgba(102, 187, 106, 0.3);
+        }
+
+        [data-accessibility="high-contrast"] #reading-ruler-overlay {
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 235, 59, 0.15) 0%,
+                rgba(255, 235, 59, 0.2) 30%,
+                rgba(255, 235, 59, 0.15) 70%,
+                transparent 100%
+            );
+            border-color: rgba(255, 235, 59, 0.4);
+        }
+
+        /* 阅读标尺控制器 */
+        #reading-ruler-handle {
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: var(--accent-calm);
+            border-radius: 50%;
+            cursor: grab;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            box-shadow: 0 2px 8px rgba(74, 93, 107, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            pointer-events: auto;
+        }
+
+        #reading-ruler-handle:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 4px 12px rgba(74, 93, 107, 0.4);
+        }
+
+        #reading-ruler-handle:active {
+            cursor: grabbing;
+        }
+
+        /* 光标增强样式 */
+        [data-cursor-enhanced="true"] #editor * {
+            caret-color: var(--accent-calm, #4a5d6b) !important;
+        }
+
+        [data-cursor-enhanced="true"] #editor,
+        [data-cursor-enhanced="true"] #editor * {
+            cursor: text !important;
+        }
+
+        /* 大光标样式 */
+        [data-cursor-size="large"] #editor * {
+            caret-width: 4px !important;
+        }
+
+        [data-cursor-size="xlarge"] #editor * {
+            caret-width: 6px !important;
+        }
+
+        /* 光标颜色选项 */
+        [data-cursor-color="blue"] #editor *,
+        [data-cursor-color="blue"] #editor {
+            caret-color: #2196F3 !important;
+        }
+
+        [data-cursor-color="green"] #editor *,
+        [data-cursor-color="green"] #editor {
+            caret-color: #4CAF50 !important;
+        }
+
+        [data-cursor-color="red"] #editor *,
+        [data-cursor-color="red"] #editor {
+            caret-color: #F44336 !important;
+        }
+
+        [data-cursor-color="yellow"] #editor *,
+        [data-cursor-color="yellow"] #editor {
+            caret-color: #FFC107 !important;
+        }
+
+        [data-cursor-color="purple"] #editor *,
+        [data-cursor-color="purple"] #editor {
+            caret-color: #9C27B0 !important;
+        }
+
+        [data-cursor-color="orange"] #editor *,
+        [data-cursor-color="orange"] #editor {
+            caret-color: #FF9800 !important;
+        }
+
+        /* 光标闪烁动画 */
+        @keyframes enhanced-cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        [data-cursor-blink="slow"] #editor *,
+        [data-cursor-blink="slow"] #editor {
+            animation: enhanced-cursor-blink 1.5s infinite !important;
+        }
+
+        [data-cursor-blink="none"] #editor *,
+        [data-cursor-blink="none"] #editor {
+            animation: none !important;
+            caret-color: currentColor !important;
+        }
+
         /* 背景色选择器 */
         .bg-color-picker {
             display: flex;
@@ -4693,6 +4864,42 @@
                     <div class="toggle-switch">
                         <label class="setting-label">行高亮追踪</label>
                         <button class="switch-btn" id="btn-line-highlight" title="启用当前行高亮追踪">
+                            <span class="switch-track">
+                                <span class="switch-thumb"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 字符级高亮追踪 -->
+                <div class="setting-item">
+                    <div class="toggle-switch">
+                        <label class="setting-label">字符高亮追踪</label>
+                        <button class="switch-btn" id="btn-char-highlight" title="启用当前字符高亮追踪（科学建议）">
+                            <span class="switch-track">
+                                <span class="switch-thumb"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 阅读标尺 -->
+                <div class="setting-item">
+                    <div class="toggle-switch">
+                        <label class="setting-label">阅读标尺</label>
+                        <button class="switch-btn" id="btn-reading-ruler" title="启用阅读标尺引导线">
+                            <span class="switch-track">
+                                <span class="switch-thumb"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 光标增强 -->
+                <div class="setting-item">
+                    <div class="toggle-switch">
+                        <label class="setting-label">光标增强</label>
+                        <button class="switch-btn" id="btn-cursor-enhance" title="增强光标可见性">
                             <span class="switch-track">
                                 <span class="switch-thumb"></span>
                             </span>
@@ -5830,7 +6037,10 @@ window.addEventListener('DOMContentLoaded', () => {
         checkBlockConversion();
         handleInlineFormatting();
         state.content = editor.innerHTML;
-        updateDocContent(getActiveDocId(), state.content);
+        
+        // 使用增量保存和防抖优化
+        pendingSaveContent = state.content;
+        
         const currentLen = getEditorText().length;
         const isDelete = lastInputLen >= 0 && currentLen < lastInputLen;
         lastInputLen = currentLen;
@@ -8555,7 +8765,62 @@ function updateSaveStatus(status) {
 // 编辑器输入时显示"保存中"状态
 editor.addEventListener('input', () => {
     updateSaveStatus('saving');
+    // 防抖保存（300ms延迟）
+    clearTimeout(debouncedSaveTimer);
+    debouncedSaveTimer = setTimeout(() => {
+        debouncedSave();
+    }, 300);
 });
+
+// 防抖保存变量
+let debouncedSaveTimer = null;
+let pendingSaveContent = null;
+
+// 防抖保存函数
+function debouncedSave() {
+    if (pendingSaveContent !== null) {
+        updateDocContentIncremental(getActiveDocId(), pendingSaveContent);
+        pendingSaveContent = null;
+    }
+}
+
+// 增量保存函数 - 只保存当前文档
+function updateDocContentIncremental(id, content) {
+    if (!id) return;
+    
+    const storageKey = 'snapdoc_doc_' + id;
+    const existingDoc = JSON.parse(localStorage.getItem(storageKey) || 'null');
+    
+    if (existingDoc) {
+        // 保存历史版本（每5分钟最多保存一个版本，或内容变化超过100字符）
+        saveVersion(id, existingDoc.content);
+        
+        // 只更新当前文档
+        existingDoc.content = content;
+        existingDoc.updatedAt = Date.now();
+        
+        localStorage.setItem(storageKey, JSON.stringify(existingDoc));
+        
+        // 同时更新文档列表（后台进行，不阻塞主线程）
+        setTimeout(() => {
+            updateDocListTimestamp(id, existingDoc.updatedAt);
+        }, 0);
+    }
+}
+
+// 更新文档列表中的时间戳（异步，不阻塞）
+function updateDocListTimestamp(id, timestamp) {
+    try {
+        const docs = getDocs();
+        const idx = docs.findIndex(d => d.id === id);
+        if (idx >= 0) {
+            docs[idx].updatedAt = timestamp;
+            saveDocs(docs);
+        }
+    } catch (e) {
+        console.error('更新文档时间戳失败:', e);
+    }
+}
 
 function drawEmotionChart() {
     const ctx = emotionChart.getContext('2d');
@@ -8748,6 +9013,13 @@ const defaultAccessibilitySettings = {
     fontSize: 1.1,
     fontWeight: 400,
     lineHighlightEnabled: false,
+    charHighlightEnabled: false,
+    readingRulerEnabled: false,
+    readingRulerPosition: 0.5,
+    cursorEnhanceEnabled: false,
+    cursorSize: 'normal',
+    cursorColor: 'default',
+    cursorBlink: 'normal',
     maxWidth: 650,
     paragraphSpacing: 16,
     backgroundColor: '',
@@ -8771,7 +9043,14 @@ const presetConfigs = {
         fontSize: 1.3,
         fontWeight: 500,
         maxWidth: 600,
-        paragraphSpacing: 20
+        paragraphSpacing: 20,
+        charHighlightEnabled: true,
+        lineHighlightEnabled: true,
+        readingRulerEnabled: true,
+        cursorEnhanceEnabled: true,
+        cursorSize: 'large',
+        cursorColor: 'blue',
+        cursorBlink: 'slow'
     },
     adhd: {
         name: 'ADHD',
@@ -8784,7 +9063,14 @@ const presetConfigs = {
         fontSize: 1.2,
         fontWeight: 400,
         maxWidth: 550,
-        paragraphSpacing: 24
+        paragraphSpacing: 24,
+        charHighlightEnabled: true,
+        lineHighlightEnabled: true,
+        readingRulerEnabled: true,
+        cursorEnhanceEnabled: true,
+        cursorSize: 'large',
+        cursorColor: 'green',
+        cursorBlink: 'slow'
     },
     vision: {
         name: '低视力',
@@ -8797,7 +9083,14 @@ const presetConfigs = {
         fontSize: 1.5,
         fontWeight: 600,
         maxWidth: 700,
-        paragraphSpacing: 18
+        paragraphSpacing: 18,
+        charHighlightEnabled: false,
+        lineHighlightEnabled: true,
+        readingRulerEnabled: false,
+        cursorEnhanceEnabled: true,
+        cursorSize: 'xlarge',
+        cursorColor: 'blue',
+        cursorBlink: 'normal'
     },
     night: {
         name: '夜间',
@@ -8810,7 +9103,14 @@ const presetConfigs = {
         fontSize: 1.2,
         fontWeight: 400,
         maxWidth: 650,
-        paragraphSpacing: 16
+        paragraphSpacing: 16,
+        charHighlightEnabled: true,
+        lineHighlightEnabled: true,
+        readingRulerEnabled: true,
+        cursorEnhanceEnabled: true,
+        cursorSize: 'large',
+        cursorColor: 'yellow',
+        cursorBlink: 'slow'
     }
 };
 
@@ -8890,6 +9190,9 @@ function applyAccessibilitySettings(settings) {
     btnQuickDyslexic.classList.toggle('active', settings.dyslexicEnabled);
     btnQuickContrast.classList.toggle('active', settings.highContrastEnabled);
     btnLineHighlight.classList.toggle('active', settings.lineHighlightEnabled);
+    btnCharHighlight.classList.toggle('active', settings.charHighlightEnabled);
+    btnReadingRuler.classList.toggle('active', settings.readingRulerEnabled);
+    btnCursorEnhance.classList.toggle('active', settings.cursorEnhanceEnabled);
     btnFocusMode.classList.toggle('active', settings.focusModeEnabled);
     
     // 更新工具按钮状态
@@ -8902,6 +9205,31 @@ function applyAccessibilitySettings(settings) {
         initLineHighlight();
     } else {
         stopLineHighlight();
+    }
+    
+    // 启动或停止字符级高亮追踪
+    if (settings.charHighlightEnabled) {
+        initCharHighlight();
+    } else {
+        stopCharHighlight();
+    }
+    
+    // 启动或停止阅读标尺
+    if (settings.readingRulerEnabled) {
+        initReadingRuler();
+        // 恢复保存的位置
+        if (settings.readingRulerPosition !== undefined) {
+            readingRulerPosition = settings.readingRulerPosition;
+        }
+    } else {
+        stopReadingRuler();
+    }
+    
+    // 启动或停止光标增强
+    if (settings.cursorEnhanceEnabled) {
+        initCursorEnhance();
+    } else {
+        stopCursorEnhance();
     }
     
     // 应用自定义背景色
@@ -9225,6 +9553,306 @@ function updateLineHighlight(e) {
 btnLineHighlight.addEventListener('click', () => {
     const settings = getAccessibilitySettings();
     settings.lineHighlightEnabled = !settings.lineHighlightEnabled;
+    saveAccessibilitySettings(settings);
+    applyAccessibilitySettings(settings);
+});
+
+// === 字符级高亮追踪功能 ===
+let charHighlightActive = false;
+let currentCharHighlight = null;
+let charHighlightTimeout = null;
+
+// 初始化字符级高亮
+function initCharHighlight() {
+    if (charHighlightActive) return;
+    charHighlightActive = true;
+    
+    // 监听编辑器内的选择变化
+    editor.addEventListener('selectionchange', handleCharHighlight);
+    editor.addEventListener('keyup', handleCharHighlight);
+    editor.addEventListener('click', handleCharHighlight);
+}
+
+// 处理字符高亮
+function handleCharHighlight() {
+    // 清除之前的延迟
+    if (charHighlightTimeout) {
+        clearTimeout(charHighlightTimeout);
+    }
+    
+    // 延迟执行以确保光标位置已更新
+    charHighlightTimeout = setTimeout(() => {
+        updateCharHighlight();
+    }, 50);
+}
+
+// 更新字符高亮
+function updateCharHighlight() {
+    if (!charHighlightActive) return;
+    
+    // 清除之前的高亮
+    clearCharHighlight();
+    
+    const selection = window.getSelection();
+    if (!selection.rangeCount || selection.isCollapsed) return;
+    
+    const range = selection.getRangeAt(0);
+    const selectedText = range.toString();
+    
+    // 确保有文本被选中
+    if (selectedText && selectedText.length > 0) {
+        // 获取选中文字的位置
+        const rects = range.getClientRects();
+        if (rects.length > 0) {
+            const rect = rects[0];
+            
+            // 创建高亮元素
+            currentCharHighlight = document.createElement('span');
+            currentCharHighlight.className = 'char-highlight';
+            
+            // 将选中内容包裹在高亮元素中
+            try {
+                range.surroundContents(currentCharHighlight);
+                
+                // 设置滚动位置使高亮可见
+                const editorElement = document.getElementById('editor');
+                const editorRect = editorElement.getBoundingClientRect();
+                const highlightTop = rect.top - editorRect.top + editorElement.scrollTop;
+                
+                // 平滑滚动到高亮位置
+                editorElement.scrollTo({
+                    top: highlightTop - editorRect.height / 3,
+                    behavior: 'smooth'
+                });
+            } catch (e) {
+                // 如果选中了跨多个元素的文本，尝试其他方法
+                console.log('字符高亮无法应用到复杂选择');
+            }
+        }
+    }
+}
+
+// 清除字符高亮
+function clearCharHighlight() {
+    if (currentCharHighlight) {
+        // 将高亮元素的内容替换为纯文本
+        const parent = currentCharHighlight.parentNode;
+        while (currentCharHighlight.firstChild) {
+            parent.insertBefore(currentCharHighlight.firstChild, currentCharHighlight);
+        }
+        parent.removeChild(currentCharHighlight);
+        currentCharHighlight = null;
+    }
+}
+
+// 字符级高亮切换
+const btnCharHighlight = document.getElementById('btn-char-highlight');
+btnCharHighlight.addEventListener('click', () => {
+    const settings = getAccessibilitySettings();
+    settings.charHighlightEnabled = !settings.charHighlightEnabled;
+    saveAccessibilitySettings(settings);
+    applyAccessibilitySettings(settings);
+});
+
+// 停止字符级高亮追踪
+function stopCharHighlight() {
+    if (!charHighlightActive) return;
+    charHighlightActive = false;
+    
+    // 清除高亮
+    clearCharHighlight();
+    
+    // 移除事件监听
+    editor.removeEventListener('selectionchange', handleCharHighlight);
+    editor.removeEventListener('keyup', handleCharHighlight);
+    editor.removeEventListener('click', handleCharHighlight);
+    
+    // 清除延迟
+    if (charHighlightTimeout) {
+        clearTimeout(charHighlightTimeout);
+        charHighlightTimeout = null;
+    }
+}
+
+// === 阅读标尺功能 ===
+let readingRulerOverlay = null;
+let readingRulerHandle = null;
+let readingRulerActive = false;
+let readingRulerPosition = 0.5; // 默认位置（0-1，表示在视口的百分比位置）
+let isDraggingRuler = false;
+
+// 初始化阅读标尺
+function initReadingRuler() {
+    if (readingRulerActive) return;
+    readingRulerActive = true;
+    
+    const editorElement = document.getElementById('editor');
+    const editorContainer = document.getElementById('editor-container');
+    
+    // 创建标尺覆盖层
+    if (!readingRulerOverlay) {
+        readingRulerOverlay = document.createElement('div');
+        readingRulerOverlay.id = 'reading-ruler-overlay';
+        editorElement.style.position = 'relative';
+        editorElement.appendChild(readingRulerOverlay);
+        
+        // 创建拖动手柄
+        readingRulerHandle = document.createElement('div');
+        readingRulerHandle.id = 'reading-ruler-handle';
+        readingRulerHandle.innerHTML = '⋮⋮';
+        readingRulerOverlay.appendChild(readingRulerHandle);
+        
+        // 添加拖动事件
+        readingRulerHandle.addEventListener('mousedown', startDragRuler);
+        document.addEventListener('mousemove', dragRuler);
+        document.addEventListener('mouseup', stopDragRuler);
+    }
+    
+    // 添加鼠标移动事件监听
+    editorContainer.addEventListener('mousemove', updateReadingRuler);
+    editorContainer.addEventListener('click', updateReadingRuler);
+    
+    // 初始更新
+    updateReadingRulerPosition(readingRulerPosition);
+}
+
+// 更新阅读标尺位置（基于鼠标位置）
+function updateReadingRuler(e) {
+    if (!readingRulerOverlay || !readingRulerActive || isDraggingRuler) return;
+    
+    const editorContainer = document.getElementById('editor-container');
+    const rect = editorContainer.getBoundingClientRect();
+    
+    // 计算鼠标在视口中的相对位置
+    let mouseY = rect.height / 2;
+    if (e && e.clientY !== undefined) {
+        mouseY = e.clientY - rect.top;
+    }
+    
+    // 计算相对位置（0-1）
+    const relativePosition = mouseY / rect.height;
+    readingRulerPosition = Math.max(0.1, Math.min(0.9, relativePosition));
+    
+    updateReadingRulerPosition(readingRulerPosition);
+}
+
+// 更新阅读标尺的实际位置
+function updateReadingRulerPosition(relativePosition) {
+    if (!readingRulerOverlay || !readingRulerActive) return;
+    
+    const editorElement = document.getElementById('editor');
+    const editorHeight = editorElement.scrollHeight;
+    
+    // 计算top位置
+    const top = relativePosition * editorHeight;
+    readingRulerOverlay.style.top = `${top}px`;
+    
+    // 保存位置到设置
+    const settings = getAccessibilitySettings();
+    settings.readingRulerPosition = relativePosition;
+    saveAccessibilitySettings(settings);
+}
+
+// 开始拖动标尺
+function startDragRuler(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    isDraggingRuler = true;
+    readingRulerHandle.style.cursor = 'grabbing';
+}
+
+// 拖动标尺
+function dragRuler(e) {
+    if (!isDraggingRuler || !readingRulerOverlay) return;
+    
+    const editorElement = document.getElementById('editor');
+    const rect = editorElement.getBoundingClientRect();
+    
+    // 计算相对位置
+    let mouseY = e.clientY - rect.top;
+    const relativePosition = mouseY / rect.height;
+    readingRulerPosition = Math.max(0.1, Math.min(0.9, relativePosition));
+    
+    updateReadingRulerPosition(readingRulerPosition);
+}
+
+// 停止拖动标尺
+function stopDragRuler() {
+    if (isDraggingRuler) {
+        isDraggingRuler = false;
+        if (readingRulerHandle) {
+            readingRulerHandle.style.cursor = 'grab';
+        }
+    }
+}
+
+// 停止阅读标尺
+function stopReadingRuler() {
+    if (!readingRulerActive) return;
+    readingRulerActive = false;
+    
+    const editorContainer = document.getElementById('editor-container');
+    
+    // 移除事件监听
+    editorContainer.removeEventListener('mousemove', updateReadingRuler);
+    editorContainer.removeEventListener('click', updateReadingRuler);
+}
+
+// 阅读标尺切换
+const btnReadingRuler = document.getElementById('btn-reading-ruler');
+btnReadingRuler.addEventListener('click', () => {
+    const settings = getAccessibilitySettings();
+    settings.readingRulerEnabled = !settings.readingRulerEnabled;
+    saveAccessibilitySettings(settings);
+    applyAccessibilitySettings(settings);
+});
+
+// === 光标增强功能 ===
+let cursorEnhanceActive = false;
+
+// 初始化光标增强
+function initCursorEnhance() {
+    if (cursorEnhanceActive) return;
+    cursorEnhanceActive = true;
+    
+    const settings = getAccessibilitySettings();
+    
+    // 设置光标增强属性
+    document.documentElement.setAttribute('data-cursor-enhanced', 'true');
+    
+    // 应用光标大小
+    if (settings.cursorSize) {
+        document.documentElement.setAttribute('data-cursor-size', settings.cursorSize);
+    }
+    
+    // 应用光标颜色
+    if (settings.cursorColor) {
+        document.documentElement.setAttribute('data-cursor-color', settings.cursorColor);
+    }
+    
+    // 应用光标闪烁速度
+    if (settings.cursorBlink) {
+        document.documentElement.setAttribute('data-cursor-blink', settings.cursorBlink);
+    }
+}
+
+// 停止光标增强
+function stopCursorEnhance() {
+    if (!cursorEnhanceActive) return;
+    cursorEnhanceActive = false;
+    
+    // 移除光标增强属性
+    document.documentElement.removeAttribute('data-cursor-enhanced');
+    document.documentElement.removeAttribute('data-cursor-size');
+    document.documentElement.removeAttribute('data-cursor-color');
+    document.documentElement.removeAttribute('data-cursor-blink');
+}
+
+// 光标增强切换
+const btnCursorEnhance = document.getElementById('btn-cursor-enhance');
+btnCursorEnhance.addEventListener('click', () => {
+    const settings = getAccessibilitySettings();
+    settings.cursorEnhanceEnabled = !settings.cursorEnhanceEnabled;
     saveAccessibilitySettings(settings);
     applyAccessibilitySettings(settings);
 });
