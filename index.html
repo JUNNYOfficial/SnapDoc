@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SnapDoc</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@400;500;600&family=Open+Dyslexic:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Noto+Serif+SC:wght@300;400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400&family=Noto+Serif+SC:wght@300;400;600&display=swap" rel="stylesheet"></noscript>
     <svg style="display:none" aria-hidden="true">
         <defs>
             <symbol id="icon-seedling" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v10"/><path d="M12 10a5 5 0 0 1 5-5h0a5 5 0 0 1 5 5v0a5 5 0 0 1-5 5h0a5 5 0 0 1-5-5v0Z"/><path d="M12 10a5 5 0 0 0-5-5h0a5 5 0 0 0-5 5v0a5 5 0 0 0 5 5h0a5 5 0 0 0 5-5v0Z"/></symbol>
@@ -5096,13 +5096,31 @@
 if (window.pdfjsLib) {
     window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 }
-// === 多文档存储系统 ===
+// === 多文档存储系统（优化版）===
 const STORAGE_KEY = 'snapdoc_docs';
 const ACTIVE_DOC_KEY = 'snapdoc_active_doc';
+const DOC_CONTENT_PREFIX = 'snapdoc_content_';
 
-function getDocs() {
+// 内存缓存 - 避免重复读取
+const docCache = {};
+const metadataCache = {};
+
+function getDocs(skipContent = true) {
     try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        const cached = metadataCache[STORAGE_KEY];
+        if (cached && skipContent) return cached;
+        
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return [];
+        
+        const docs = JSON.parse(raw);
+        
+        if (skipContent) {
+            metadataCache[STORAGE_KEY] = docs;
+            return docs;
+        }
+        
+        return docs;
     } catch {
         return [];
     }
@@ -5110,6 +5128,7 @@ function getDocs() {
 
 function saveDocs(docs) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(docs));
+    metadataCache[STORAGE_KEY] = docs;
 }
 
 function getActiveDocId() {
@@ -5118,6 +5137,70 @@ function getActiveDocId() {
 
 function setActiveDocId(id) {
     localStorage.setItem(ACTIVE_DOC_KEY, id);
+}
+
+async function compressString(str) {
+    if (!str || str.length < 1024) return str;
+    
+    try {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(str);
+        const compressed = await compression.compress(data, { format: 'deflate' });
+        return 'c:' + btoa(String.fromCharCode(...new Uint8Array(compressed)));
+    } catch {
+        return str;
+    }
+}
+
+async function decompressString(str) {
+    if (!str || !str.startsWith('c:')) return str;
+    
+    try {
+        const encoded = str.slice(2);
+        const binary = atob(encoded);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+        const decompressed = await compression.decompress(bytes);
+        const decoder = new TextDecoder();
+        return decoder.decode(decompressed);
+    } catch {
+        return str.slice(2);
+    }
+}
+
+function getDocContent(id) {
+    if (docCache[id]) return docCache[id];
+    
+    const stored = localStorage.getItem(DOC_CONTENT_PREFIX + id);
+    if (stored !== null) {
+        if (stored.startsWith('c:')) {
+            decompressString(stored).then(content => {
+                docCache[id] = content;
+            });
+            return '';
+        }
+        docCache[id] = stored;
+        return stored;
+    }
+    
+    return '';
+}
+
+async function saveDocContent(id, content) {
+    docCache[id] = content;
+    
+    if (content.length > 4096) {
+        const compressed = await compressString(content);
+        localStorage.setItem(DOC_CONTENT_PREFIX + id, compressed);
+    } else {
+        localStorage.setItem(DOC_CONTENT_PREFIX + id, content);
+    }
+}
+
+function clearDocCache(id) {
+    delete docCache[id];
 }
 
 function createNewDoc(title) {
@@ -5142,7 +5225,11 @@ function updateDocContent(id, content) {
     if (idx >= 0) {
         // 保存历史版本（每5分钟最多保存一个版本，或内容变化超过100字符）
         saveVersion(id, docs[idx].content);
-        docs[idx].content = content;
+        
+        // 分离存储：内容单独保存（异步，不阻塞）
+        saveDocContent(id, content).catch(console.error);
+        
+        // 只更新元数据中的时间戳
         docs[idx].updatedAt = Date.now();
         saveDocs(docs);
     }
@@ -5293,19 +5380,26 @@ function getDocVersions(docId) {
     return versions[docId] || [];
 }
 
-function restoreVersion(docId, versionIndex) {
+async function restoreVersion(docId, versionIndex) {
     const versions = getVersions();
     const docVersions = versions[docId];
     if (!docVersions || !docVersions[versionIndex]) return false;
     const version = docVersions[versionIndex];
-    // 先保存当前状态为一个新版本
+    
+    let content = version.content;
+    if (content.startsWith('c:')) {
+        content = await decompressString(content);
+    }
+    
     const docs = getDocs();
     const idx = docs.findIndex(d => d.id === docId);
     if (idx >= 0) {
         saveVersion(docId, docs[idx].content);
-        docs[idx].content = version.content;
+        docs[idx].content = content;
         docs[idx].updatedAt = Date.now();
         saveDocs(docs);
+        
+        docCache[docId] = content;
         return true;
     }
     return false;
@@ -5378,10 +5472,11 @@ function openVersionsPanel() {
     }
 
     modal.querySelectorAll('.version-item').forEach(item => {
-        item.addEventListener('click', () => {
+        item.addEventListener('click', async () => {
             const idx = parseInt(item.dataset.index);
             if (confirm('确定要恢复到这个版本吗？当前内容将被保存为历史版本。')) {
-                if (restoreVersion(docId, idx)) {
+                const success = await restoreVersion(docId, idx);
+                if (success) {
                     const doc = getDoc(docId);
                     loadDocContent(doc);
                     modal.remove();
@@ -5440,14 +5535,18 @@ function deleteDoc(id) {
     return null;
 }
 
-function getDoc(id) {
-    return getDocs().find(d => d.id === id);
+function getDoc(id, withContent = false) {
+    const doc = getDocs().find(d => d.id === id);
+    if (doc && withContent) {
+        doc.content = getDocContent(id);
+    }
+    return doc;
 }
 
-function getActiveDoc() {
+function getActiveDoc(withContent = false) {
     const id = getActiveDocId();
     if (!id) return null;
-    return getDoc(id);
+    return getDoc(id, withContent);
 }
 
 // 迁移旧数据
@@ -5496,8 +5595,10 @@ const statsBar = document.getElementById('stats-bar');
 const outlinePanel = document.getElementById('outline-panel');
 const outlineList = document.getElementById('outline-list');
 
-document.getElementById('btn-import').addEventListener('click', () => fileInputImport.click());
-fileInputImport.addEventListener('change', handleImport);
+function initImportSystem() {
+    document.getElementById('btn-import').addEventListener('click', () => fileInputImport.click());
+    fileInputImport.addEventListener('change', handleImport);
+}
 
 // === 撤销/重做栈 ===
 const undoStack = [];
@@ -5982,41 +6083,131 @@ function setEditorHTML(html) {
 
 // === 全局变量声明 ===
 let currentFilterTag = null;
+let isInitialized = false;
 
-// === 初始化 ===
-window.addEventListener('DOMContentLoaded', () => {
-    if (state.content) {
-        if (state.content.includes('block-')) {
-            editor.innerHTML = state.content;
-        } else if (state.content.startsWith('<')) {
-            editor.innerHTML = state.content;
-        } else {
-            editor.textContent = state.content;
+// === 字体按需加载 ===
+const accessibilityFontsLoaded = false;
+function loadAccessibilityFonts() {
+    if (accessibilityFontsLoaded) return;
+    
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@400;500;600&family=Open+Dyslexic:wght@400;600&display=swap';
+    link.rel = 'stylesheet';
+    link.crossOrigin = 'anonymous';
+    link.onload = () => {
+        accessibilityFontsLoaded = true;
+    };
+    document.head.appendChild(link);
+}
+
+// === 初始化优化 ===
+async function loadActiveDocContent() {
+    const activeDoc = getActiveDoc();
+    if (!activeDoc) {
+        if (!editor.innerHTML.trim()) {
+            ensureBlocks();
+        }
+        return;
+    }
+    
+    let content = docCache[activeDoc.id];
+    
+    if (!content) {
+        const stored = localStorage.getItem(DOC_CONTENT_PREFIX + activeDoc.id);
+        if (stored !== null) {
+            if (stored.startsWith('c:')) {
+                content = await decompressString(stored);
+            } else {
+                content = stored;
+            }
+            docCache[activeDoc.id] = content;
         }
     }
+    
+    if (content) {
+        if (content.includes('block-')) {
+            editor.innerHTML = content;
+        } else if (content.startsWith('<')) {
+            editor.innerHTML = content;
+        } else {
+            editor.textContent = content;
+        }
+    } else if (!editor.innerHTML.trim()) {
+        ensureBlocks();
+    }
+}
+
+async function delayedInit() {
+    if (isInitialized) return;
+    isInitialized = true;
+    
+    // 并行执行：加载文档内容和基础初始化
+    const [contentLoaded] = await Promise.all([
+        loadActiveDocContent(),
+        new Promise(resolve => setTimeout(resolve, 0))
+    ]);
+    
+    // 基础初始化
     ensureBlocks();
     lastSnapshotText = getEditorText();
     lastSnapshotHtml = editor.innerHTML;
-    renderTimeline();
-    renderClipboard();
-    drawEmotionChart();
-    renderSidebarDocs();
-
+    
     // 初始化撤销栈
     saveUndoState();
-
+    
+    // 初始化字数统计
+    updateStats();
+    statsBar.classList.add('visible');
+    
+    // 初始化表格大小选择网格
+    initTableSizeGrid();
+    
+    // 移除加载状态并聚焦
     setTimeout(() => {
         document.body.classList.remove('low-energy-init');
         editor.focus();
-    }, 1800);
+    }, 500);
+}
 
-    // 初始化字数统计
-    updateStats();
-    // 默认显示统计栏
-    statsBar.classList.add('visible');
-    // 初始化表格大小选择网格
-    initTableSizeGrid();
+// === 延迟加载非关键功能 ===
+function lazyLoadFeatures() {
+    // 延迟 100ms 渲染文档列表
+    setTimeout(() => {
+        renderSidebarDocs();
+    }, 100);
+    
+    // 延迟 500ms 渲染 timeline 和 clipboard
+    setTimeout(() => {
+        renderTimeline();
+        renderClipboard();
+    }, 500);
+    
+    // 延迟 800ms 渲染情绪图表
+    setTimeout(() => {
+        drawEmotionChart();
+    }, 800);
+}
 
+// === 初始化 ===
+window.addEventListener('DOMContentLoaded', () => {
+    // 快速初始化 - 优先保证编辑器可用
+    delayedInit();
+    
+    // 延迟加载非关键功能
+    lazyLoadFeatures();
+    
+    // 初始化评论系统
+    initCommentSystem();
+    
+    // 初始化侧边栏评论系统
+    initSidebarCommentSystem();
+    
+    // 初始化导入系统
+    initImportSystem();
+    
+    // 初始化链接系统
+    initLinkSystem();
+    
     // 自动保存 & 版本记录
     // 删除操作：即时记录，不做防抖合并，确保每次按键都是独立时间轴条目
     // 新增/编辑：800ms 防抖，避免打字碎片化
@@ -6683,7 +6874,9 @@ function scrollToFootnoteRef(num) {
 }
 
 // === 链接插入逻辑 ===
-document.getElementById('link-confirm').addEventListener('click', insertLink);
+function initLinkSystem() {
+    document.getElementById('link-confirm').addEventListener('click', insertLink);
+}
 function openLinkModal() {
     const sel = window.getSelection();
     if (sel.rangeCount) state.savedSelection = sel.getRangeAt(0).cloneRange();
@@ -9137,6 +9330,11 @@ function applyAccessibilitySettings(settings) {
         document.documentElement.removeAttribute('data-accessibility');
     }
     
+    // 按需加载无障碍字体
+    if (settings.dyslexicEnabled || settings.font !== 'default') {
+        loadAccessibilityFonts();
+    }
+    
     // 应用自定义字体
     const fontMap = {
         'default': 'var(--font-body)',
@@ -10440,39 +10638,41 @@ function openCommentModal() {
     commentInput.focus();
 }
 
-document.getElementById('comment-cancel').addEventListener('click', () => {
-    commentModal.classList.remove('show');
-});
+function initCommentSystem() {
+    document.getElementById('comment-cancel').addEventListener('click', () => {
+        commentModal.classList.remove('show');
+    });
 
-document.getElementById('comment-confirm').addEventListener('click', () => {
-    const text = commentInput.value.trim();
-    if (!text) {
-        showToastCustom('请输入评论内容');
-        return;
+    document.getElementById('comment-confirm').addEventListener('click', () => {
+        const text = commentInput.value.trim();
+        if (!text) {
+            showToastCustom('请输入评论内容');
+            return;
+        }
+        const comments = getDocComments();
+        comments.push({
+            quote: selectedCommentText,
+            text: text,
+            time: new Date().toLocaleString('zh-CN')
+        });
+        setDocComments(comments);
+        renderComments();
+        commentModal.classList.remove('show');
+        showToastCustom('评论已添加');
+    });
+
+    commentModal.addEventListener('click', (e) => {
+        if (e.target === commentModal) commentModal.classList.remove('show');
+    });
+
+    // 格式工具栏评论按钮
+    const fmtCommentBtn = document.querySelector('[data-cmd="comment"]');
+    if (fmtCommentBtn) {
+        fmtCommentBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCommentModal();
+        });
     }
-    const comments = getDocComments();
-    comments.push({
-        quote: selectedCommentText,
-        text: text,
-        time: new Date().toLocaleString('zh-CN')
-    });
-    setDocComments(comments);
-    renderComments();
-    commentModal.classList.remove('show');
-    showToastCustom('评论已添加');
-});
-
-commentModal.addEventListener('click', (e) => {
-    if (e.target === commentModal) commentModal.classList.remove('show');
-});
-
-// 格式工具栏评论按钮
-const fmtCommentBtn = document.querySelector('[data-cmd="comment"]');
-if (fmtCommentBtn) {
-    fmtCommentBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        openCommentModal();
-    });
 }
 
 // === 全文查找替换 ===
@@ -10979,13 +11179,19 @@ function addComment() {
     loadComments();
 }
 
-commentSubmit.addEventListener('click', addComment);
-rightSidebarCommentInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        addComment();
+function initSidebarCommentSystem() {
+    if (commentSubmit) {
+        commentSubmit.addEventListener('click', addComment);
     }
-});
+    if (rightSidebarCommentInput) {
+        rightSidebarCommentInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                addComment();
+            }
+        });
+    }
+}
 
 // 加载相关文档
 function loadRelatedDocs() {
